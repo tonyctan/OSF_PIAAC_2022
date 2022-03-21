@@ -1,0 +1,87 @@
+TITLE:	Structural equation modeling with PIAAC data
+	Multilevel CFA
+	Single-factor model of curiosity and continuous treatment--modified
+	Complex design: Total weights, clustering
+	Clustered by: country (CNTRYID)
+	Level 1--Saturated
+	Level 2--CFA modified
+	CROSS-LEVEL METRIC INVARIANCE
+
+DATA: 	FILE IS piaac1-all-curiosity.dat;
+	! TYPE = IMPUTATION;
+	! Not needed here as the model does not contain any PV
+		
+		
+VARIABLE: 
+	NAMES ARE 
+		CNTRYID
+		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+		SPFWT0
+		HDI2012 UAI;
+		
+	! Variables to be used
+	! Newly defined variable appear at the end of this list
+	USEVARIABLES ARE 
+		I_Q04b 
+		I_Q04d 
+		I_Q04h 
+		I_Q04j 
+		I_Q04l
+		I_Q04m;
+		
+	! Missing data coding
+	MISSING ARE ALL(-99);
+		
+	! Final participant weight
+	WEIGHT = SPFWT0;
+	
+	! Clustering by countries
+	CLUSTER = CNTRYID;
+
+
+ANALYSIS:
+	TYPE = TWOLEVEL;
+	ESTIMATOR = MLR;
+	H1ITERATIONS = 10000;
+	
+	! Use multiple processors to speed the estimation up
+	PROCESSORS = 4;
+
+
+
+MODEL:
+	%WITHIN%
+	! Level 1: Individual participants
+	
+	! Saturated model
+	! No intercepts (they only exist at level 2)
+	! Variances
+	I_Q04b-I_Q04m;
+	! Covariances
+	I_Q04b-I_Q04m WITH I_Q04b-I_Q04m;
+	
+	
+	%BETWEEN%
+	! Level 2: Countries
+	
+	! MEASUREMENT MODEL
+	! Curiousity
+	CURIOUSb BY
+		I_Q04b 
+		I_Q04d
+		I_Q04h
+		I_Q04j
+		I_Q04l
+		I_Q04m;
+		
+	! Model modifications
+	! Residual covariance
+	I_Q04L WITH I_Q04J;
+
+	
+	
+OUTPUT: STDYX;	! Fully standardized parameters requested
+        SAMPSTAT;	! Sample statistics 
+        CINTERVAL;	! Confidence intervals
+        !MOD(all);	! Modification indices
+        

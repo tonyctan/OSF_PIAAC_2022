@@ -1,0 +1,1984 @@
+Mplus VERSION 8.2 (Mac)
+MUTHEN & MUTHEN
+03/19/2022   6:15 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:	Structural equation modeling with PIAAC data
+  	STRUCTURAL EQUATION MODEL
+  	SEM with complex relations and latent variables
+  	Complex design: PVs, total weight, clustering, stratification
+
+  DATA: 	FILE IS piaac1-nor_pvlist.dat;
+  	TYPE = IMPUTATION;
+  	! Needed here as the model contains PVs
+  		
+  		
+  VARIABLE:
+  	NAMES ARE
+  		AGE FEMALE B_Q01a
+  		D_Q11a D_Q11b D_Q11c D_Q11d
+  		F_Q03a F_Q03c F_Q05a F_Q05b
+  		G_Q01a G_Q01b G_Q01c G_Q01d
+  		G_Q01e G_Q01f G_Q01g G_Q01h
+  		G_Q02a G_Q02b G_Q02c G_Q02d
+  		G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+  		G_Q05a G_Q05c G_Q05d G_Q05e
+  		G_Q05f G_Q05g G_Q05h
+  		H_Q01a H_Q01b H_Q01c H_Q01d
+  		H_Q01e H_Q01f H_Q01g H_Q01h
+  		H_Q02a H_Q02b H_Q02c H_Q02d
+  		H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
+  		H_Q05a H_Q05c H_Q05d H_Q05e
+  		H_Q05f H_Q05g H_Q05h
+  		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  		I_Q06a
+  		I_Q07a I_Q07b
+  		HOMLANG IMGEN
+  		PVLIT PVNUM PVPSL
+  		SPFWT0
+  		SPFWT1-SPFWT80
+  		VARSTRAT VARUNIT;
+  		
+  	! Variables to be used
+  	! Newly defined variable appear at the end of this list
+  	USEVARIABLES ARE
+  		H_Q05a
+  		H_Q05c
+  		H_Q05e
+  		H_Q05f
+  		I_Q04b
+  		I_Q04d
+  		I_Q04h
+  		I_Q04j
+  		I_Q04l
+  		I_Q04m
+  		HOMLANG
+  		FEMALE
+  		LIT
+  		PSTRE;
+  		
+  	! Missing data coding
+  	MISSING ARE ALL(-99);
+  		
+  	! Final participant weight
+  	WEIGHT = SPFWT0;
+  	
+  	! Clustering in sampling units
+  	CLUSTER = VARUNIT;
+  	
+  	! Stratification
+  	STRATIFICATION = VARSTRAT;
+
+
+  DEFINE:
+  	! Scale down the achievement scores to avoid convergence issues
+  	PSTRE = PVPSL/100;
+  	LIT = PVLIT/100;
+  	
+
+  ANALYSIS:
+  	TYPE = COMPLEX;
+  	ESTIMATOR = MLR;
+  	H1ITERATIONS = 10000;
+
+  MODEL:
+  	
+  	! MEASUREMENT MODELS
+  	! Everyday life skills
+  	LIFE BY
+  		H_Q05a
+  		H_Q05c
+  		H_Q05e
+  		H_Q05f;
+  		
+  	! Curiousity
+  	CURIOUS BY
+  		I_Q04b
+  		I_Q04d
+  		I_Q04h
+  		I_Q04j
+  		I_Q04l
+  		I_Q04m;
+  		
+  	! Model modifications
+  	! Residual covariance
+  	I_Q04B WITH I_Q04H;
+  	I_Q04B WITH I_Q04J;
+  	
+  	! STRUCTURAL MODEL
+  	! Direct effects
+  	PSTRE ON
+  		CURIOUS
+  		LIFE
+  		FEMALE
+  		HOMLANG
+  		LIT;
+  		
+  	CURIOUS ON
+  		FEMALE
+  		HOMLANG
+  		LIT;
+  		
+  	LIFE ON
+  		FEMALE
+  		HOMLANG
+  		LIT;
+  		
+  	
+  	! Variances and covariances of predictors/residuals to let FIML work
+  	! Variances
+  	CURIOUS;
+  	LIFE;
+  	FEMALE;
+  	HOMLANG;
+  	LIT;
+  	
+  	! Covariances
+  	! Residuals of mediators
+  	CURIOUS WITH LIFE;
+  	! Predictors
+  	FEMALE WITH HOMLANG LIT;
+  	HOMLANG WITH LIT;
+  	
+  	
+  MODEL INDIRECT:
+  	! Indirect effects
+  	PSTRE IND FEMALE;
+  	PSTRE IND HOMLANG;
+  	PSTRE IND LIT;
+  	
+
+
+  OUTPUT: STDYX;	! Fully standardized parameters requested
+          STDY;	! Standardized parameter estimates requested
+          		! (some X-variables are dichotomous)
+          SAMPSTAT;	! Sample statistics
+          CINTERVAL;	! Confidence intervals
+          !mod(all);
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Structural equation modeling with PIAAC data
+STRUCTURAL EQUATION MODEL
+SEM with complex relations and latent variables
+Complex design: PVs, total weight, clustering, stratification
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Average number of observations                                5128
+
+Number of replications
+    Requested                                                   10
+    Completed                                                   10
+
+Number of dependent variables                                   11
+Number of independent variables                                  3
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   H_Q05A      H_Q05C      H_Q05E      H_Q05F      I_Q04B      I_Q04D
+   I_Q04H      I_Q04J      I_Q04L      I_Q04M      PSTRE
+
+Observed independent variables
+   HOMLANG     FEMALE      LIT
+
+Continuous latent variables
+   LIFE        CURIOUS
+
+Variables with special functions
+
+  Stratification        VARSTRAT
+  Cluster variable      VARUNIT
+  Weight variable       SPFWT0
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                          10000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  Multiple data files from
+    piaac1-nor_pvlist.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA FOR THE FIRST DATA SET
+
+     Number of missing data patterns            36
+     Number of strata                           80
+     Number of clusters                        163
+
+
+SUMMARY OF MISSING DATA PATTERNS FOR THE FIRST DATA SET
+
+
+     MISSING DATA PATTERNS (x = not missing)
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+ H_Q05A    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ H_Q05C    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ H_Q05E    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ H_Q05F    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ I_Q04B    x  x  x  x  x  x  x  x  x  x  x  x  x
+ I_Q04D    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ I_Q04H    x  x  x  x  x  x  x  x                 x  x  x
+ I_Q04J    x  x  x  x  x  x        x  x  x  x     x  x  x  x  x
+ I_Q04L    x  x  x  x              x  x  x     x  x  x     x  x
+ I_Q04M    x  x  x     x  x  x     x  x     x  x  x  x  x  x  x  x
+ PSTRE     x  x     x  x     x     x              x     x  x
+ HOMLANG   x     x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ FEMALE    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ LIT       x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+
+          21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36
+ H_Q05A    x  x  x  x  x
+ H_Q05C    x  x  x
+ H_Q05E    x        x  x
+ H_Q05F    x        x  x
+ I_Q04B       x     x     x  x  x  x  x
+ I_Q04D       x  x  x     x  x  x  x  x  x  x  x  x
+ I_Q04H          x  x     x  x  x  x     x  x
+ I_Q04J       x  x  x     x  x  x  x  x  x  x  x
+ I_Q04L             x     x  x  x     x  x
+ I_Q04M       x  x  x     x  x  x  x  x  x  x  x
+ PSTRE           x  x     x
+ HOMLANG   x  x  x  x  x  x  x     x  x  x  x  x  x
+ FEMALE    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ LIT       x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1        4245          13           1          25           2
+          2           2          14           5          26          76
+          3         414          15           2          27         164
+          4           1          16           1          28           1
+          5           7          17           1          29           1
+          6           2          18           2          30           1
+          7           1          19           1          31           1
+          8           1          20           1          32           1
+          9           1          21           1          33           1
+         10           2          22           1          34           1
+         11           1          23           1          35           2
+         12           1          24           1          36         181
+
+
+COVARIANCE COVERAGE OF DATA FOR THE FIRST DATA SET
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              H_Q05A        H_Q05C        H_Q05E        H_Q05F        I_Q04B
+              ________      ________      ________      ________      ________
+ H_Q05A         0.916
+ H_Q05C         0.916         0.916
+ H_Q05E         0.916         0.915         0.916
+ H_Q05F         0.916         0.915         0.916         0.916
+ I_Q04B         0.913         0.913         0.913         0.913         0.960
+ I_Q04D         0.916         0.915         0.915         0.915         0.960
+ I_Q04H         0.913         0.913         0.913         0.913         0.959
+ I_Q04J         0.915         0.914         0.914         0.914         0.960
+ I_Q04L         0.912         0.912         0.912         0.912         0.957
+ I_Q04M         0.915         0.915         0.914         0.914         0.960
+ PSTRE          0.832         0.832         0.832         0.832         0.845
+ HOMLANG        0.916         0.915         0.915         0.915         0.960
+ FEMALE         0.916         0.916         0.916         0.916         0.960
+ LIT            0.916         0.916         0.916         0.916         0.960
+
+
+           Covariance Coverage
+              I_Q04D        I_Q04H        I_Q04J        I_Q04L        I_Q04M
+              ________      ________      ________      ________      ________
+ I_Q04D         0.964
+ I_Q04H         0.961         0.961
+ I_Q04J         0.963         0.960         0.963
+ I_Q04L         0.960         0.958         0.959         0.960
+ I_Q04M         0.963         0.960         0.962         0.959         0.963
+ PSTRE          0.847         0.846         0.847         0.845         0.847
+ HOMLANG        0.963         0.960         0.962         0.959         0.962
+ FEMALE         0.964         0.961         0.963         0.960         0.963
+ LIT            0.964         0.961         0.963         0.960         0.963
+
+
+           Covariance Coverage
+              PSTRE         HOMLANG       FEMALE        LIT
+              ________      ________      ________      ________
+ PSTRE          0.847
+ HOMLANG        0.846         0.964
+ FEMALE         0.847         0.964         1.000
+ LIT            0.847         0.964         0.965         0.965
+
+
+SAMPLE STATISTICS
+
+NOTE:  These are average results over 10 data sets.
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              H_Q05A        H_Q05C        H_Q05E        H_Q05F        I_Q04B
+              ________      ________      ________      ________      ________
+                3.276         2.877         0.821         1.799         2.261
+
+
+           Means
+              I_Q04D        I_Q04H        I_Q04J        I_Q04L        I_Q04M
+              ________      ________      ________      ________      ________
+                3.138         2.884         2.941         2.480         2.958
+
+
+           Means
+              PSTRE         HOMLANG       FEMALE        LIT
+              ________      ________      ________      ________
+                2.817         0.902         0.489         2.784
+
+
+           Covariances
+              H_Q05A        H_Q05C        H_Q05E        H_Q05F        I_Q04B
+              ________      ________      ________      ________      ________
+ H_Q05A         1.044
+ H_Q05C         0.435         1.127
+ H_Q05E         0.306         0.252         0.982
+ H_Q05F         0.481         0.402         0.521         1.498
+ I_Q04B         0.174         0.204         0.154         0.209         0.744
+ I_Q04D         0.194         0.224         0.131         0.225         0.270
+ I_Q04H         0.178         0.193         0.144         0.235         0.328
+ I_Q04J         0.110         0.106         0.093         0.131         0.202
+ I_Q04L         0.156         0.202         0.127         0.203         0.332
+ I_Q04M         0.183         0.230         0.119         0.182         0.209
+ PSTRE          0.137         0.086         0.139         0.146         0.078
+ HOMLANG       -0.014        -0.031        -0.002         0.005         0.001
+ FEMALE        -0.011        -0.024        -0.103        -0.004        -0.022
+ LIT            0.124         0.077         0.132         0.129         0.094
+
+
+           Covariances
+              I_Q04D        I_Q04H        I_Q04J        I_Q04L        I_Q04M
+              ________      ________      ________      ________      ________
+ I_Q04D         0.583
+ I_Q04H         0.292         0.600
+ I_Q04J         0.253         0.254         0.702
+ I_Q04L         0.297         0.334         0.361         0.750
+ I_Q04M         0.264         0.235         0.283         0.306         0.622
+ PSTRE          0.080         0.097         0.054         0.050         0.058
+ HOMLANG       -0.011         0.012         0.021        -0.007        -0.013
+ FEMALE         0.000        -0.013         0.001        -0.019        -0.008
+ LIT            0.061         0.108         0.054         0.058         0.049
+
+
+           Covariances
+              PSTRE         HOMLANG       FEMALE        LIT
+              ________      ________      ________      ________
+ PSTRE          0.190
+ HOMLANG        0.027         0.088
+ FEMALE        -0.015         0.005         0.250
+ LIT            0.170         0.035        -0.010         0.221
+
+
+           Correlations
+              H_Q05A        H_Q05C        H_Q05E        H_Q05F        I_Q04B
+              ________      ________      ________      ________      ________
+ H_Q05A         1.000
+ H_Q05C         0.401         1.000
+ H_Q05E         0.303         0.239         1.000
+ H_Q05F         0.384         0.310         0.430         1.000
+ I_Q04B         0.198         0.223         0.180         0.198         1.000
+ I_Q04D         0.249         0.277         0.173         0.240         0.410
+ I_Q04H         0.225         0.234         0.188         0.247         0.491
+ I_Q04J         0.129         0.120         0.112         0.128         0.280
+ I_Q04L         0.176         0.220         0.148         0.191         0.444
+ I_Q04M         0.227         0.274         0.153         0.188         0.307
+ PSTRE          0.308         0.186         0.322         0.275         0.208
+ HOMLANG       -0.045        -0.098        -0.007         0.014         0.004
+ FEMALE        -0.022        -0.045        -0.208        -0.006        -0.052
+ LIT            0.257         0.155         0.284         0.225         0.232
+
+
+           Correlations
+              I_Q04D        I_Q04H        I_Q04J        I_Q04L        I_Q04M
+              ________      ________      ________      ________      ________
+ I_Q04D         1.000
+ I_Q04H         0.493         1.000
+ I_Q04J         0.396         0.391         1.000
+ I_Q04L         0.449         0.497         0.498         1.000
+ I_Q04M         0.438         0.385         0.429         0.448         1.000
+ PSTRE          0.241         0.287         0.148         0.133         0.169
+ HOMLANG       -0.050         0.054         0.083        -0.028        -0.057
+ FEMALE         0.000        -0.032         0.001        -0.044        -0.021
+ LIT            0.171         0.297         0.136         0.142         0.131
+
+
+           Correlations
+              PSTRE         HOMLANG       FEMALE        LIT
+              ________      ________      ________      ________
+ PSTRE          1.000
+ HOMLANG        0.207         1.000
+ FEMALE        -0.069         0.035         1.000
+ LIT            0.832         0.254        -0.042         1.000
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       55
+
+Loglikelihood
+
+    H0 Value
+
+        Mean                            -65907.873
+        Std Dev                             58.672
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       -66044.362     -66003.129
+           0.980       1.000       -66028.368     -66003.129
+           0.950       1.000       -66004.383     -66003.129
+           0.900       0.900       -65983.067     -66003.129
+           0.800       0.700       -65957.251     -66003.129
+           0.700       0.600       -65938.640     -65961.133
+           0.500       0.400       -65907.873     -65931.209
+           0.300       0.400       -65877.105     -65857.683
+           0.200       0.400       -65858.494     -65856.540
+           0.100       0.100       -65832.678     -65834.457
+           0.050       0.000       -65811.363     -65834.457
+           0.020       0.000       -65787.378     -65834.457
+           0.010       0.000       -65771.384     -65834.457
+
+    H1 Value
+
+        Mean                            -65213.529
+        Std Dev                             56.738
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       -65345.519     -65293.136
+           0.980       1.000       -65330.052     -65293.136
+           0.950       1.000       -65306.858     -65293.136
+           0.900       0.900       -65286.245     -65293.136
+           0.800       0.700       -65261.280     -65293.136
+           0.700       0.600       -65243.283     -65264.141
+           0.500       0.400       -65213.529     -65238.545
+           0.300       0.400       -65183.776     -65169.251
+           0.200       0.200       -65165.779     -65167.380
+           0.100       0.100       -65140.814     -65147.811
+           0.050       0.100       -65120.201     -65147.811
+           0.020       0.000       -65097.007     -65147.811
+           0.010       0.000       -65081.540     -65147.811
+
+Information Criteria
+
+    Akaike (AIC)
+
+        Mean                            131925.745
+        Std Dev                            117.344
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       131652.767     131753.328
+           0.980       1.000       131684.755     131753.328
+           0.950       1.000       131732.726     131753.328
+           0.900       0.900       131775.357     131753.328
+           0.800       0.600       131826.988     131753.328
+           0.700       0.600       131864.210     131823.081
+           0.500       0.600       131925.745     131930.103
+           0.300       0.400       131987.281     131993.155
+           0.200       0.300       132024.502     132032.265
+           0.100       0.100       132076.134     132032.565
+           0.050       0.000       132118.765     132032.565
+           0.020       0.000       132166.736     132032.565
+           0.010       0.000       132198.724     132032.565
+
+    Bayesian (BIC)
+
+        Mean                            132285.581
+        Std Dev                            117.344
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       132012.603     132113.164
+           0.980       1.000       132044.591     132113.164
+           0.950       1.000       132092.562     132113.164
+           0.900       0.900       132135.193     132113.164
+           0.800       0.600       132186.824     132113.164
+           0.700       0.600       132224.046     132182.917
+           0.500       0.600       132285.581     132289.938
+           0.300       0.400       132347.117     132352.991
+           0.200       0.300       132384.338     132392.101
+           0.100       0.100       132435.970     132392.401
+           0.050       0.000       132478.601     132392.401
+           0.020       0.000       132526.572     132392.401
+           0.010       0.000       132558.560     132392.401
+
+    Sample-Size Adjusted BIC (n* = (n + 2) / 24)
+
+        Mean                            132110.810
+        Std Dev                            117.344
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       131837.832     131938.392
+           0.980       1.000       131869.820     131938.392
+           0.950       1.000       131917.790     131938.392
+           0.900       0.900       131960.421     131938.392
+           0.800       0.600       132012.053     131938.392
+           0.700       0.600       132049.274     132008.145
+           0.500       0.600       132110.810     132115.167
+           0.300       0.400       132172.345     132178.220
+           0.200       0.300       132209.567     132217.330
+           0.100       0.100       132261.198     132217.630
+           0.050       0.000       132303.830     132217.630
+           0.020       0.000       132351.800     132217.630
+           0.010       0.000       132383.788     132217.630
+
+Chi-Square Test of Model Fit
+
+        Degrees of freedom                      64
+
+        Mean                              1144.778
+        Std Dev                             21.293
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000           40.649       1111.368
+           0.980       1.000           42.960       1111.368
+           0.950       1.000           46.595       1111.368
+           0.900       1.000           49.996       1111.368
+           0.800       1.000           54.336       1111.368
+           0.700       1.000           57.620       1139.346
+           0.500       1.000           63.335       1141.497
+           0.300       1.000           69.416       1147.657
+           0.200       1.000           73.276       1149.654
+           0.100       1.000           78.860       1172.104
+           0.050       1.000           83.675       1172.104
+           0.020       1.000           89.320       1172.104
+           0.010       1.000           93.217       1172.104
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+        Mean                                 0.057
+        Std Dev                              0.001
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.056          0.056
+           0.980       1.000            0.056          0.056
+           0.950       1.000            0.056          0.056
+           0.900       0.800            0.057          0.056
+           0.800       0.800            0.057          0.056
+           0.700       0.800            0.057          0.057
+           0.500       0.500            0.057          0.057
+           0.300       0.200            0.058          0.057
+           0.200       0.200            0.058          0.058
+           0.100       0.100            0.058          0.058
+           0.050       0.100            0.058          0.058
+           0.020       0.000            0.059          0.058
+           0.010       0.000            0.059          0.058
+
+CFI/TLI
+
+    CFI
+
+        Mean                                 0.926
+        Std Dev                              0.001
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.923          0.924
+           0.980       1.000            0.924          0.924
+           0.950       1.000            0.924          0.924
+           0.900       0.900            0.925          0.924
+           0.800       0.700            0.925          0.924
+           0.700       0.500            0.926          0.925
+           0.500       0.500            0.926          0.926
+           0.300       0.400            0.927          0.927
+           0.200       0.300            0.927          0.927
+           0.100       0.100            0.928          0.928
+           0.050       0.100            0.928          0.928
+           0.020       0.000            0.929          0.928
+           0.010       0.000            0.929          0.928
+
+    TLI
+
+        Mean                                 0.899
+        Std Dev                              0.002
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.895          0.896
+           0.980       1.000            0.895          0.896
+           0.950       1.000            0.896          0.896
+           0.900       0.900            0.896          0.896
+           0.800       0.700            0.897          0.896
+           0.700       0.500            0.898          0.897
+           0.500       0.500            0.899          0.898
+           0.300       0.400            0.899          0.899
+           0.200       0.300            0.900          0.900
+           0.100       0.100            0.901          0.900
+           0.050       0.100            0.901          0.900
+           0.020       0.000            0.902          0.900
+           0.010       0.000            0.902          0.900
+
+SRMR (Standardized Root Mean Square Residual)
+
+        Mean                                 0.041
+        Std Dev                              0.000
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.040          0.040
+           0.980       1.000            0.040          0.040
+           0.950       0.900            0.040          0.040
+           0.900       0.900            0.041          0.040
+           0.800       0.800            0.041          0.040
+           0.700       0.700            0.041          0.041
+           0.500       0.500            0.041          0.041
+           0.300       0.400            0.041          0.041
+           0.200       0.200            0.041          0.041
+           0.100       0.100            0.041          0.041
+           0.050       0.000            0.041          0.041
+           0.020       0.000            0.042          0.041
+           0.010       0.000            0.042          0.041
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+ LIFE     BY
+    H_Q05A             1.000      0.000    999.000    999.000      0.000
+    H_Q05C             0.886      0.037     23.888      0.000      0.005
+    H_Q05E             0.882      0.049     17.849      0.000      0.026
+    H_Q05F             1.214      0.050     24.458      0.000      0.019
+
+ CURIOUS  BY
+    I_Q04B             1.000      0.000    999.000    999.000      0.000
+    I_Q04D             1.006      0.036     27.993      0.000      0.004
+    I_Q04H             1.036      0.033     31.004      0.000      0.001
+    I_Q04J             1.013      0.044     23.087      0.000      0.002
+    I_Q04L             1.216      0.041     29.580      0.000      0.002
+    I_Q04M             0.944      0.035     26.877      0.000      0.004
+
+ CURIOUS  ON
+    FEMALE            -0.023      0.016     -1.424      0.155      0.020
+    HOMLANG           -0.128      0.033     -3.901      0.000      0.015
+    LIT                0.322      0.025     13.007      0.000      0.178
+
+ LIFE     ON
+    FEMALE            -0.108      0.022     -4.826      0.000      0.029
+    HOMLANG           -0.333      0.044     -7.514      0.000      0.012
+    LIT                0.577      0.033     17.620      0.000      0.152
+
+ PSTRE    ON
+    CURIOUS            0.003      0.017      0.201      0.840      0.665
+    LIFE               0.110      0.017      6.625      0.000      0.640
+
+ PSTRE    ON
+    FEMALE            -0.018      0.010     -1.780      0.075      0.481
+    HOMLANG            0.038      0.027      1.402      0.161      0.638
+    LIT                0.704      0.018     39.541      0.000      0.584
+
+ CURIOUS  WITH
+    LIFE               0.122      0.009     13.043      0.000      0.039
+
+ I_Q04B   WITH
+    I_Q04H             0.052      0.010      5.421      0.000      0.005
+    I_Q04J            -0.062      0.010     -6.156      0.000      0.001
+
+ FEMALE   WITH
+    HOMLANG            0.005      0.002      2.227      0.026      0.000
+    LIT               -0.010      0.004     -2.676      0.007      0.195
+
+ HOMLANG  WITH
+    LIT                0.035      0.003     11.461      0.000      0.040
+
+ Means
+    HOMLANG            0.902      0.004    208.070      0.000      0.000
+    FEMALE             0.489      0.007     68.080      0.000      0.000
+    LIT                2.784      0.006    428.865      0.000      0.201
+
+ Intercepts
+    H_Q05A             2.027      0.093     21.901      0.000      0.137
+    H_Q05C             1.771      0.084     21.062      0.000      0.120
+    H_Q05E            -0.281      0.081     -3.459      0.001      0.127
+    H_Q05F             0.279      0.111      2.525      0.012      0.132
+    I_Q04B             1.491      0.065     23.051      0.000      0.176
+    I_Q04D             2.363      0.062     37.965      0.000      0.175
+    I_Q04H             2.088      0.063     32.897      0.000      0.194
+    I_Q04J             2.161      0.061     35.529      0.000      0.191
+    I_Q04L             1.543      0.070     22.109      0.000      0.211
+    I_Q04M             2.231      0.052     42.688      0.000      0.216
+    PSTRE              0.693      0.047     14.846      0.000      0.555
+
+ Variances
+    HOMLANG            0.088      0.003     25.322      0.000      0.000
+    FEMALE             0.250      0.000   1595.333      0.000      0.000
+    LIT                0.221      0.006     36.277      0.000      0.122
+
+ Residual Variances
+    H_Q05A             0.637      0.024     27.051      0.000      0.014
+    H_Q05C             0.805      0.023     34.352      0.000      0.014
+    H_Q05E             0.665      0.019     34.905      0.000      0.033
+    H_Q05F             0.903      0.025     35.752      0.000      0.017
+    I_Q04B             0.479      0.014     34.589      0.000      0.003
+    I_Q04D             0.317      0.010     32.132      0.000      0.002
+    I_Q04H             0.317      0.010     32.839      0.000      0.004
+    I_Q04J             0.431      0.012     35.318      0.000      0.000
+    I_Q04L             0.360      0.012     29.969      0.000      0.001
+    I_Q04M             0.387      0.011     36.791      0.000      0.002
+    PSTRE              0.054      0.002     28.332      0.000      0.475
+    LIFE               0.330      0.026     12.837      0.000      0.019
+    CURIOUS            0.242      0.015     16.523      0.000      0.004
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+ LIFE     BY
+    H_Q05A             0.623      0.016     39.656      0.000      0.021
+    H_Q05C             0.532      0.020     26.612      0.000      0.014
+    H_Q05E             0.567      0.014     39.417      0.000      0.048
+    H_Q05F             0.630      0.012     50.468      0.000      0.019
+
+ CURIOUS  BY
+    I_Q04B             0.596      0.016     37.982      0.000      0.003
+    I_Q04D             0.676      0.011     64.393      0.000      0.003
+    I_Q04H             0.687      0.011     60.177      0.000      0.004
+    I_Q04J             0.621      0.013     46.519      0.000      0.000
+    I_Q04L             0.721      0.011     62.808      0.000      0.001
+    I_Q04M             0.615      0.011     54.191      0.000      0.003
+
+ CURIOUS  ON
+    FEMALE            -0.022      0.016     -1.437      0.151      0.020
+    HOMLANG           -0.074      0.018     -4.004      0.000      0.015
+    LIT                0.295      0.018     16.066      0.000      0.268
+
+ LIFE     ON
+    FEMALE            -0.085      0.018     -4.651      0.000      0.031
+    HOMLANG           -0.155      0.019     -8.370      0.000      0.012
+    LIT                0.427      0.020     21.124      0.000      0.205
+
+ PSTRE    ON
+    CURIOUS            0.004      0.021      0.204      0.838      0.667
+    LIFE               0.161      0.024      6.849      0.000      0.650
+
+ PSTRE    ON
+    FEMALE            -0.020      0.011     -1.786      0.074      0.475
+    HOMLANG            0.026      0.018      1.408      0.159      0.642
+    LIT                0.761      0.014     54.092      0.000      0.561
+
+ CURIOUS  WITH
+    LIFE               0.432      0.022     19.862      0.000      0.036
+
+ I_Q04B   WITH
+    I_Q04H             0.132      0.023      5.728      0.000      0.005
+    I_Q04J            -0.136      0.023     -5.921      0.000      0.002
+
+ FEMALE   WITH
+    HOMLANG            0.035      0.016      2.246      0.025      0.000
+    LIT               -0.042      0.015     -2.680      0.007      0.189
+
+ HOMLANG  WITH
+    LIT                0.254      0.020     12.866      0.000      0.046
+
+ Means
+    HOMLANG            3.040      0.075     40.729      0.000      0.000
+    FEMALE             0.978      0.014     69.627      0.000      0.000
+    LIT                5.922      0.088     67.675      0.000      0.110
+
+ Intercepts
+    H_Q05A             1.987      0.111     17.963      0.000      0.092
+    H_Q05C             1.672      0.090     18.634      0.000      0.094
+    H_Q05E            -0.284      0.082     -3.449      0.001      0.127
+    H_Q05F             0.228      0.091      2.520      0.012      0.131
+    I_Q04B             1.730      0.082     21.109      0.000      0.147
+    I_Q04D             3.094      0.106     29.054      0.000      0.101
+    I_Q04H             2.695      0.098     27.452      0.000      0.134
+    I_Q04J             2.579      0.086     30.128      0.000      0.136
+    I_Q04L             1.781      0.086     20.651      0.000      0.183
+    I_Q04M             2.830      0.078     36.146      0.000      0.154
+    PSTRE              1.594      0.129     12.364      0.000      0.535
+
+ Variances
+    HOMLANG            1.000      0.000  *********      0.000      0.000
+    FEMALE             1.000      0.000  *********      0.000      0.000
+    LIT                1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    H_Q05A             0.612      0.020     31.261      0.000      0.021
+    H_Q05C             0.717      0.021     33.762      0.000      0.014
+    H_Q05E             0.679      0.016     41.686      0.000      0.048
+    H_Q05F             0.603      0.016     38.261      0.000      0.019
+    I_Q04B             0.645      0.019     34.479      0.000      0.003
+    I_Q04D             0.543      0.014     38.231      0.000      0.003
+    I_Q04H             0.528      0.016     33.702      0.000      0.004
+    I_Q04J             0.614      0.017     37.023      0.000      0.000
+    I_Q04L             0.480      0.017     29.001      0.000      0.001
+    I_Q04M             0.622      0.014     44.587      0.000      0.003
+    PSTRE              0.284      0.011     25.240      0.000      0.344
+    LIFE               0.816      0.016     50.447      0.000      0.219
+    CURIOUS            0.917      0.010     89.239      0.000      0.265
+
+
+STDY Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+ LIFE     BY
+    H_Q05A             0.623      0.016     39.656      0.000      0.021
+    H_Q05C             0.532      0.020     26.612      0.000      0.014
+    H_Q05E             0.567      0.014     39.417      0.000      0.048
+    H_Q05F             0.630      0.012     50.468      0.000      0.019
+
+ CURIOUS  BY
+    I_Q04B             0.596      0.016     37.982      0.000      0.003
+    I_Q04D             0.676      0.011     64.393      0.000      0.003
+    I_Q04H             0.687      0.011     60.177      0.000      0.004
+    I_Q04J             0.621      0.013     46.519      0.000      0.000
+    I_Q04L             0.721      0.011     62.808      0.000      0.001
+    I_Q04M             0.615      0.011     54.191      0.000      0.003
+
+ CURIOUS  ON
+    FEMALE            -0.022      0.016     -1.437      0.151      0.020
+    HOMLANG           -0.074      0.018     -4.004      0.000      0.015
+    LIT                0.295      0.018     16.066      0.000      0.268
+
+ LIFE     ON
+    FEMALE            -0.085      0.018     -4.651      0.000      0.031
+    HOMLANG           -0.155      0.019     -8.370      0.000      0.012
+    LIT                0.427      0.020     21.124      0.000      0.205
+
+ PSTRE    ON
+    CURIOUS            0.004      0.021      0.204      0.838      0.667
+    LIFE               0.161      0.024      6.849      0.000      0.650
+
+ PSTRE    ON
+    FEMALE            -0.020      0.011     -1.786      0.074      0.475
+    HOMLANG            0.026      0.018      1.408      0.159      0.642
+    LIT                0.761      0.014     54.092      0.000      0.561
+
+ CURIOUS  WITH
+    LIFE               0.432      0.022     19.862      0.000      0.036
+
+ I_Q04B   WITH
+    I_Q04H             0.132      0.023      5.728      0.000      0.005
+    I_Q04J            -0.136      0.023     -5.921      0.000      0.002
+
+ FEMALE   WITH
+    HOMLANG            0.035      0.016      2.246      0.025      0.000
+    LIT               -0.042      0.015     -2.680      0.007      0.189
+
+ HOMLANG  WITH
+    LIT                0.254      0.020     12.866      0.000      0.046
+
+ Means
+    HOMLANG            3.040      0.075     40.729      0.000      0.000
+    FEMALE             0.978      0.014     69.627      0.000      0.000
+    LIT                5.922      0.088     67.675      0.000      0.110
+
+ Intercepts
+    H_Q05A             1.987      0.111     17.963      0.000      0.092
+    H_Q05C             1.672      0.090     18.634      0.000      0.094
+    H_Q05E            -0.284      0.082     -3.449      0.001      0.127
+    H_Q05F             0.228      0.091      2.520      0.012      0.131
+    I_Q04B             1.730      0.082     21.109      0.000      0.147
+    I_Q04D             3.094      0.106     29.054      0.000      0.101
+    I_Q04H             2.695      0.098     27.452      0.000      0.134
+    I_Q04J             2.579      0.086     30.128      0.000      0.136
+    I_Q04L             1.781      0.086     20.651      0.000      0.183
+    I_Q04M             2.830      0.078     36.146      0.000      0.154
+    PSTRE              1.594      0.129     12.364      0.000      0.535
+
+ Variances
+    HOMLANG            1.000      0.000  *********      0.000      0.000
+    FEMALE             1.000      0.000  *********      0.000      0.000
+    LIT                1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    H_Q05A             0.612      0.020     31.261      0.000      0.021
+    H_Q05C             0.717      0.021     33.762      0.000      0.014
+    H_Q05E             0.679      0.016     41.686      0.000      0.048
+    H_Q05F             0.603      0.016     38.261      0.000      0.019
+    I_Q04B             0.645      0.019     34.479      0.000      0.003
+    I_Q04D             0.543      0.014     38.231      0.000      0.003
+    I_Q04H             0.528      0.016     33.702      0.000      0.004
+    I_Q04J             0.614      0.017     37.023      0.000      0.000
+    I_Q04L             0.480      0.017     29.001      0.000      0.001
+    I_Q04M             0.622      0.014     44.587      0.000      0.003
+    PSTRE              0.284      0.011     25.240      0.000      0.344
+    LIFE               0.816      0.016     50.447      0.000      0.219
+    CURIOUS            0.917      0.010     89.239      0.000      0.265
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed   Rate of
+    Variable        Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+    H_Q05A             0.388      0.020     19.829      0.000      0.021
+    H_Q05C             0.283      0.021     13.306      0.000      0.014
+    H_Q05E             0.321      0.016     19.705      0.000      0.048
+    H_Q05F             0.397      0.016     25.235      0.000      0.019
+    I_Q04B             0.355      0.019     18.991      0.000      0.003
+    I_Q04D             0.457      0.014     32.196      0.000      0.003
+    I_Q04H             0.472      0.016     30.088      0.000      0.004
+    I_Q04J             0.386      0.017     23.259      0.000      0.000
+    I_Q04L             0.520      0.017     31.404      0.000      0.001
+    I_Q04M             0.378      0.014     27.096      0.000      0.003
+    PSTRE              0.716      0.011     63.519      0.000      0.344
+
+     Latent                                         Two-Tailed   Rate of
+    Variable        Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+    LIFE               0.184      0.016     11.361      0.000      0.219
+    CURIOUS            0.083      0.010      8.027      0.000      0.265
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Average Condition Number for the Information Matrix      0.456E-04
+       (ratio of smallest to largest eigenvalue)
+
+
+TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Effects from FEMALE to PSTRE
+
+  Total               -0.030      0.010     -2.841      0.004      0.512
+  Total indirect      -0.012      0.003     -3.957      0.000      0.160
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    FEMALE            -0.012      0.003     -3.872      0.000      0.177
+
+    PSTRE
+    CURIOUS
+    FEMALE             0.000      0.000     -0.222      0.824      0.482
+
+  Direct
+    PSTRE
+    FEMALE            -0.018      0.010     -1.780      0.075      0.481
+
+
+Effects from HOMLANG to PSTRE
+
+  Total                0.000      0.027      0.018      0.986      0.658
+  Total indirect      -0.037      0.007     -5.515      0.000      0.320
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    HOMLANG           -0.037      0.007     -5.003      0.000      0.407
+
+    PSTRE
+    CURIOUS
+    HOMLANG            0.000      0.002     -0.187      0.852      0.643
+
+  Direct
+    PSTRE
+    HOMLANG            0.038      0.027      1.402      0.161      0.638
+
+
+Effects from LIT to PSTRE
+
+  Total                0.768      0.014     55.212      0.000      0.501
+  Total indirect       0.065      0.009      7.597      0.000      0.541
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    LIT                0.064      0.010      6.071      0.000      0.624
+
+    PSTRE
+    CURIOUS
+    LIT                0.001      0.006      0.187      0.851      0.673
+
+  Direct
+    PSTRE
+    LIT                0.704      0.018     39.541      0.000      0.584
+
+
+
+STANDARDIZED TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Effects from FEMALE to PSTRE
+
+  Total               -0.034      0.012     -2.863      0.004      0.503
+  Total indirect      -0.014      0.003     -3.980      0.000      0.157
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    FEMALE            -0.014      0.004     -3.900      0.000      0.171
+
+    PSTRE
+    CURIOUS
+    FEMALE             0.000      0.000     -0.225      0.822      0.483
+
+  Direct
+    PSTRE
+    FEMALE            -0.020      0.011     -1.786      0.074      0.475
+
+
+Effects from HOMLANG to PSTRE
+
+  Total                0.000      0.018      0.017      0.987      0.659
+  Total indirect      -0.025      0.005     -5.554      0.000      0.315
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    HOMLANG           -0.025      0.005     -5.072      0.000      0.394
+
+    PSTRE
+    CURIOUS
+    HOMLANG            0.000      0.002     -0.190      0.849      0.643
+
+  Direct
+    PSTRE
+    HOMLANG            0.026      0.018      1.408      0.159      0.642
+
+
+Effects from LIT to PSTRE
+
+  Total                0.831      0.008    105.385      0.000      0.395
+  Total indirect       0.070      0.009      7.503      0.000      0.554
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    LIT                0.069      0.011      6.101      0.000      0.624
+
+    PSTRE
+    CURIOUS
+    LIT                0.001      0.006      0.189      0.850      0.674
+
+  Direct
+    PSTRE
+    LIT                0.761      0.014     54.093      0.000      0.561
+
+
+
+STDY Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Effects from FEMALE to PSTRE
+
+  Total               -0.034      0.012     -2.863      0.004      0.503
+  Total indirect      -0.014      0.003     -3.980      0.000      0.157
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    FEMALE            -0.014      0.004     -3.900      0.000      0.171
+
+    PSTRE
+    CURIOUS
+    FEMALE             0.000      0.000     -0.225      0.822      0.483
+
+  Direct
+    PSTRE
+    FEMALE            -0.020      0.011     -1.786      0.074      0.475
+
+
+Effects from HOMLANG to PSTRE
+
+  Total                0.000      0.018      0.017      0.987      0.659
+  Total indirect      -0.025      0.005     -5.554      0.000      0.315
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    HOMLANG           -0.025      0.005     -5.072      0.000      0.394
+
+    PSTRE
+    CURIOUS
+    HOMLANG            0.000      0.002     -0.190      0.849      0.643
+
+  Direct
+    PSTRE
+    HOMLANG            0.026      0.018      1.408      0.159      0.642
+
+
+Effects from LIT to PSTRE
+
+  Total                0.831      0.008    105.385      0.000      0.395
+  Total indirect       0.070      0.009      7.503      0.000      0.554
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    LIT                0.069      0.011      6.101      0.000      0.624
+
+    PSTRE
+    CURIOUS
+    LIT                0.001      0.006      0.189      0.850      0.674
+
+  Direct
+    PSTRE
+    LIT                0.761      0.014     54.093      0.000      0.561
+
+
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ LIFE     BY
+    H_Q05A           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    H_Q05C           0.791       0.814       0.825       0.886       0.947       0.959       0.982
+    H_Q05E           0.755       0.785       0.801       0.882       0.964       0.979       1.010
+    H_Q05F           1.086       1.117       1.133       1.214       1.296       1.312       1.342
+
+ CURIOUS  BY
+    I_Q04B           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04D           0.913       0.935       0.946       1.006       1.065       1.076       1.098
+    I_Q04H           0.950       0.970       0.981       1.036       1.091       1.101       1.122
+    I_Q04J           0.900       0.927       0.941       1.013       1.086       1.099       1.126
+    I_Q04L           1.110       1.136       1.149       1.216       1.284       1.297       1.322
+    I_Q04M           0.853       0.875       0.886       0.944       1.002       1.013       1.034
+
+ CURIOUS  ON
+    FEMALE          -0.065      -0.055      -0.050      -0.023       0.004       0.009       0.019
+    HOMLANG         -0.213      -0.192      -0.182      -0.128      -0.074      -0.064      -0.043
+    LIT              0.258       0.273       0.281       0.322       0.363       0.371       0.386
+
+ LIFE     ON
+    FEMALE          -0.166      -0.152      -0.145      -0.108      -0.071      -0.064      -0.051
+    HOMLANG         -0.447      -0.420      -0.406      -0.333      -0.260      -0.246      -0.219
+    LIT              0.492       0.513       0.523       0.577       0.630       0.641       0.661
+
+ PSTRE    ON
+    CURIOUS         -0.041      -0.031      -0.025       0.003       0.032       0.038       0.048
+    LIFE             0.067       0.078       0.083       0.110       0.138       0.143       0.153
+
+ PSTRE    ON
+    FEMALE          -0.043      -0.037      -0.034      -0.018      -0.001       0.002       0.008
+    HOMLANG         -0.031      -0.015      -0.007       0.038       0.082       0.090       0.107
+    LIT              0.658       0.669       0.674       0.704       0.733       0.739       0.749
+
+ CURIOUS  WITH
+    LIFE             0.098       0.104       0.107       0.122       0.137       0.140       0.146
+
+ I_Q04B   WITH
+    I_Q04H           0.027       0.033       0.036       0.052       0.067       0.070       0.076
+    I_Q04J          -0.087      -0.081      -0.078      -0.062      -0.045      -0.042      -0.036
+
+ FEMALE   WITH
+    HOMLANG         -0.001       0.001       0.001       0.005       0.009       0.010       0.011
+    LIT             -0.019      -0.017      -0.016      -0.010      -0.004      -0.003       0.000
+
+ HOMLANG  WITH
+    LIT              0.027       0.029       0.030       0.035       0.040       0.041       0.043
+
+ Means
+    HOMLANG          0.891       0.894       0.895       0.902       0.909       0.911       0.913
+    FEMALE           0.470       0.475       0.477       0.489       0.500       0.503       0.507
+    LIT              2.768       2.772       2.774       2.784       2.795       2.797       2.801
+
+ Intercepts
+    H_Q05A           1.789       1.846       1.875       2.027       2.179       2.209       2.266
+    H_Q05C           1.554       1.606       1.633       1.771       1.909       1.936       1.988
+    H_Q05E          -0.490      -0.440      -0.415      -0.281      -0.147      -0.122      -0.072
+    H_Q05F          -0.006       0.062       0.097       0.279       0.461       0.496       0.564
+    I_Q04B           1.325       1.364       1.385       1.491       1.598       1.618       1.658
+    I_Q04D           2.203       2.241       2.261       2.363       2.466       2.485       2.524
+    I_Q04H           1.924       1.963       1.983       2.088       2.192       2.212       2.251
+    I_Q04J           2.004       2.042       2.061       2.161       2.261       2.280       2.317
+    I_Q04L           1.363       1.406       1.428       1.543       1.658       1.680       1.723
+    I_Q04M           2.096       2.129       2.145       2.231       2.317       2.333       2.366
+    PSTRE            0.573       0.602       0.616       0.693       0.770       0.784       0.813
+
+ Variances
+    HOMLANG          0.079       0.081       0.082       0.088       0.094       0.095       0.097
+    FEMALE           0.249       0.250       0.250       0.250       0.250       0.250       0.250
+    LIT              0.205       0.209       0.211       0.221       0.231       0.233       0.237
+
+ Residual Variances
+    H_Q05A           0.576       0.591       0.598       0.637       0.675       0.683       0.697
+    H_Q05C           0.745       0.759       0.766       0.805       0.844       0.851       0.865
+    H_Q05E           0.616       0.628       0.634       0.665       0.696       0.702       0.714
+    H_Q05F           0.838       0.853       0.861       0.903       0.944       0.952       0.968
+    I_Q04B           0.443       0.452       0.456       0.479       0.502       0.506       0.515
+    I_Q04D           0.291       0.297       0.301       0.317       0.333       0.336       0.342
+    I_Q04H           0.292       0.298       0.301       0.317       0.333       0.336       0.342
+    I_Q04J           0.400       0.407       0.411       0.431       0.451       0.455       0.463
+    I_Q04L           0.329       0.337       0.341       0.360       0.380       0.384       0.391
+    I_Q04M           0.360       0.366       0.369       0.387       0.404       0.407       0.414
+    PSTRE            0.049       0.050       0.051       0.054       0.057       0.058       0.059
+    LIFE             0.263       0.279       0.287       0.330       0.372       0.380       0.396
+    CURIOUS          0.204       0.213       0.218       0.242       0.266       0.271       0.280
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ LIFE     BY
+    H_Q05A           0.583       0.592       0.597       0.623       0.649       0.654       0.663
+    H_Q05C           0.480       0.493       0.499       0.532       0.565       0.571       0.583
+    H_Q05E           0.530       0.538       0.543       0.567       0.590       0.595       0.604
+    H_Q05F           0.598       0.606       0.610       0.630       0.651       0.655       0.663
+
+ CURIOUS  BY
+    I_Q04B           0.556       0.565       0.570       0.596       0.622       0.627       0.636
+    I_Q04D           0.649       0.656       0.659       0.676       0.693       0.697       0.703
+    I_Q04H           0.657       0.664       0.668       0.687       0.706       0.709       0.716
+    I_Q04J           0.587       0.595       0.599       0.621       0.643       0.647       0.656
+    I_Q04L           0.691       0.699       0.702       0.721       0.740       0.744       0.751
+    I_Q04M           0.586       0.593       0.596       0.615       0.633       0.637       0.644
+
+ CURIOUS  ON
+    FEMALE          -0.063      -0.053      -0.048      -0.022       0.003       0.008       0.018
+    HOMLANG         -0.122      -0.110      -0.104      -0.074      -0.044      -0.038      -0.026
+    LIT              0.248       0.259       0.265       0.295       0.325       0.331       0.342
+
+ LIFE     ON
+    FEMALE          -0.132      -0.121      -0.115      -0.085      -0.055      -0.049      -0.038
+    HOMLANG         -0.203      -0.192      -0.186      -0.155      -0.125      -0.119      -0.108
+    LIT              0.375       0.387       0.393       0.427       0.460       0.466       0.479
+
+ PSTRE    ON
+    CURIOUS         -0.049      -0.036      -0.030       0.004       0.038       0.044       0.057
+    LIFE             0.100       0.115       0.122       0.161       0.200       0.207       0.222
+
+ PSTRE    ON
+    FEMALE          -0.050      -0.043      -0.039      -0.020      -0.002       0.002       0.009
+    HOMLANG         -0.021      -0.010      -0.004       0.026       0.056       0.061       0.073
+    LIT              0.724       0.733       0.737       0.761       0.784       0.788       0.797
+
+ CURIOUS  WITH
+    LIFE             0.376       0.389       0.396       0.432       0.468       0.475       0.488
+
+ I_Q04B   WITH
+    I_Q04H           0.073       0.087       0.094       0.132       0.170       0.178       0.192
+    I_Q04J          -0.195      -0.180      -0.173      -0.136      -0.098      -0.091      -0.077
+
+ FEMALE   WITH
+    HOMLANG         -0.005       0.004       0.009       0.035       0.061       0.066       0.076
+    LIT             -0.081      -0.072      -0.067      -0.042      -0.016      -0.011      -0.002
+
+ HOMLANG  WITH
+    LIT              0.203       0.215       0.221       0.254       0.286       0.292       0.305
+
+ Means
+    HOMLANG          2.848       2.894       2.917       3.040       3.163       3.186       3.232
+    FEMALE           0.941       0.950       0.955       0.978       1.001       1.005       1.014
+    LIT              5.696       5.750       5.778       5.922       6.066       6.093       6.147
+
+ Intercepts
+    H_Q05A           1.702       1.771       1.805       1.987       2.169       2.204       2.272
+    H_Q05C           1.441       1.496       1.524       1.672       1.819       1.848       1.903
+    H_Q05E          -0.496      -0.445      -0.419      -0.284      -0.149      -0.123      -0.072
+    H_Q05F          -0.005       0.051       0.079       0.228       0.377       0.406       0.462
+    I_Q04B           1.519       1.570       1.595       1.730       1.865       1.891       1.941
+    I_Q04D           2.820       2.885       2.919       3.094       3.269       3.303       3.369
+    I_Q04H           2.442       2.503       2.533       2.695       2.856       2.887       2.948
+    I_Q04J           2.358       2.411       2.438       2.579       2.719       2.746       2.799
+    I_Q04L           1.559       1.612       1.639       1.781       1.923       1.950       2.003
+    I_Q04M           2.628       2.676       2.701       2.830       2.958       2.983       3.031
+    PSTRE            1.262       1.341       1.382       1.594       1.806       1.847       1.926
+
+ Variances
+    HOMLANG          1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    FEMALE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    LIT              1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    H_Q05A           0.561       0.574       0.580       0.612       0.644       0.650       0.662
+    H_Q05C           0.663       0.676       0.682       0.717       0.752       0.759       0.772
+    H_Q05E           0.637       0.647       0.652       0.679       0.706       0.711       0.721
+    H_Q05F           0.562       0.572       0.577       0.603       0.628       0.633       0.643
+    I_Q04B           0.597       0.608       0.614       0.645       0.676       0.681       0.693
+    I_Q04D           0.506       0.515       0.519       0.543       0.566       0.571       0.579
+    I_Q04H           0.488       0.498       0.503       0.528       0.554       0.559       0.569
+    I_Q04J           0.571       0.582       0.587       0.614       0.641       0.647       0.657
+    I_Q04L           0.437       0.448       0.453       0.480       0.507       0.513       0.523
+    I_Q04M           0.586       0.595       0.599       0.622       0.645       0.649       0.658
+    PSTRE            0.255       0.262       0.266       0.284       0.303       0.306       0.313
+    LIFE             0.775       0.784       0.790       0.816       0.843       0.848       0.858
+    CURIOUS          0.891       0.897       0.901       0.917       0.934       0.938       0.944
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ LIFE     BY
+    H_Q05A           0.583       0.592       0.597       0.623       0.649       0.654       0.663
+    H_Q05C           0.480       0.493       0.499       0.532       0.565       0.571       0.583
+    H_Q05E           0.530       0.538       0.543       0.567       0.590       0.595       0.604
+    H_Q05F           0.598       0.606       0.610       0.630       0.651       0.655       0.663
+
+ CURIOUS  BY
+    I_Q04B           0.556       0.565       0.570       0.596       0.622       0.627       0.636
+    I_Q04D           0.649       0.656       0.659       0.676       0.693       0.697       0.703
+    I_Q04H           0.657       0.664       0.668       0.687       0.706       0.709       0.716
+    I_Q04J           0.587       0.595       0.599       0.621       0.643       0.647       0.656
+    I_Q04L           0.691       0.699       0.702       0.721       0.740       0.744       0.751
+    I_Q04M           0.586       0.593       0.596       0.615       0.633       0.637       0.644
+
+ CURIOUS  ON
+    FEMALE          -0.063      -0.053      -0.048      -0.022       0.003       0.008       0.018
+    HOMLANG         -0.122      -0.110      -0.104      -0.074      -0.044      -0.038      -0.026
+    LIT              0.248       0.259       0.265       0.295       0.325       0.331       0.342
+
+ LIFE     ON
+    FEMALE          -0.132      -0.121      -0.115      -0.085      -0.055      -0.049      -0.038
+    HOMLANG         -0.203      -0.192      -0.186      -0.155      -0.125      -0.119      -0.108
+    LIT              0.375       0.387       0.393       0.427       0.460       0.466       0.479
+
+ PSTRE    ON
+    CURIOUS         -0.049      -0.036      -0.030       0.004       0.038       0.044       0.057
+    LIFE             0.100       0.115       0.122       0.161       0.200       0.207       0.222
+
+ PSTRE    ON
+    FEMALE          -0.050      -0.043      -0.039      -0.020      -0.002       0.002       0.009
+    HOMLANG         -0.021      -0.010      -0.004       0.026       0.056       0.061       0.073
+    LIT              0.724       0.733       0.737       0.761       0.784       0.788       0.797
+
+ CURIOUS  WITH
+    LIFE             0.376       0.389       0.396       0.432       0.468       0.475       0.488
+
+ I_Q04B   WITH
+    I_Q04H           0.073       0.087       0.094       0.132       0.170       0.178       0.192
+    I_Q04J          -0.195      -0.180      -0.173      -0.136      -0.098      -0.091      -0.077
+
+ FEMALE   WITH
+    HOMLANG         -0.005       0.004       0.009       0.035       0.061       0.066       0.076
+    LIT             -0.081      -0.072      -0.067      -0.042      -0.016      -0.011      -0.002
+
+ HOMLANG  WITH
+    LIT              0.203       0.215       0.221       0.254       0.286       0.292       0.305
+
+ Means
+    HOMLANG          2.848       2.894       2.917       3.040       3.163       3.186       3.232
+    FEMALE           0.941       0.950       0.955       0.978       1.001       1.005       1.014
+    LIT              5.696       5.750       5.778       5.922       6.066       6.093       6.147
+
+ Intercepts
+    H_Q05A           1.702       1.771       1.805       1.987       2.169       2.204       2.272
+    H_Q05C           1.441       1.496       1.524       1.672       1.819       1.848       1.903
+    H_Q05E          -0.496      -0.445      -0.419      -0.284      -0.149      -0.123      -0.072
+    H_Q05F          -0.005       0.051       0.079       0.228       0.377       0.406       0.462
+    I_Q04B           1.519       1.570       1.595       1.730       1.865       1.891       1.941
+    I_Q04D           2.820       2.885       2.919       3.094       3.269       3.303       3.369
+    I_Q04H           2.442       2.503       2.533       2.695       2.856       2.887       2.948
+    I_Q04J           2.358       2.411       2.438       2.579       2.719       2.746       2.799
+    I_Q04L           1.559       1.612       1.639       1.781       1.923       1.950       2.003
+    I_Q04M           2.628       2.676       2.701       2.830       2.958       2.983       3.031
+    PSTRE            1.262       1.341       1.382       1.594       1.806       1.847       1.926
+
+ Variances
+    HOMLANG          1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    FEMALE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    LIT              1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    H_Q05A           0.561       0.574       0.580       0.612       0.644       0.650       0.662
+    H_Q05C           0.663       0.676       0.682       0.717       0.752       0.759       0.772
+    H_Q05E           0.637       0.647       0.652       0.679       0.706       0.711       0.721
+    H_Q05F           0.562       0.572       0.577       0.603       0.628       0.633       0.643
+    I_Q04B           0.597       0.608       0.614       0.645       0.676       0.681       0.693
+    I_Q04D           0.506       0.515       0.519       0.543       0.566       0.571       0.579
+    I_Q04H           0.488       0.498       0.503       0.528       0.554       0.559       0.569
+    I_Q04J           0.571       0.582       0.587       0.614       0.641       0.647       0.657
+    I_Q04L           0.437       0.448       0.453       0.480       0.507       0.513       0.523
+    I_Q04M           0.586       0.595       0.599       0.622       0.645       0.649       0.658
+    PSTRE            0.255       0.262       0.266       0.284       0.303       0.306       0.313
+    LIFE             0.775       0.784       0.790       0.816       0.843       0.848       0.858
+    CURIOUS          0.891       0.897       0.901       0.917       0.934       0.938       0.944
+
+
+CONFIDENCE INTERVALS OF TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Effects from FEMALE to PSTRE
+
+  Total             -0.057      -0.050      -0.047      -0.030      -0.013      -0.009      -0.003
+  Total indirect    -0.020      -0.018      -0.017      -0.012      -0.007      -0.006      -0.004
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    FEMALE          -0.020      -0.018      -0.017      -0.012      -0.007      -0.006      -0.004
+
+    PSTRE
+    CURIOUS
+    FEMALE          -0.001      -0.001      -0.001       0.000       0.001       0.001       0.001
+
+  Direct
+    PSTRE
+    FEMALE          -0.043      -0.037      -0.034      -0.018      -0.001       0.002       0.008
+
+
+Effects from HOMLANG to PSTRE
+
+  Total             -0.069      -0.052      -0.044       0.000       0.045       0.053       0.069
+  Total indirect    -0.054      -0.050      -0.048      -0.037      -0.026      -0.024      -0.020
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    HOMLANG         -0.056      -0.051      -0.049      -0.037      -0.025      -0.022      -0.018
+
+    PSTRE
+    CURIOUS
+    HOMLANG         -0.006      -0.005      -0.004       0.000       0.003       0.004       0.005
+
+  Direct
+    PSTRE
+    HOMLANG         -0.031      -0.015      -0.007       0.038       0.082       0.090       0.107
+
+
+Effects from LIT to PSTRE
+
+  Total              0.732       0.741       0.745       0.768       0.791       0.796       0.804
+  Total indirect     0.043       0.048       0.051       0.065       0.079       0.081       0.087
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    LIT              0.037       0.043       0.046       0.064       0.081       0.084       0.091
+
+    PSTRE
+    CURIOUS
+    LIT             -0.014      -0.010      -0.008       0.001       0.010       0.012       0.016
+
+  Direct
+    PSTRE
+    LIT              0.658       0.669       0.674       0.704       0.733       0.739       0.749
+
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Effects from FEMALE to PSTRE
+
+  Total             -0.065      -0.058      -0.054      -0.034      -0.015      -0.011      -0.003
+  Total indirect    -0.023      -0.021      -0.020      -0.014      -0.008      -0.007      -0.005
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    FEMALE          -0.023      -0.021      -0.019      -0.014      -0.008      -0.007      -0.005
+
+    PSTRE
+    CURIOUS
+    FEMALE          -0.001      -0.001      -0.001       0.000       0.001       0.001       0.001
+
+  Direct
+    PSTRE
+    FEMALE          -0.050      -0.043      -0.039      -0.020      -0.002       0.002       0.009
+
+
+Effects from HOMLANG to PSTRE
+
+  Total             -0.047      -0.036      -0.030       0.000       0.030       0.036       0.048
+  Total indirect    -0.037      -0.034      -0.033      -0.025      -0.018      -0.016      -0.014
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    HOMLANG         -0.038      -0.035      -0.033      -0.025      -0.017      -0.015      -0.012
+
+    PSTRE
+    CURIOUS
+    HOMLANG         -0.004      -0.003      -0.003       0.000       0.002       0.003       0.004
+
+  Direct
+    PSTRE
+    HOMLANG         -0.021      -0.010      -0.004       0.026       0.056       0.061       0.073
+
+
+Effects from LIT to PSTRE
+
+  Total              0.810       0.815       0.818       0.831       0.843       0.846       0.851
+  Total indirect     0.046       0.052       0.055       0.070       0.085       0.088       0.094
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    LIT              0.040       0.047       0.050       0.069       0.087       0.091       0.098
+
+    PSTRE
+    CURIOUS
+    LIT             -0.015      -0.011      -0.009       0.001       0.011       0.013       0.017
+
+  Direct
+    PSTRE
+    LIT              0.724       0.733       0.737       0.761       0.784       0.788       0.797
+
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Effects from FEMALE to PSTRE
+
+  Total             -0.065      -0.058      -0.054      -0.034      -0.015      -0.011      -0.003
+  Total indirect    -0.023      -0.021      -0.020      -0.014      -0.008      -0.007      -0.005
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    FEMALE          -0.023      -0.021      -0.019      -0.014      -0.008      -0.007      -0.005
+
+    PSTRE
+    CURIOUS
+    FEMALE          -0.001      -0.001      -0.001       0.000       0.001       0.001       0.001
+
+  Direct
+    PSTRE
+    FEMALE          -0.050      -0.043      -0.039      -0.020      -0.002       0.002       0.009
+
+
+Effects from HOMLANG to PSTRE
+
+  Total             -0.047      -0.036      -0.030       0.000       0.030       0.036       0.048
+  Total indirect    -0.037      -0.034      -0.033      -0.025      -0.018      -0.016      -0.014
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    HOMLANG         -0.038      -0.035      -0.033      -0.025      -0.017      -0.015      -0.012
+
+    PSTRE
+    CURIOUS
+    HOMLANG         -0.004      -0.003      -0.003       0.000       0.002       0.003       0.004
+
+  Direct
+    PSTRE
+    HOMLANG         -0.021      -0.010      -0.004       0.026       0.056       0.061       0.073
+
+
+Effects from LIT to PSTRE
+
+  Total              0.810       0.815       0.818       0.831       0.843       0.846       0.851
+  Total indirect     0.046       0.052       0.055       0.070       0.085       0.088       0.094
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    LIT              0.040       0.047       0.050       0.069       0.087       0.091       0.098
+
+    PSTRE
+    CURIOUS
+    LIT             -0.015      -0.011      -0.009       0.001       0.011       0.013       0.017
+
+  Direct
+    PSTRE
+    LIT              0.724       0.733       0.737       0.761       0.784       0.788       0.797
+
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              H_Q05A        H_Q05C        H_Q05E        H_Q05F        I_Q04B
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              I_Q04D        I_Q04H        I_Q04J        I_Q04L        I_Q04M
+              ________      ________      ________      ________      ________
+                  6             7             8             9            10
+
+
+           NU
+              PSTRE         HOMLANG       FEMALE        LIT
+              ________      ________      ________      ________
+                  0             0             0             0
+
+
+           LAMBDA
+              LIFE          CURIOUS       PSTRE         HOMLANG       FEMALE
+              ________      ________      ________      ________      ________
+ H_Q05A             0             0             0             0             0
+ H_Q05C            11             0             0             0             0
+ H_Q05E            12             0             0             0             0
+ H_Q05F            13             0             0             0             0
+ I_Q04B             0             0             0             0             0
+ I_Q04D             0            14             0             0             0
+ I_Q04H             0            15             0             0             0
+ I_Q04J             0            16             0             0             0
+ I_Q04L             0            17             0             0             0
+ I_Q04M             0            18             0             0             0
+ PSTRE              0             0             0             0             0
+ HOMLANG            0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ LIT                0             0             0             0             0
+
+
+           LAMBDA
+              LIT
+              ________
+ H_Q05A             0
+ H_Q05C             0
+ H_Q05E             0
+ H_Q05F             0
+ I_Q04B             0
+ I_Q04D             0
+ I_Q04H             0
+ I_Q04J             0
+ I_Q04L             0
+ I_Q04M             0
+ PSTRE              0
+ HOMLANG            0
+ FEMALE             0
+ LIT                0
+
+
+           THETA
+              H_Q05A        H_Q05C        H_Q05E        H_Q05F        I_Q04B
+              ________      ________      ________      ________      ________
+ H_Q05A            19
+ H_Q05C             0            20
+ H_Q05E             0             0            21
+ H_Q05F             0             0             0            22
+ I_Q04B             0             0             0             0            23
+ I_Q04D             0             0             0             0             0
+ I_Q04H             0             0             0             0            25
+ I_Q04J             0             0             0             0            27
+ I_Q04L             0             0             0             0             0
+ I_Q04M             0             0             0             0             0
+ PSTRE              0             0             0             0             0
+ HOMLANG            0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ LIT                0             0             0             0             0
+
+
+           THETA
+              I_Q04D        I_Q04H        I_Q04J        I_Q04L        I_Q04M
+              ________      ________      ________      ________      ________
+ I_Q04D            24
+ I_Q04H             0            26
+ I_Q04J             0             0            28
+ I_Q04L             0             0             0            29
+ I_Q04M             0             0             0             0            30
+ PSTRE              0             0             0             0             0
+ HOMLANG            0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ LIT                0             0             0             0             0
+
+
+           THETA
+              PSTRE         HOMLANG       FEMALE        LIT
+              ________      ________      ________      ________
+ PSTRE              0
+ HOMLANG            0             0
+ FEMALE             0             0             0
+ LIT                0             0             0             0
+
+
+           ALPHA
+              LIFE          CURIOUS       PSTRE         HOMLANG       FEMALE
+              ________      ________      ________      ________      ________
+                  0             0            31            32            33
+
+
+           ALPHA
+              LIT
+              ________
+                 34
+
+
+           BETA
+              LIFE          CURIOUS       PSTRE         HOMLANG       FEMALE
+              ________      ________      ________      ________      ________
+ LIFE               0             0             0            35            36
+ CURIOUS            0             0             0            38            39
+ PSTRE             41            42             0            43            44
+ HOMLANG            0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ LIT                0             0             0             0             0
+
+
+           BETA
+              LIT
+              ________
+ LIFE              37
+ CURIOUS           40
+ PSTRE             45
+ HOMLANG            0
+ FEMALE             0
+ LIT                0
+
+
+           PSI
+              LIFE          CURIOUS       PSTRE         HOMLANG       FEMALE
+              ________      ________      ________      ________      ________
+ LIFE              46
+ CURIOUS           47            48
+ PSTRE              0             0            49
+ HOMLANG            0             0             0            50
+ FEMALE             0             0             0            51            52
+ LIT                0             0             0            53            54
+
+
+           PSI
+              LIT
+              ________
+ LIT               55
+
+
+     STARTING VALUES
+
+
+           NU
+              H_Q05A        H_Q05C        H_Q05E        H_Q05F        I_Q04B
+              ________      ________      ________      ________      ________
+                3.300         2.900         0.843         1.826         2.262
+
+
+           NU
+              I_Q04D        I_Q04H        I_Q04J        I_Q04L        I_Q04M
+              ________      ________      ________      ________      ________
+                3.138         2.886         2.941         2.481         2.958
+
+
+           NU
+              PSTRE         HOMLANG       FEMALE        LIT
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              LIFE          CURIOUS       PSTRE         HOMLANG       FEMALE
+              ________      ________      ________      ________      ________
+ H_Q05A         1.000         0.000         0.000         0.000         0.000
+ H_Q05C         0.767         0.000         0.000         0.000         0.000
+ H_Q05E         0.843         0.000         0.000         0.000         0.000
+ H_Q05F         1.113         0.000         0.000         0.000         0.000
+ I_Q04B         0.000         1.000         0.000         0.000         0.000
+ I_Q04D         0.000         0.918         0.000         0.000         0.000
+ I_Q04H         0.000         1.059         0.000         0.000         0.000
+ I_Q04J         0.000         0.915         0.000         0.000         0.000
+ I_Q04L         0.000         1.088         0.000         0.000         0.000
+ I_Q04M         0.000         0.826         0.000         0.000         0.000
+ PSTRE          0.000         0.000         1.000         0.000         0.000
+ HOMLANG        0.000         0.000         0.000         1.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         1.000
+ LIT            0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              LIT
+              ________
+ H_Q05A         0.000
+ H_Q05C         0.000
+ H_Q05E         0.000
+ H_Q05F         0.000
+ I_Q04B         0.000
+ I_Q04D         0.000
+ I_Q04H         0.000
+ I_Q04J         0.000
+ I_Q04L         0.000
+ I_Q04M         0.000
+ PSTRE          0.000
+ HOMLANG        0.000
+ FEMALE         0.000
+ LIT            1.000
+
+
+           THETA
+              H_Q05A        H_Q05C        H_Q05E        H_Q05F        I_Q04B
+              ________      ________      ________      ________      ________
+ H_Q05A         0.515
+ H_Q05C         0.000         0.557
+ H_Q05E         0.000         0.000         0.486
+ H_Q05F         0.000         0.000         0.000         0.742
+ I_Q04B         0.000         0.000         0.000         0.000         0.372
+ I_Q04D         0.000         0.000         0.000         0.000         0.000
+ I_Q04H         0.000         0.000         0.000         0.000         0.000
+ I_Q04J         0.000         0.000         0.000         0.000         0.000
+ I_Q04L         0.000         0.000         0.000         0.000         0.000
+ I_Q04M         0.000         0.000         0.000         0.000         0.000
+ PSTRE          0.000         0.000         0.000         0.000         0.000
+ HOMLANG        0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ LIT            0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              I_Q04D        I_Q04H        I_Q04J        I_Q04L        I_Q04M
+              ________      ________      ________      ________      ________
+ I_Q04D         0.292
+ I_Q04H         0.000         0.300
+ I_Q04J         0.000         0.000         0.351
+ I_Q04L         0.000         0.000         0.000         0.375
+ I_Q04M         0.000         0.000         0.000         0.000         0.311
+ PSTRE          0.000         0.000         0.000         0.000         0.000
+ HOMLANG        0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ LIT            0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PSTRE         HOMLANG       FEMALE        LIT
+              ________      ________      ________      ________
+ PSTRE          0.000
+ HOMLANG        0.000         0.000
+ FEMALE         0.000         0.000         0.000
+ LIT            0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              LIFE          CURIOUS       PSTRE         HOMLANG       FEMALE
+              ________      ________      ________      ________      ________
+                0.000         0.000         2.864         0.902         0.489
+
+
+           ALPHA
+              LIT
+              ________
+                2.789
+
+
+           BETA
+              LIFE          CURIOUS       PSTRE         HOMLANG       FEMALE
+              ________      ________      ________      ________      ________
+ LIFE           0.000         0.000         0.000         0.000         0.000
+ CURIOUS        0.000         0.000         0.000         0.000         0.000
+ PSTRE          0.000         0.000         0.000         0.000         0.000
+ HOMLANG        0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ LIT            0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              LIT
+              ________
+ LIFE           0.000
+ CURIOUS        0.000
+ PSTRE          0.000
+ HOMLANG        0.000
+ FEMALE         0.000
+ LIT            0.000
+
+
+           PSI
+              LIFE          CURIOUS       PSTRE         HOMLANG       FEMALE
+              ________      ________      ________      ________      ________
+ LIFE           0.050
+ CURIOUS        0.000         0.050
+ PSTRE          0.000         0.000         0.083
+ HOMLANG        0.000         0.000         0.000         0.044
+ FEMALE         0.000         0.000         0.000         0.000         0.125
+ LIT            0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              LIT
+              ________
+ LIT            0.112
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    /Users/ronnysc/Documents/CEMO/TEACHING/PIAAC2022-SEM/Examples/3-SEM/SEM1a.dgm
+
+     Beginning Time:  18:15:37
+        Ending Time:  18:15:42
+       Elapsed Time:  00:00:05
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2018 Muthen & Muthen

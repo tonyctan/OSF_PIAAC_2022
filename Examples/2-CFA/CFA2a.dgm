@@ -1,0 +1,169 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+ Structural equation modeling with PIAAC data
+ CFA
+ Two-factor model of skills and continuous treatment
+ Complex design: PVs, total weight, clustering, stratification
+
+DATA:
+  FILE IS piaac1-nor_pv1.dat;
+VARIABLE:
+ NAMES ARE
+  AGE FEMALE B_Q01a
+  D_Q11a D_Q11b D_Q11c D_Q11d
+  F_Q03a F_Q03c F_Q05a F_Q05b
+  G_Q01a G_Q01b G_Q01c G_Q01d
+  G_Q01e G_Q01f G_Q01g G_Q01h
+  G_Q02a G_Q02b G_Q02c G_Q02d
+  G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+  G_Q05a G_Q05c G_Q05d G_Q05e
+  G_Q05f G_Q05g G_Q05h
+  H_Q01a H_Q01b H_Q01c H_Q01d
+  H_Q01e H_Q01f H_Q01g H_Q01h
+  H_Q02a H_Q02b H_Q02c H_Q02d
+  H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
+  H_Q05a H_Q05c H_Q05d H_Q05e
+  H_Q05f H_Q05g H_Q05h
+  I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  I_Q06a
+  I_Q07a I_Q07b
+  HOMLANG IMGEN
+  PVLIT PVNUM PVPSL
+  SPFWT0
+  SPFWT1-SPFWT80
+  VARSTRAT VARUNIT;
+ USEVARIABLES ARE
+  G_Q05a
+    G_Q05c
+    G_Q05e
+    G_Q05f
+    H_Q05a
+    H_Q05c
+    H_Q05e
+    H_Q05f;
+ MISSING ARE ALL(-99);
+ WEIGHT = SPFWT0;
+ CLUSTER = VARUNIT;
+ STRATIFICATION = VARSTRAT;
+ANALYSIS:
+ TYPE = COMPLEX;
+ ESTIMATOR = MLR;
+ H1ITERATIONS = 10000;
+OUTPUT:
+ STDYX;
+        STDY;
+        SAMPSTAT;
+        CINTERVAL;
+        MOD(all);
+MODEL:
+ WORK BY
+  G_Q05a
+    G_Q05c
+    G_Q05e
+    G_Q05f;
+   LIFE BY
+    H_Q05a
+    H_Q05c
+    H_Q05e
+    H_Q05f;
+   WORK;
+   LIFE;
+   WORK WITH LIFE;
+INPUT_END
+3
+3
+3
+3
+MLR
+1
+GENERAL
+0
+8
+2
+0
+g_q05a g_q05c g_q05e g_q05f h_q05a h_q05c h_q05e h_q05f work life
+1
+-1 -1 -1 -1 -1 -1 -1 -1 0 0
+0
+2
+work
+g_q05a g_q05c g_q05e g_q05f
+life
+h_q05a h_q05c h_q05e h_q05f
+1 1 work g_q05a    1.000    0.000    1.000    1.000
+1 1 work g_q05c    1.045    0.031    0.984    1.106
+1 1 work g_q05e    1.082    0.040    1.005    1.160
+1 1 work g_q05f    1.310    0.042    1.228    1.392
+1 1 life h_q05a    1.000    0.000    1.000    1.000
+1 1 life h_q05c    0.861    0.037    0.787    0.934
+1 1 life h_q05e    0.941    0.060    0.824    1.059
+1 1 life h_q05f    1.286    0.061    1.166    1.405
+2 1 work life    0.283    0.020    0.244    0.322
+4 1 g_q05a    0.869    0.036    0.798    0.940
+4 1 g_q05c    0.909    0.039    0.833    0.985
+4 1 g_q05e    1.506    0.042    1.424    1.587
+4 1 g_q05f    0.842    0.041    0.763    0.922
+4 1 h_q05a    0.657    0.026    0.607    0.708
+4 1 h_q05c    0.838    0.024    0.792    0.885
+4 1 h_q05e    0.641    0.021    0.600    0.681
+4 1 h_q05f    0.867    0.028    0.812    0.922
+5 1 work    0.879    0.051    0.778    0.980
+5 1 life    0.374    0.031    0.314    0.435
+11 1 work g_q05a    0.709    0.014    0.681    0.737
+11 1 work g_q05c    0.717    0.015    0.688    0.746
+11 1 work g_q05e    0.637    0.012    0.613    0.661
+11 1 work g_q05f    0.801    0.011    0.779    0.823
+11 1 life h_q05a    0.602    0.019    0.566    0.639
+11 1 life h_q05c    0.499    0.021    0.457    0.540
+11 1 life h_q05e    0.584    0.016    0.553    0.615
+11 1 life h_q05f    0.645    0.013    0.619    0.672
+12 1 work life    0.493    0.026    0.442    0.545
+14 1 g_q05a    0.497    0.020    0.457    0.537
+14 1 g_q05c    0.486    0.021    0.445    0.528
+14 1 g_q05e    0.594    0.016    0.563    0.625
+14 1 g_q05f    0.358    0.018    0.322    0.394
+14 1 h_q05a    0.637    0.022    0.593    0.681
+14 1 h_q05c    0.751    0.021    0.710    0.792
+14 1 h_q05e    0.659    0.018    0.623    0.695
+14 1 h_q05f    0.583    0.017    0.550    0.617
+15 1 work    1.000    0.000    1.000    1.000
+15 1 life    1.000    0.000    1.000    1.000
+21 1 work g_q05a    0.709    0.014    0.681    0.737
+21 1 work g_q05c    0.717    0.015    0.688    0.746
+21 1 work g_q05e    0.637    0.012    0.613    0.661
+21 1 work g_q05f    0.801    0.011    0.779    0.823
+21 1 life h_q05a    0.602    0.019    0.566    0.639
+21 1 life h_q05c    0.499    0.021    0.457    0.540
+21 1 life h_q05e    0.584    0.016    0.553    0.615
+21 1 life h_q05f    0.645    0.013    0.619    0.672
+22 1 work life    0.493    0.026    0.442    0.545
+24 1 g_q05a    0.497    0.020    0.457    0.537
+24 1 g_q05c    0.486    0.021    0.445    0.528
+24 1 g_q05e    0.594    0.016    0.563    0.625
+24 1 g_q05f    0.358    0.018    0.322    0.394
+24 1 h_q05a    0.637    0.022    0.593    0.681
+24 1 h_q05c    0.751    0.021    0.710    0.792
+24 1 h_q05e    0.659    0.018    0.623    0.695
+24 1 h_q05f    0.583    0.017    0.550    0.617
+25 1 work    1.000    0.000    1.000    1.000
+25 1 life    1.000    0.000    1.000    1.000
+31 1 work g_q05a    0.938    0.027    0.884    0.991
+31 1 work g_q05c    0.980    0.025    0.931    1.029
+31 1 work g_q05e    1.015    0.021    0.974    1.056
+31 1 work g_q05f    1.228    0.022    1.185    1.272
+31 1 life h_q05a    0.612    0.025    0.562    0.661
+31 1 life h_q05c    0.526    0.025    0.478    0.575
+31 1 life h_q05e    0.576    0.017    0.542    0.610
+31 1 life h_q05f    0.786    0.017    0.752    0.821
+32 1 work life    0.493    0.026    0.442    0.545
+34 1 g_q05a    0.869    0.036    0.798    0.940
+34 1 g_q05c    0.909    0.039    0.833    0.985
+34 1 g_q05e    1.506    0.042    1.424    1.587
+34 1 g_q05f    0.842    0.041    0.763    0.922
+34 1 h_q05a    0.657    0.026    0.607    0.708
+34 1 h_q05c    0.838    0.024    0.792    0.885
+34 1 h_q05e    0.641    0.021    0.600    0.681
+34 1 h_q05f    0.867    0.028    0.812    0.922
+35 1 work    1.000    0.000    1.000    1.000
+35 1 life    1.000    0.000    1.000    1.000

@@ -1,0 +1,483 @@
+Mplus VERSION 8.2 (Mac)
+MUTHEN & MUTHEN
+03/19/2022   6:06 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:	Structural equation modeling with PIAAC data
+  	PATH MODEL
+  	Regression model
+  	Complex design: Total weight
+
+  DATA: 	FILE IS piaac1-nor_pv1.dat;
+
+  		
+  		
+  VARIABLE:
+  	NAMES ARE
+  		AGE FEMALE B_Q01a
+  		D_Q11a D_Q11b D_Q11c D_Q11d
+  		F_Q03a F_Q03c F_Q05a F_Q05b
+  		G_Q01a G_Q01b G_Q01c G_Q01d
+  		G_Q01e G_Q01f G_Q01g G_Q01h
+  		G_Q02a G_Q02b G_Q02c G_Q02d
+  		G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+  		G_Q05a G_Q05c G_Q05d G_Q05e
+  		G_Q05f G_Q05g G_Q05h
+  		H_Q01a H_Q01b H_Q01c H_Q01d
+  		H_Q01e H_Q01f H_Q01g H_Q01h
+  		H_Q02a H_Q02b H_Q02c H_Q02d
+  		H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
+  		H_Q05a H_Q05c H_Q05d H_Q05e
+  		H_Q05f H_Q05g H_Q05h
+  		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  		I_Q06a
+  		I_Q07a I_Q07b
+  		HOMLANG IMGEN
+  		PVLIT PVNUM PVPSL
+  		SPFWT0
+  		SPFWT1-SPFWT80
+  		VARSTRAT VARUNIT;
+  		
+  	! Variables to be used
+  	! Newly defined variable appear at the end of this list
+  	USEVARIABLES ARE
+  		PSTRE
+  		CURIOUS
+  		LIFE;
+  		
+  	! Missing data coding
+  	MISSING ARE ALL(-99);
+  		
+  	! Final participant weight
+  	WEIGHT = SPFWT0;
+
+
+  DEFINE:
+  	! Scale down the achievement scores to avoid convergence issues
+  	PSTRE = PVPSL/100;
+  	LIT = PVLIT/100;
+  	
+  	! Create scale means as composite scores
+  	CURIOUS = (I_Q04b+
+  	I_Q04d+
+  	I_Q04h+
+  	I_Q04j+
+  	I_Q04l+
+  	I_Q04m)/6;
+  	
+  	LIFE = (H_Q05a+
+  	H_Q05c+
+  	H_Q05e+
+  	H_Q05f)/4;
+
+
+  ANALYSIS:
+  	!TYPE = COMPLEX;
+  	ESTIMATOR = MLR;
+  	H1ITERATIONS = 10000;
+
+  MODEL:
+  	
+  	! STRUCTURAL MODEL
+  	
+  	! Structural paths
+  	PSTRE ON
+  		CURIOUS
+  		LIFE;
+  	
+  	! Variances and covariances of predictors to let FIML work
+  	! Variances
+  	CURIOUS;
+  	LIFE;
+  	! Covariance
+  	CURIOUS WITH LIFE;
+
+
+  OUTPUT: STDYX;	! Fully standardized parameters requested
+          STDY;	! Standardized parameter estimates requested
+          		! (some X-variables are dichotomous)
+          SAMPSTAT;	! Sample statistics
+          CINTERVAL;	! Confidence intervals
+
+
+
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  192
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Structural equation modeling with PIAAC data
+PATH MODEL
+Regression model
+Complex design: Total weight
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        4936
+
+Number of dependent variables                                    1
+Number of independent variables                                  2
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   PSTRE
+
+Observed independent variables
+   CURIOUS     LIFE
+
+Variables with special functions
+
+  Weight variable       SPFWT0
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                          10000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  piaac1-nor_pv1.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             7
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              PSTRE         CURIOUS       LIFE
+              ________      ________      ________
+ PSTRE          0.880
+ CURIOUS        0.876         0.993
+ LIFE           0.864         0.944         0.951
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              PSTRE         CURIOUS       LIFE
+              ________      ________      ________
+                2.849         2.779         2.203
+
+
+           Covariances
+              PSTRE         CURIOUS       LIFE
+              ________      ________      ________
+ PSTRE          0.168
+ CURIOUS        0.062         0.345
+ LIFE           0.119         0.166         0.585
+
+
+           Correlations
+              PSTRE         CURIOUS       LIFE
+              ________      ________      ________
+ PSTRE          1.000
+ CURIOUS        0.257         1.000
+ LIFE           0.380         0.370         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -11243.929
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     PSTRE                 2.864      -0.351       0.681    0.02%       2.552      2.806      2.910
+            4342.000       0.165       0.379       4.238    0.02%       3.008      3.219
+     CURIOUS               2.780      -0.211       0.333    0.02%       2.333      2.667      2.833
+            4903.000       0.344       0.138       4.000    2.37%       3.000      3.333
+     LIFE                  2.217      -0.429       0.000    0.72%       1.750      2.000      2.250
+            4693.000       0.578       0.045       4.000    0.45%       2.500      3.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                        9
+
+Loglikelihood
+
+          H0 Value                      -11243.929
+          H0 Scaling Correction Factor      1.1983
+            for MLR
+          H1 Value                      -11243.929
+          H1 Scaling Correction Factor      1.1983
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   22505.857
+          Bayesian (BIC)                 22564.396
+          Sample-Size Adjusted BIC       22535.797
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              0.000*
+          Degrees of Freedom                     0
+          P-Value                           0.0000
+          Scaling Correction Factor         1.0000
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.000
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.000
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            540.129
+          Degrees of Freedom                     2
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.000
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ PSTRE    ON
+    CURIOUS            0.094      0.012      7.812      0.000
+    LIFE               0.177      0.010     17.959      0.000
+
+ CURIOUS  WITH
+    LIFE               0.166      0.008     20.214      0.000
+
+ Means
+    CURIOUS            2.779      0.009    317.222      0.000
+    LIFE               2.203      0.012    188.593      0.000
+
+ Intercepts
+    PSTRE              2.197      0.033     67.022      0.000
+
+ Variances
+    CURIOUS            0.345      0.008     44.463      0.000
+    LIFE               0.585      0.013     44.846      0.000
+
+ Residual Variances
+    PSTRE              0.141      0.004     40.141      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ PSTRE    ON
+    CURIOUS            0.135      0.017      7.854      0.000
+    LIFE               0.331      0.017     18.896      0.000
+
+ CURIOUS  WITH
+    LIFE               0.370      0.015     24.200      0.000
+
+ Means
+    CURIOUS            4.733      0.058     81.496      0.000
+    LIFE               2.880      0.040     71.303      0.000
+
+ Intercepts
+    PSTRE              5.361      0.126     42.594      0.000
+
+ Variances
+    CURIOUS            1.000      0.000    999.000    999.000
+    LIFE               1.000      0.000    999.000    999.000
+
+ Residual Variances
+    PSTRE              0.840      0.012     69.826      0.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ PSTRE    ON
+    CURIOUS            0.135      0.017      7.854      0.000
+    LIFE               0.331      0.017     18.896      0.000
+
+ CURIOUS  WITH
+    LIFE               0.370      0.015     24.200      0.000
+
+ Means
+    CURIOUS            4.733      0.058     81.496      0.000
+    LIFE               2.880      0.040     71.303      0.000
+
+ Intercepts
+    PSTRE              5.361      0.126     42.594      0.000
+
+ Variances
+    CURIOUS            1.000      0.000    999.000    999.000
+    LIFE               1.000      0.000    999.000    999.000
+
+ Residual Variances
+    PSTRE              0.840      0.012     69.826      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    PSTRE              0.160      0.012     13.347      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.263E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ PSTRE    ON
+    CURIOUS          0.063       0.071       0.074       0.094       0.114       0.118       0.125
+    LIFE             0.152       0.158       0.161       0.177       0.193       0.196       0.203
+
+ CURIOUS  WITH
+    LIFE             0.145       0.150       0.153       0.166       0.180       0.182       0.187
+
+ Means
+    CURIOUS          2.756       2.762       2.765       2.779       2.793       2.796       2.801
+    LIFE             2.172       2.180       2.183       2.203       2.222       2.225       2.233
+
+ Intercepts
+    PSTRE            2.113       2.133       2.143       2.197       2.251       2.261       2.282
+
+ Variances
+    CURIOUS          0.325       0.330       0.332       0.345       0.357       0.360       0.365
+    LIFE             0.551       0.559       0.563       0.585       0.606       0.611       0.619
+
+ Residual Variances
+    PSTRE            0.132       0.134       0.135       0.141       0.147       0.148       0.150
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ PSTRE    ON
+    CURIOUS          0.091       0.101       0.107       0.135       0.163       0.169       0.179
+    LIFE             0.285       0.296       0.302       0.331       0.359       0.365       0.376
+
+ CURIOUS  WITH
+    LIFE             0.331       0.340       0.345       0.370       0.395       0.400       0.409
+
+ Means
+    CURIOUS          4.583       4.619       4.637       4.733       4.828       4.847       4.883
+    LIFE             2.776       2.801       2.813       2.880       2.946       2.959       2.984
+
+ Intercepts
+    PSTRE            5.037       5.114       5.154       5.361       5.568       5.608       5.685
+
+ Variances
+    CURIOUS          1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    LIFE             1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    PSTRE            0.809       0.816       0.820       0.840       0.859       0.863       0.870
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ PSTRE    ON
+    CURIOUS          0.091       0.101       0.107       0.135       0.163       0.169       0.179
+    LIFE             0.285       0.296       0.302       0.331       0.359       0.365       0.376
+
+ CURIOUS  WITH
+    LIFE             0.331       0.340       0.345       0.370       0.395       0.400       0.409
+
+ Means
+    CURIOUS          4.583       4.619       4.637       4.733       4.828       4.847       4.883
+    LIFE             2.776       2.801       2.813       2.880       2.946       2.959       2.984
+
+ Intercepts
+    PSTRE            5.037       5.114       5.154       5.361       5.568       5.608       5.685
+
+ Variances
+    CURIOUS          1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    LIFE             1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    PSTRE            0.809       0.816       0.820       0.840       0.859       0.863       0.870
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    /Users/ronnysc/Documents/CEMO/TEACHING/PIAAC2022-SEM/Examples/1-PathModels/REG1a.dgm
+
+     Beginning Time:  18:06:29
+        Ending Time:  18:06:29
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2018 Muthen & Muthen

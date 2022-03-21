@@ -1,0 +1,1358 @@
+Mplus VERSION 8.2 (Mac)
+MUTHEN & MUTHEN
+03/19/2022   6:04 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:	Structural equation modeling with PIAAC data
+  	PATH MODEL
+  	Path model CURIOUS-LIFE-PSTRE
+  	Complex design: PVs, total weight, clustering, stratification
+  	Grouping: Gender
+
+  DATA: 	FILE IS piaac1-nor_pvlist.dat;
+  	TYPE = IMPUTATION;
+  	! Needed here as the model contains PVs
+  		
+  		
+  VARIABLE:
+  	NAMES ARE
+  		AGE FEMALE B_Q01a
+  		D_Q11a D_Q11b D_Q11c D_Q11d
+  		F_Q03a F_Q03c F_Q05a F_Q05b
+  		G_Q01a G_Q01b G_Q01c G_Q01d
+  		G_Q01e G_Q01f G_Q01g G_Q01h
+  		G_Q02a G_Q02b G_Q02c G_Q02d
+  		G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+  		G_Q05a G_Q05c G_Q05d G_Q05e
+  		G_Q05f G_Q05g G_Q05h
+  		H_Q01a H_Q01b H_Q01c H_Q01d
+  		H_Q01e H_Q01f H_Q01g H_Q01h
+  		H_Q02a H_Q02b H_Q02c H_Q02d
+  		H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
+  		H_Q05a H_Q05c H_Q05d H_Q05e
+  		H_Q05f H_Q05g H_Q05h
+  		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  		I_Q06a
+  		I_Q07a I_Q07b
+  		HOMLANG IMGEN
+  		PVLIT PVNUM PVPSL
+  		SPFWT0
+  		SPFWT1-SPFWT80
+  		VARSTRAT VARUNIT;
+  		
+  	! Variables to be used
+  	! Newly defined variable appear at the end of this list
+  	USEVARIABLES ARE
+  		PSTRE
+  		CURIOUS
+  		LIFE;
+  		
+  	! Missing data coding
+  	MISSING ARE ALL(-99);
+  		
+  	! Final participant weight
+  	WEIGHT = SPFWT0;
+  	
+  	! Clustering in sampling units
+  	CLUSTER = VARUNIT;
+  	
+  	! Stratification
+  	STRATIFICATION = VARSTRAT;
+  	
+  	! Grouping by gender
+  	! Binary coding as 1=Woman and 0=Man
+  	GROUPING = FEMALE (0=Men 1=Women);
+
+
+  DEFINE:
+  	! Scale down the achievement scores to avoid convergence issues
+  	PSTRE = PVPSL/100;
+  	LIT = PVLIT/100;
+  	
+  	! Create scale means as composite scores
+  	CURIOUS = (I_Q04b+
+  	I_Q04d+
+  	I_Q04h+
+  	I_Q04j+
+  	I_Q04l+
+  	I_Q04m)/6;
+  	
+  	LIFE = (H_Q05a+
+  	H_Q05c+
+  	H_Q05e+
+  	H_Q05f)/4;
+
+
+  ANALYSIS:
+  	TYPE = COMPLEX;
+  	ESTIMATOR = MLR;
+  	H1ITERATIONS = 10000;
+
+  MODEL:
+  	
+  	! STRUCTURAL MODEL
+  	! Direct effects
+  	! Note: No more constraints in here; otherwise, these effects would
+  	! be set equal across groups.
+  	PSTRE ON
+  		CURIOUS
+  		LIFE;
+  		
+  	LIFE ON
+  		CURIOUS;
+  	
+  	! Variances and covariances of predictors to let FIML work
+  	! Variance
+  	CURIOUS;
+  	
+  	
+  MODEL INDIRECT:
+  	! Indirect effects
+  	PSTRE IND CURIOUS;
+  	
+
+
+  OUTPUT: STDYX;	! Fully standardized parameters requested
+          STDY;	! Standardized parameter estimates requested
+          		! (some X-variables are dichotomous)
+          SAMPSTAT;	! Sample statistics
+          CINTERVAL;	! Confidence intervals
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Structural equation modeling with PIAAC data
+PATH MODEL
+Path model CURIOUS-LIFE-PSTRE
+Complex design: PVs, total weight, clustering, stratification
+Grouping: Gender
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 2
+Average number of observations
+   Group MEN                                                  2551
+   Group WOMEN                                                2385
+   Total sample size                                          4936
+
+Number of replications
+    Requested                                                   10
+    Completed                                                   10
+
+Number of dependent variables                                    2
+Number of independent variables                                  1
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   PSTRE       LIFE
+
+Observed independent variables
+   CURIOUS
+
+Variables with special functions
+
+  Grouping variable     FEMALE
+  Stratification        VARSTRAT
+  Cluster variable      VARUNIT
+  Weight variable       SPFWT0
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                          10000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  Multiple data files from
+    piaac1-nor_pvlist.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA FOR THE FIRST DATA SET
+
+   Total number of strata                       80
+   Total number of clusters                    163
+
+   Group MEN
+     Number of missing data patterns             7
+     Number of strata                           80
+     Number of clusters                        160
+
+   Group WOMEN
+     Number of missing data patterns             6
+     Number of strata                           80
+     Number of clusters                        163
+
+
+SUMMARY OF MISSING DATA PATTERNS FOR THE FIRST DATA SET
+
+
+     MISSING DATA PATTERNS FOR MEN (x = not missing)
+
+           1  2  3  4  5  6  7
+ PSTRE     x  x  x  x
+ LIFE      x  x        x  x
+ CURIOUS   x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR MEN
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1        2201           4           1           7          80
+          2           9           5         221
+          3          34           6           5
+
+
+     MISSING DATA PATTERNS FOR WOMEN (x = not missing)
+
+           1  2  3  4  5  6
+ PSTRE     x  x  x
+ LIFE      x  x     x  x
+ CURIOUS   x     x  x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR WOMEN
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1        2046           3          43           5          10
+          2           8           4         193           6          85
+
+
+COVARIANCE COVERAGE OF DATA FOR THE FIRST DATA SET
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR MEN
+
+
+           Covariance Coverage
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.880
+ LIFE           0.866         0.955
+ CURIOUS        0.876         0.949         0.994
+
+
+     PROPORTION OF DATA PRESENT FOR WOMEN
+
+
+           Covariance Coverage
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.879
+ LIFE           0.861         0.946
+ CURIOUS        0.876         0.939         0.992
+
+
+SAMPLE STATISTICS
+
+NOTE:  These are average results over 10 data sets.
+
+
+     ESTIMATED SAMPLE STATISTICS FOR MEN
+
+
+           Means
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                2.882         2.270         2.800
+
+
+           Covariances
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.168
+ LIFE           0.111         0.595
+ CURIOUS        0.054         0.171         0.345
+
+
+           Correlations
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          1.000
+ LIFE           0.351         1.000
+ CURIOUS        0.224         0.377         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR WOMEN
+
+
+           Means
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                2.817         2.132         2.757
+
+
+           Covariances
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.158
+ LIFE           0.116         0.564
+ CURIOUS        0.066         0.158         0.343
+
+
+           Correlations
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          1.000
+ LIFE           0.387         1.000
+ CURIOUS        0.283         0.359         1.000
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       18
+
+Loglikelihood
+
+    H0 Value
+
+        Mean                            -11182.819
+        Std Dev                             44.342
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       -11285.971     -11238.192
+           0.980       1.000       -11273.883     -11238.192
+           0.950       1.000       -11255.756     -11238.192
+           0.900       1.000       -11239.647     -11238.192
+           0.800       0.800       -11220.137     -11238.192
+           0.700       0.600       -11206.072     -11214.274
+           0.500       0.400       -11182.819     -11190.440
+           0.300       0.200       -11159.566     -11177.810
+           0.200       0.100       -11145.501     -11159.922
+           0.100       0.100       -11125.990     -11156.641
+           0.050       0.100       -11109.881     -11156.641
+           0.020       0.100       -11091.754     -11156.641
+           0.010       0.100       -11079.666     -11156.641
+
+    H1 Value
+
+        Mean                            -11182.819
+        Std Dev                             44.342
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       -11285.971     -11238.191
+           0.980       1.000       -11273.883     -11238.191
+           0.950       1.000       -11255.756     -11238.191
+           0.900       1.000       -11239.647     -11238.191
+           0.800       0.800       -11220.137     -11238.191
+           0.700       0.600       -11206.071     -11214.274
+           0.500       0.400       -11182.819     -11190.440
+           0.300       0.200       -11159.566     -11177.810
+           0.200       0.100       -11145.501     -11159.922
+           0.100       0.100       -11125.990     -11156.641
+           0.050       0.100       -11109.881     -11156.641
+           0.020       0.100       -11091.754     -11156.641
+           0.010       0.100       -11079.666     -11156.641
+
+Information Criteria
+
+    Akaike (AIC)
+
+        Mean                             22401.637
+        Std Dev                             88.684
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       0.900        22195.333      22183.054
+           0.980       0.900        22219.508      22183.054
+           0.950       0.900        22255.762      22183.054
+           0.900       0.900        22287.981      22183.054
+           0.800       0.900        22327.001      22183.054
+           0.700       0.800        22355.132      22355.845
+           0.500       0.600        22401.637      22402.555
+           0.300       0.400        22448.143      22463.044
+           0.200       0.200        22476.273      22464.547
+           0.100       0.000        22515.294      22477.164
+           0.050       0.000        22547.513      22477.164
+           0.020       0.000        22583.767      22477.164
+           0.010       0.000        22607.942      22477.164
+
+    Bayesian (BIC)
+
+        Mean                             22518.715
+        Std Dev                             88.684
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       0.900        22312.410      22300.131
+           0.980       0.900        22336.586      22300.131
+           0.950       0.900        22372.839      22300.131
+           0.900       0.900        22405.058      22300.131
+           0.800       0.900        22444.079      22300.131
+           0.700       0.800        22472.209      22472.922
+           0.500       0.600        22518.715      22519.632
+           0.300       0.400        22565.221      22580.122
+           0.200       0.200        22593.351      22581.625
+           0.100       0.000        22632.372      22594.241
+           0.050       0.000        22664.591      22594.241
+           0.020       0.000        22700.844      22594.241
+           0.010       0.000        22725.020      22594.241
+
+    Sample-Size Adjusted BIC (n* = (n + 2) / 24)
+
+        Mean                             22461.517
+        Std Dev                             88.684
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       0.900        22255.213      22242.934
+           0.980       0.900        22279.388      22242.934
+           0.950       0.900        22315.642      22242.934
+           0.900       0.900        22347.860      22242.934
+           0.800       0.900        22386.881      22242.934
+           0.700       0.800        22415.012      22415.725
+           0.500       0.600        22461.517      22462.434
+           0.300       0.400        22508.023      22522.924
+           0.200       0.200        22536.153      22524.427
+           0.100       0.000        22575.174      22537.044
+           0.050       0.000        22607.393      22537.044
+           0.020       0.000        22643.647      22537.044
+           0.010       0.000        22667.822      22537.044
+
+Chi-Square Test of Model Fit
+
+        Degrees of freedom                       0
+
+        Mean                                 0.000
+        Std Dev                              0.000
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.000          0.000
+           0.980       1.000            0.000          0.000
+           0.950       1.000            0.000          0.000
+           0.900       1.000            0.000          0.000
+           0.800       1.000            0.000          0.000
+           0.700       1.000            0.000          0.000
+           0.500       1.000            0.000          0.000
+           0.300       1.000            0.000          0.000
+           0.200       1.000            0.000          0.000
+           0.100       1.000            0.000          0.000
+           0.050       1.000            0.000          0.000
+           0.020       1.000            0.000          0.000
+           0.010       1.000            0.000          0.000
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+        Mean                                 0.000
+        Std Dev                              0.000
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       0.000            0.000          0.000
+           0.980       0.000            0.000          0.000
+           0.950       0.000            0.000          0.000
+           0.900       0.000            0.000          0.000
+           0.800       0.000            0.000          0.000
+           0.700       0.000            0.000          0.000
+           0.500       0.000            0.000          0.000
+           0.300       0.000            0.000          0.000
+           0.200       0.000            0.000          0.000
+           0.100       0.000            0.000          0.000
+           0.050       0.000            0.000          0.000
+           0.020       0.000            0.000          0.000
+           0.010       0.000            0.000          0.000
+
+CFI/TLI
+
+    CFI
+
+        Mean                                 1.000
+        Std Dev                              0.000
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            1.000          1.000
+           0.980       1.000            1.000          1.000
+           0.950       0.800            1.000          1.000
+           0.900       0.800            1.000          1.000
+           0.800       0.700            1.000          1.000
+           0.700       0.700            1.000          1.000
+           0.500       0.600            1.000          1.000
+           0.300       0.600            1.000          1.000
+           0.200       0.000            1.000          1.000
+           0.100       0.000            1.000          1.000
+           0.050       0.000            1.000          1.000
+           0.020       0.000            1.000          1.000
+           0.010       0.000            1.000          1.000
+
+    TLI
+
+        Mean                                 1.000
+        Std Dev                              0.000
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       0.000            1.000          1.000
+           0.980       0.000            1.000          1.000
+           0.950       0.000            1.000          1.000
+           0.900       0.000            1.000          1.000
+           0.800       0.000            1.000          1.000
+           0.700       0.000            1.000          1.000
+           0.500       0.000            1.000          1.000
+           0.300       0.000            1.000          1.000
+           0.200       0.000            1.000          1.000
+           0.100       0.000            1.000          1.000
+           0.050       0.000            1.000          1.000
+           0.020       0.000            1.000          1.000
+           0.010       0.000            1.000          1.000
+
+SRMR (Standardized Root Mean Square Residual)
+
+        Mean                                 0.000
+        Std Dev                              0.000
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.000          0.000
+           0.980       1.000            0.000          0.000
+           0.950       1.000            0.000          0.000
+           0.900       1.000            0.000          0.000
+           0.800       0.800            0.000          0.000
+           0.700       0.500            0.000          0.000
+           0.500       0.400            0.000          0.000
+           0.300       0.300            0.000          0.000
+           0.200       0.300            0.000          0.000
+           0.100       0.300            0.000          0.000
+           0.050       0.000            0.000          0.000
+           0.020       0.000            0.000          0.000
+           0.010       0.000            0.000          0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group MEN
+
+ PSTRE    ON
+    CURIOUS            0.075      0.020      3.807      0.000      0.176
+    LIFE               0.165      0.015     11.185      0.000      0.222
+
+ LIFE     ON
+    CURIOUS            0.495      0.026     18.695      0.000      0.000
+
+ Means
+    CURIOUS            2.800      0.010    268.273      0.000      0.000
+
+ Intercepts
+    PSTRE              2.297      0.052     43.818      0.000      0.148
+    LIFE               0.883      0.077     11.422      0.000      0.000
+
+ Variances
+    CURIOUS            0.345      0.009     39.498      0.000      0.000
+
+ Residual Variances
+    PSTRE              0.146      0.006     22.501      0.000      0.376
+    LIFE               0.510      0.019     26.905      0.000      0.000
+
+Group WOMEN
+
+ PSTRE    ON
+    CURIOUS            0.112      0.018      6.372      0.000      0.259
+    LIFE               0.174      0.016     10.611      0.000      0.361
+
+ LIFE     ON
+    CURIOUS            0.460      0.029     15.749      0.000      0.001
+
+ Means
+    CURIOUS            2.757      0.011    249.195      0.000      0.000
+
+ Intercepts
+    PSTRE              2.139      0.048     44.717      0.000      0.366
+    LIFE               0.862      0.085     10.160      0.000      0.001
+
+ Variances
+    CURIOUS            0.343      0.011     32.556      0.000      0.000
+
+ Residual Variances
+    PSTRE              0.131      0.006     21.707      0.000      0.412
+    LIFE               0.491      0.017     28.475      0.000      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group MEN
+
+ PSTRE    ON
+    CURIOUS            0.107      0.028      3.806      0.000      0.185
+    LIFE               0.310      0.026     12.061      0.000      0.247
+
+ LIFE     ON
+    CURIOUS            0.377      0.020     19.029      0.000      0.000
+
+ Means
+    CURIOUS            4.767      0.065     72.966      0.000      0.000
+
+ Intercepts
+    PSTRE              5.599      0.207     27.099      0.000      0.159
+    LIFE               1.145      0.109     10.497      0.000      0.000
+
+ Variances
+    CURIOUS            1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    PSTRE              0.867      0.017     52.124      0.000      0.256
+    LIFE               0.858      0.015     57.352      0.000      0.000
+
+Group WOMEN
+
+ PSTRE    ON
+    CURIOUS            0.165      0.026      6.328      0.000      0.276
+    LIFE               0.328      0.029     11.246      0.000      0.311
+
+ LIFE     ON
+    CURIOUS            0.359      0.022     16.071      0.000      0.000
+
+ Means
+    CURIOUS            4.706      0.081     57.877      0.000      0.000
+
+ Intercepts
+    PSTRE              5.378      0.191     28.114      0.000      0.413
+    LIFE               1.148      0.122      9.422      0.000      0.001
+
+ Variances
+    CURIOUS            1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    PSTRE              0.826      0.020     41.217      0.000      0.385
+    LIFE               0.871      0.016     54.226      0.000      0.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group MEN
+
+ PSTRE    ON
+    CURIOUS            0.107      0.028      3.806      0.000      0.185
+    LIFE               0.310      0.026     12.061      0.000      0.247
+
+ LIFE     ON
+    CURIOUS            0.377      0.020     19.029      0.000      0.000
+
+ Means
+    CURIOUS            4.767      0.065     72.966      0.000      0.000
+
+ Intercepts
+    PSTRE              5.599      0.207     27.099      0.000      0.159
+    LIFE               1.145      0.109     10.497      0.000      0.000
+
+ Variances
+    CURIOUS            1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    PSTRE              0.867      0.017     52.124      0.000      0.256
+    LIFE               0.858      0.015     57.352      0.000      0.000
+
+Group WOMEN
+
+ PSTRE    ON
+    CURIOUS            0.165      0.026      6.328      0.000      0.276
+    LIFE               0.328      0.029     11.246      0.000      0.311
+
+ LIFE     ON
+    CURIOUS            0.359      0.022     16.071      0.000      0.000
+
+ Means
+    CURIOUS            4.706      0.081     57.877      0.000      0.000
+
+ Intercepts
+    PSTRE              5.378      0.191     28.114      0.000      0.413
+    LIFE               1.148      0.122      9.422      0.000      0.001
+
+ Variances
+    CURIOUS            1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    PSTRE              0.826      0.020     41.217      0.000      0.385
+    LIFE               0.871      0.016     54.226      0.000      0.000
+
+
+R-SQUARE
+
+Group MEN
+
+    Observed                                        Two-Tailed   Rate of
+    Variable        Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+    PSTRE              0.133      0.017      8.008      0.000      0.256
+    LIFE               0.142      0.015      9.515      0.000      0.000
+
+Group WOMEN
+
+    Observed                                        Two-Tailed   Rate of
+    Variable        Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+    PSTRE              0.174      0.020      8.666      0.000      0.385
+    LIFE               0.129      0.016      8.035      0.000      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Average Condition Number for the Information Matrix      0.703E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group MEN
+
+Effects from CURIOUS to PSTRE
+
+  Total                0.157      0.019      8.153      0.000      0.141
+  Total indirect       0.082      0.008     10.236      0.000      0.184
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS            0.082      0.008     10.236      0.000      0.184
+
+  Direct
+    PSTRE
+    CURIOUS            0.075      0.020      3.807      0.000      0.176
+
+
+Group WOMEN
+
+Effects from CURIOUS to PSTRE
+
+  Total                0.192      0.016     11.752      0.000      0.283
+  Total indirect       0.080      0.009      8.729      0.000      0.237
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS            0.080      0.009      8.729      0.000      0.237
+
+  Direct
+    PSTRE
+    CURIOUS            0.112      0.018      6.372      0.000      0.259
+
+
+
+STANDARDIZED TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group MEN
+
+Effects from CURIOUS to PSTRE
+
+  Total                0.224      0.027      8.306      0.000      0.165
+  Total indirect       0.117      0.011     10.878      0.000      0.199
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS            0.117      0.011     10.878      0.000      0.199
+
+  Direct
+    PSTRE
+    CURIOUS            0.107      0.028      3.806      0.000      0.185
+
+
+Group WOMEN
+
+Effects from CURIOUS to PSTRE
+
+  Total                0.283      0.024     11.892      0.000      0.293
+  Total indirect       0.118      0.013      9.062      0.000      0.195
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS            0.118      0.013      9.062      0.000      0.195
+
+  Direct
+    PSTRE
+    CURIOUS            0.165      0.026      6.328      0.000      0.276
+
+
+
+STDY Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group MEN
+
+Effects from CURIOUS to PSTRE
+
+  Total                0.224      0.027      8.306      0.000      0.165
+  Total indirect       0.117      0.011     10.878      0.000      0.199
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS            0.117      0.011     10.878      0.000      0.199
+
+  Direct
+    PSTRE
+    CURIOUS            0.107      0.028      3.806      0.000      0.185
+
+
+Group WOMEN
+
+Effects from CURIOUS to PSTRE
+
+  Total                0.283      0.024     11.892      0.000      0.293
+  Total indirect       0.118      0.013      9.062      0.000      0.195
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS            0.118      0.013      9.062      0.000      0.195
+
+  Direct
+    PSTRE
+    CURIOUS            0.165      0.026      6.328      0.000      0.276
+
+
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MEN
+
+ PSTRE    ON
+    CURIOUS          0.024       0.036       0.042       0.075       0.107       0.113       0.125
+    LIFE             0.127       0.136       0.141       0.165       0.189       0.194       0.203
+
+ LIFE     ON
+    CURIOUS          0.427       0.443       0.452       0.495       0.539       0.547       0.564
+
+ Means
+    CURIOUS          2.773       2.779       2.783       2.800       2.817       2.820       2.827
+
+ Intercepts
+    PSTRE            2.162       2.195       2.211       2.297       2.384       2.400       2.432
+    LIFE             0.684       0.732       0.756       0.883       1.011       1.035       1.083
+
+ Variances
+    CURIOUS          0.322       0.328       0.331       0.345       0.359       0.362       0.367
+
+ Residual Variances
+    PSTRE            0.129       0.133       0.135       0.146       0.157       0.159       0.163
+    LIFE             0.461       0.473       0.479       0.510       0.541       0.547       0.559
+
+Group WOMEN
+
+ PSTRE    ON
+    CURIOUS          0.067       0.078       0.083       0.112       0.141       0.146       0.157
+    LIFE             0.131       0.142       0.147       0.174       0.201       0.206       0.216
+
+ LIFE     ON
+    CURIOUS          0.385       0.403       0.412       0.460       0.508       0.518       0.536
+
+ Means
+    CURIOUS          2.729       2.736       2.739       2.757       2.776       2.779       2.786
+
+ Intercepts
+    PSTRE            2.016       2.045       2.060       2.139       2.217       2.232       2.262
+    LIFE             0.644       0.696       0.723       0.862       1.002       1.029       1.081
+
+ Variances
+    CURIOUS          0.316       0.323       0.326       0.343       0.361       0.364       0.371
+
+ Residual Variances
+    PSTRE            0.115       0.119       0.121       0.131       0.141       0.143       0.146
+    LIFE             0.447       0.457       0.463       0.491       0.520       0.525       0.536
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MEN
+
+ PSTRE    ON
+    CURIOUS          0.035       0.052       0.061       0.107       0.153       0.162       0.180
+    LIFE             0.244       0.260       0.268       0.310       0.353       0.361       0.377
+
+ LIFE     ON
+    CURIOUS          0.326       0.338       0.345       0.377       0.410       0.416       0.428
+
+ Means
+    CURIOUS          4.598       4.639       4.659       4.767       4.874       4.895       4.935
+
+ Intercepts
+    PSTRE            5.067       5.194       5.259       5.599       5.939       6.004       6.131
+    LIFE             0.864       0.932       0.966       1.145       1.325       1.359       1.427
+
+ Variances
+    CURIOUS          1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    PSTRE            0.824       0.834       0.839       0.867       0.894       0.899       0.910
+    LIFE             0.819       0.828       0.833       0.858       0.882       0.887       0.896
+
+Group WOMEN
+
+ PSTRE    ON
+    CURIOUS          0.098       0.114       0.122       0.165       0.208       0.216       0.232
+    LIFE             0.253       0.271       0.280       0.328       0.376       0.385       0.403
+
+ LIFE     ON
+    CURIOUS          0.302       0.315       0.322       0.359       0.396       0.403       0.417
+
+ Means
+    CURIOUS          4.496       4.546       4.572       4.706       4.839       4.865       4.915
+
+ Intercepts
+    PSTRE            4.885       5.003       5.063       5.378       5.692       5.753       5.870
+    LIFE             0.834       0.909       0.948       1.148       1.349       1.387       1.462
+
+ Variances
+    CURIOUS          1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    PSTRE            0.775       0.787       0.793       0.826       0.859       0.866       0.878
+    LIFE             0.830       0.839       0.845       0.871       0.897       0.902       0.912
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MEN
+
+ PSTRE    ON
+    CURIOUS          0.035       0.052       0.061       0.107       0.153       0.162       0.180
+    LIFE             0.244       0.260       0.268       0.310       0.353       0.361       0.377
+
+ LIFE     ON
+    CURIOUS          0.326       0.338       0.345       0.377       0.410       0.416       0.428
+
+ Means
+    CURIOUS          4.598       4.639       4.659       4.767       4.874       4.895       4.935
+
+ Intercepts
+    PSTRE            5.067       5.194       5.259       5.599       5.939       6.004       6.131
+    LIFE             0.864       0.932       0.966       1.145       1.325       1.359       1.427
+
+ Variances
+    CURIOUS          1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    PSTRE            0.824       0.834       0.839       0.867       0.894       0.899       0.910
+    LIFE             0.819       0.828       0.833       0.858       0.882       0.887       0.896
+
+Group WOMEN
+
+ PSTRE    ON
+    CURIOUS          0.098       0.114       0.122       0.165       0.208       0.216       0.232
+    LIFE             0.253       0.271       0.280       0.328       0.376       0.385       0.403
+
+ LIFE     ON
+    CURIOUS          0.302       0.315       0.322       0.359       0.396       0.403       0.417
+
+ Means
+    CURIOUS          4.496       4.546       4.572       4.706       4.839       4.865       4.915
+
+ Intercepts
+    PSTRE            4.885       5.003       5.063       5.378       5.692       5.753       5.870
+    LIFE             0.834       0.909       0.948       1.148       1.349       1.387       1.462
+
+ Variances
+    CURIOUS          1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    PSTRE            0.775       0.787       0.793       0.826       0.859       0.866       0.878
+    LIFE             0.830       0.839       0.845       0.871       0.897       0.902       0.912
+
+
+CONFIDENCE INTERVALS OF TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MEN
+
+Effects from CURIOUS to PSTRE
+
+  Total              0.107       0.119       0.125       0.157       0.188       0.194       0.206
+  Total indirect     0.061       0.066       0.069       0.082       0.095       0.097       0.102
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS          0.061       0.066       0.069       0.082       0.095       0.097       0.102
+
+  Direct
+    PSTRE
+    CURIOUS          0.024       0.036       0.042       0.075       0.107       0.113       0.125
+
+
+Group WOMEN
+
+Effects from CURIOUS to PSTRE
+
+  Total              0.150       0.160       0.165       0.192       0.219       0.224       0.234
+  Total indirect     0.056       0.062       0.065       0.080       0.095       0.098       0.104
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS          0.056       0.062       0.065       0.080       0.095       0.098       0.104
+
+  Direct
+    PSTRE
+    CURIOUS          0.067       0.078       0.083       0.112       0.141       0.146       0.157
+
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MEN
+
+Effects from CURIOUS to PSTRE
+
+  Total              0.155       0.171       0.180       0.224       0.269       0.277       0.294
+  Total indirect     0.089       0.096       0.099       0.117       0.135       0.138       0.145
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS          0.089       0.096       0.099       0.117       0.135       0.138       0.145
+
+  Direct
+    PSTRE
+    CURIOUS          0.035       0.052       0.061       0.107       0.153       0.162       0.180
+
+
+Group WOMEN
+
+Effects from CURIOUS to PSTRE
+
+  Total              0.221       0.236       0.244       0.283       0.322       0.329       0.344
+  Total indirect     0.084       0.092       0.096       0.118       0.139       0.143       0.151
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS          0.084       0.092       0.096       0.118       0.139       0.143       0.151
+
+  Direct
+    PSTRE
+    CURIOUS          0.098       0.114       0.122       0.165       0.208       0.216       0.232
+
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MEN
+
+Effects from CURIOUS to PSTRE
+
+  Total              0.155       0.171       0.180       0.224       0.269       0.277       0.294
+  Total indirect     0.089       0.096       0.099       0.117       0.135       0.138       0.145
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS          0.089       0.096       0.099       0.117       0.135       0.138       0.145
+
+  Direct
+    PSTRE
+    CURIOUS          0.035       0.052       0.061       0.107       0.153       0.162       0.180
+
+
+Group WOMEN
+
+Effects from CURIOUS to PSTRE
+
+  Total              0.221       0.236       0.244       0.283       0.322       0.329       0.344
+  Total indirect     0.084       0.092       0.096       0.118       0.139       0.143       0.151
+
+  Specific indirect
+
+    PSTRE
+    LIFE
+    CURIOUS          0.084       0.092       0.096       0.118       0.139       0.143       0.151
+
+  Direct
+    PSTRE
+    CURIOUS          0.098       0.114       0.122       0.165       0.208       0.216       0.232
+
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR MEN
+
+
+           NU
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                  0             0             0
+
+
+           LAMBDA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE              0             0             0
+ LIFE               0             0             0
+ CURIOUS            0             0             0
+
+
+           THETA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE              0
+ LIFE               0             0
+ CURIOUS            0             0             0
+
+
+           ALPHA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                  1             2             3
+
+
+           BETA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE              0             4             5
+ LIFE               0             0             6
+ CURIOUS            0             0             0
+
+
+           PSI
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE              7
+ LIFE               0             8
+ CURIOUS            0             0             9
+
+
+     PARAMETER SPECIFICATION FOR WOMEN
+
+
+           NU
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                  0             0             0
+
+
+           LAMBDA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE              0             0             0
+ LIFE               0             0             0
+ CURIOUS            0             0             0
+
+
+           THETA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE              0
+ LIFE               0             0
+ CURIOUS            0             0             0
+
+
+           ALPHA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                 10            11            12
+
+
+           BETA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE              0            13            14
+ LIFE               0             0            15
+ CURIOUS            0             0             0
+
+
+           PSI
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE             16
+ LIFE               0            17
+ CURIOUS            0             0            18
+
+
+     STARTING VALUES FOR MEN
+
+
+           NU
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          1.000         0.000         0.000
+ LIFE           0.000         1.000         0.000
+ CURIOUS        0.000         0.000         1.000
+
+
+           THETA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.000
+ LIFE           0.000         0.000
+ CURIOUS        0.000         0.000         0.000
+
+
+           ALPHA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                2.898         2.283         2.801
+
+
+           BETA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.000         0.000         0.000
+ LIFE           0.000         0.000         0.000
+ CURIOUS        0.000         0.000         0.000
+
+
+           PSI
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.084
+ LIFE           0.000         0.295
+ CURIOUS        0.000         0.000         0.172
+
+
+     STARTING VALUES FOR WOMEN
+
+
+           NU
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          1.000         0.000         0.000
+ LIFE           0.000         1.000         0.000
+ CURIOUS        0.000         0.000         1.000
+
+
+           THETA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.000
+ LIFE           0.000         0.000
+ CURIOUS        0.000         0.000         0.000
+
+
+           ALPHA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+                2.898         2.283         2.801
+
+
+           BETA
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.000         0.000         0.000
+ LIFE           0.000         0.000         0.000
+ CURIOUS        0.000         0.000         0.000
+
+
+           PSI
+              PSTRE         LIFE          CURIOUS
+              ________      ________      ________
+ PSTRE          0.084
+ LIFE           0.000         0.295
+ CURIOUS        0.000         0.000         0.172
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    /Users/ronnysc/Documents/CEMO/TEACHING/PIAAC2022-SEM/Examples/1-PathModels/PATH2c.dgm
+
+     Beginning Time:  18:04:25
+        Ending Time:  18:04:27
+       Elapsed Time:  00:00:02
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2018 Muthen & Muthen

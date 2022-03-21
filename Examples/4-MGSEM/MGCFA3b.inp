@@ -1,0 +1,79 @@
+TITLE:	Structural equation modeling with PIAAC data
+	Multi-group CFA
+	Single-factor model of curiosity and continuous treatment--modified
+	Complex design: Total weight
+	Grouping by: country (CNTRYID)
+	Equality constraints on parameters: FL
+	METRIC MEASUREMENT INVARIANCE
+
+DATA: 	FILE IS piaac1-all-curiosity.dat;
+	! TYPE = IMPUTATION;
+	! Not needed here as the model does not contain any PV
+		
+		
+VARIABLE: 
+	NAMES ARE 
+		CNTRYID
+		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+		SPFWT0
+		HDI2012 UAI;
+		
+	! Variables to be used
+	! Newly defined variable appear at the end of this list
+	USEVARIABLES ARE 
+		I_Q04b 
+		I_Q04d 
+		I_Q04h 
+		I_Q04j 
+		I_Q04l
+		I_Q04m;
+		
+	! Missing data coding
+	MISSING ARE ALL(-99);
+		
+	! Final participant weight
+	WEIGHT = SPFWT0;
+	
+	! Grouping variable and its levels
+	GROUPING IS CNTRYID (56=BEL 124=CAN 152=CHL
+			203=CZE 208=DNK 233=EST 246=FIN
+			250=FRA 276=DEU 300=GRC 372=IRL
+			376=ISR 380=ITA 392=JPN 410=KOR
+			440=LTU 528=NLD 554=NZL 578=NOR
+			616=POL 702=SGP 703=SVK 705=SVN
+			724=ESP 752=SWE 826=GBR 840=USA);
+	
+
+ANALYSIS:
+	!TYPE = COMPLEX; ! No clustering variable involved
+	ESTIMATOR = MLR;
+	H1ITERATIONS = 10000;
+	PROCESSORS = 4;
+	
+	MODEL = METRIC;
+
+MODEL:
+	
+	! MEASUREMENT MODEL
+	! Curiousity
+	CURIOUS BY
+		I_Q04b 
+		I_Q04d 
+		I_Q04h 
+		I_Q04j 
+		I_Q04l
+		I_Q04m;
+		
+	! Model modifications
+	! Residual covariances
+	I_Q04B WITH I_Q04H;
+	I_Q04B WITH I_Q04J;
+	
+	
+
+
+OUTPUT: STDYX;	! Fully standardized parameters requested
+        STDY;	! Standardized parameter estimates requested 
+        		! (some X-variables are dichotomous)
+        SAMPSTAT;	! Sample statistics 
+        CINTERVAL;	! Confidence intervals

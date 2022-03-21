@@ -1,0 +1,83 @@
+TITLE:	Structural equation modeling with PIAAC data
+	Multi-group CFA
+	Single-factor model of curiosity and continuous treatment--modified
+	Complex design: Total weights
+	Grouping by: country (CNTRYID)
+	FREE ALIGNMENT METHOD
+
+DATA: 	FILE IS piaac1-all-curiosity.dat;
+	! TYPE = IMPUTATION;
+	! Not needed here as the model does not contain any PV
+		
+		
+VARIABLE: 
+	NAMES ARE 
+		CNTRYID
+		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+		SPFWT0
+		HDI2012 UAI;
+		
+	! Variables to be used
+	! Newly defined variable appear at the end of this list
+	USEVARIABLES ARE 
+		I_Q04b 
+		I_Q04d 
+		I_Q04h 
+		I_Q04j 
+		I_Q04l
+		I_Q04m;
+		
+	! Missing data coding
+	MISSING ARE ALL(-99);
+		
+	! Final participant weight
+	WEIGHT = SPFWT0;
+	
+	! Group specification
+	! Define the 27 countries by the ISO code
+	CLASSES = c(27);
+	KNOWNCLASS = c(CNTRYID=56 124 152 203
+			208 233 246 250 276 300 372
+			376 380 392 410 440 528 554
+			578 616 702 703 705 724 752
+			826 840);
+
+
+ANALYSIS:
+	TYPE = MIXTURE;
+	ESTIMATOR = MLR;
+	H1ITERATIONS = 10000;
+
+	! Free alignment method
+	ALIGNMENT = FREE;
+	
+	! Use multiple processors to speed the estimation up
+	PROCESSORS = 4;
+
+
+
+MODEL:
+	%OVERALL%
+	! MEASUREMENT MODEL
+	! Curiousity
+	CURIOUS BY
+		I_Q04b 
+		I_Q04d 
+		I_Q04h 
+		I_Q04j 
+		I_Q04l
+		I_Q04m;
+		
+	! Model modifications
+	! Residual covariances
+	I_Q04B WITH I_Q04H;
+	I_Q04B WITH I_Q04J;
+
+	
+	
+OUTPUT: 	
+	TECH1;		! Overview of model parameters
+	TECH8;		! Optimization history
+	ALIGN;		! Alignment output
+	SVALUES;	! Starting values
+        

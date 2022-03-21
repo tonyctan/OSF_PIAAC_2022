@@ -1,0 +1,307 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+ Structural equation modeling with PIAAC data
+ STRUCTURAL EQUATION MODEL
+ SEM with complex relations and latent variables--modified
+ Complex design: PVs, total weight, clustering, stratification
+
+DATA:
+  FILE IS piaac1-nor_pvlist.dat;
+ TYPE = IMPUTATION;
+VARIABLE:
+ NAMES ARE
+  AGE FEMALE B_Q01a
+  D_Q11a D_Q11b D_Q11c D_Q11d
+  F_Q03a F_Q03c F_Q05a F_Q05b
+  G_Q01a G_Q01b G_Q01c G_Q01d
+  G_Q01e G_Q01f G_Q01g G_Q01h
+  G_Q02a G_Q02b G_Q02c G_Q02d
+  G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+  G_Q05a G_Q05c G_Q05d G_Q05e
+  G_Q05f G_Q05g G_Q05h
+  H_Q01a H_Q01b H_Q01c H_Q01d
+  H_Q01e H_Q01f H_Q01g H_Q01h
+  H_Q02a H_Q02b H_Q02c H_Q02d
+  H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
+  H_Q05a H_Q05c H_Q05d H_Q05e
+  H_Q05f H_Q05g H_Q05h
+  I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  I_Q06a
+  I_Q07a I_Q07b
+  HOMLANG IMGEN
+  PVLIT PVNUM PVPSL
+  SPFWT0
+  SPFWT1-SPFWT80
+  VARSTRAT VARUNIT;
+ USEVARIABLES ARE
+  H_Q05a
+  H_Q05c
+  H_Q05e
+  H_Q05f
+  I_Q04b
+  I_Q04d
+  I_Q04h
+  I_Q04j
+  I_Q04l
+  I_Q04m
+  HOMLANG
+  FEMALE
+  LIT
+  PSTRE;
+ MISSING ARE ALL(-99);
+ WEIGHT = SPFWT0;
+ CLUSTER = VARUNIT;
+ STRATIFICATION = VARSTRAT;
+DEFINE:
+ PSTRE = PVPSL/100;
+ LIT = PVLIT/100;
+ANALYSIS:
+ TYPE = COMPLEX;
+ ESTIMATOR = MLR;
+ H1ITERATIONS = 10000;
+OUTPUT:
+ STDYX;
+        STDY;
+        SAMPSTAT;
+        CINTERVAL;
+MODEL:
+ LIFE BY
+  H_Q05a
+  H_Q05c
+  H_Q05e
+  H_Q05f;
+ CURIOUS BY
+  I_Q04b
+  I_Q04d
+  I_Q04h
+  I_Q04j
+  I_Q04l
+  I_Q04m;
+ I_Q04B WITH I_Q04H;
+ I_Q04B WITH I_Q04J;
+ PSTRE ON
+  CURIOUS
+  LIFE
+  FEMALE
+  HOMLANG
+  LIT;
+ CURIOUS ON
+  FEMALE
+  HOMLANG
+  LIT;
+ LIFE ON
+  FEMALE
+  HOMLANG
+  LIT;
+ CURIOUS;
+ LIFE;
+ FEMALE;
+ HOMLANG;
+ LIT;
+ CURIOUS WITH LIFE;
+ FEMALE WITH HOMLANG LIT;
+ HOMLANG WITH LIT;
+ H_Q05E WITH H_Q05F;
+ H_Q05E ON FEMALE;
+INPUT_END
+3
+3
+3
+3
+MLR
+1
+GENERAL
+0
+14
+2
+0
+h_q05a h_q05c h_q05e h_q05f i_q04b i_q04d i_q04h i_q04j i_q04l i_q04m pstre homlang female lit life curious
+3
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 2 0 0 0 1 1
+0
+2
+life
+h_q05a h_q05c h_q05e h_q05f
+curious
+i_q04b i_q04d i_q04h i_q04j i_q04l i_q04m
+1 1 life h_q05a           1.000           0.000           1.000           1.000
+1 1 life h_q05c           0.882           0.039           0.805           0.959
+1 1 life h_q05e           0.676           0.039           0.600           0.752
+1 1 life h_q05f           1.018           0.042           0.936           1.100
+1 1 curious i_q04b           1.000           0.000           1.000           1.000
+1 1 curious i_q04d           1.007           0.036           0.937           1.078
+1 1 curious i_q04h           1.036           0.033           0.971           1.102
+1 1 curious i_q04j           1.013           0.044           0.927           1.099
+1 1 curious i_q04l           1.217           0.041           1.136           1.297
+1 1 curious i_q04m           0.946           0.035           0.877           1.015
+1 1 female curious          -0.023           0.016          -0.055           0.009
+1 1 homlang curious          -0.128           0.033          -0.193          -0.064
+1 1 lit curious           0.322           0.025           0.273           0.370
+1 1 female life          -0.020           0.025          -0.070           0.029
+1 1 homlang life          -0.397           0.047          -0.489          -0.304
+1 1 lit life           0.615           0.035           0.547           0.683
+1 1 female pstre          -0.028           0.010          -0.048          -0.007
+1 1 homlang pstre           0.041           0.027          -0.012           0.094
+1 1 lit pstre           0.705           0.018           0.670           0.740
+1 1 female h_q05e          -0.383           0.029          -0.440          -0.327
+1 1 curious pstre           0.001           0.018          -0.034           0.036
+1 1 life pstre           0.103           0.016           0.071           0.135
+2 1 i_q04b i_q04h           0.052           0.009           0.034           0.071
+2 1 i_q04b i_q04j          -0.061           0.010          -0.081          -0.042
+2 1 female homlang           0.005           0.002           0.001           0.010
+2 1 female lit          -0.010           0.004          -0.017          -0.003
+2 1 homlang lit           0.035           0.003           0.029           0.041
+2 1 h_q05e h_q05f           0.198           0.017           0.164           0.232
+2 1 curious life           0.137           0.010           0.118           0.155
+4 1 h_q05a           0.579           0.024           0.533           0.626
+4 1 h_q05c           0.764           0.025           0.714           0.813
+4 1 h_q05e           0.725           0.020           0.685           0.764
+4 1 h_q05f           1.016           0.025           0.966           1.065
+4 1 i_q04b           0.479           0.014           0.452           0.506
+4 1 i_q04d           0.316           0.010           0.297           0.335
+4 1 i_q04h           0.317           0.010           0.299           0.336
+4 1 i_q04j           0.432           0.012           0.408           0.456
+4 1 i_q04l           0.361           0.012           0.337           0.384
+4 1 i_q04m           0.386           0.010           0.365           0.406
+4 1 pstre           0.054           0.002           0.050           0.058
+4 1 life           0.382           0.029           0.325           0.439
+4 1 curious           0.242           0.015           0.213           0.270
+5 1 homlang           0.088           0.003           0.081           0.095
+5 1 female           0.250           0.000           0.250           0.250
+5 1 lit           0.221           0.006           0.209           0.233
+11 1 life h_q05a           0.666           0.016           0.635           0.697
+11 1 life h_q05c           0.566           0.020           0.526           0.606
+11 1 life h_q05e           0.464           0.016           0.434           0.495
+11 1 life h_q05f           0.566           0.014           0.539           0.593
+11 1 curious i_q04b           0.595           0.016           0.565           0.626
+11 1 curious i_q04d           0.677           0.010           0.656           0.697
+11 1 curious i_q04h           0.686           0.011           0.664           0.709
+11 1 curious i_q04j           0.620           0.013           0.594           0.647
+11 1 curious i_q04l           0.721           0.012           0.698           0.743
+11 1 curious i_q04m           0.616           0.011           0.594           0.638
+11 1 female curious          -0.022           0.016          -0.053           0.008
+11 1 homlang curious          -0.074           0.018          -0.110          -0.038
+11 1 lit curious           0.295           0.018           0.259           0.331
+11 1 female life          -0.015           0.019          -0.052           0.022
+11 1 homlang life          -0.173           0.019          -0.210          -0.136
+11 1 lit life           0.425           0.022           0.382           0.468
+11 1 female pstre          -0.032           0.012          -0.055          -0.009
+11 1 homlang pstre           0.028           0.018          -0.008           0.064
+11 1 lit pstre           0.762           0.014           0.734           0.790
+11 1 female h_q05e          -0.194           0.014          -0.221          -0.166
+11 1 curious pstre           0.001           0.021          -0.040           0.042
+11 1 life pstre           0.161           0.024           0.114           0.208
+12 1 i_q04b i_q04h           0.133           0.023           0.088           0.178
+12 1 i_q04b i_q04j          -0.134           0.023          -0.179          -0.090
+12 1 female homlang           0.035           0.016           0.004           0.066
+12 1 female lit          -0.042           0.015          -0.072          -0.011
+12 1 homlang lit           0.254           0.020           0.215           0.292
+12 1 h_q05e h_q05f           0.231           0.018           0.196           0.265
+12 1 curious life           0.450           0.023           0.404           0.495
+14 1 h_q05a           0.556           0.021           0.515           0.598
+14 1 h_q05c           0.680           0.023           0.635           0.725
+14 1 h_q05e           0.740           0.016           0.709           0.771
+14 1 h_q05f           0.679           0.016           0.649           0.710
+14 1 i_q04b           0.645           0.019           0.609           0.682
+14 1 i_q04d           0.542           0.014           0.514           0.570
+14 1 i_q04h           0.529           0.016           0.498           0.559
+14 1 i_q04j           0.615           0.017           0.582           0.648
+14 1 i_q04l           0.481           0.017           0.448           0.513
+14 1 i_q04m           0.621           0.014           0.594           0.648
+14 1 pstre           0.285           0.011           0.262           0.307
+14 1 life           0.826           0.017           0.792           0.860
+14 1 curious           0.918           0.010           0.897           0.938
+15 1 homlang           1.000           0.000           1.000           1.000
+15 1 female           1.000           0.000           1.000           1.000
+15 1 lit           1.000           0.000           1.000           1.000
+21 1 life h_q05a           0.666           0.016           0.635           0.697
+21 1 life h_q05c           0.566           0.020           0.526           0.606
+21 1 life h_q05e           0.464           0.016           0.434           0.495
+21 1 life h_q05f           0.566           0.014           0.539           0.593
+21 1 curious i_q04b           0.595           0.016           0.565           0.626
+21 1 curious i_q04d           0.677           0.010           0.656           0.697
+21 1 curious i_q04h           0.686           0.011           0.664           0.709
+21 1 curious i_q04j           0.620           0.013           0.594           0.647
+21 1 curious i_q04l           0.721           0.012           0.698           0.743
+21 1 curious i_q04m           0.616           0.011           0.594           0.638
+21 1 female curious          -0.022           0.016          -0.053           0.008
+21 1 homlang curious          -0.074           0.018          -0.110          -0.038
+21 1 lit curious           0.295           0.018           0.259           0.331
+21 1 female life          -0.015           0.019          -0.052           0.022
+21 1 homlang life          -0.173           0.019          -0.210          -0.136
+21 1 lit life           0.425           0.022           0.382           0.468
+21 1 female pstre          -0.032           0.012          -0.055          -0.009
+21 1 homlang pstre           0.028           0.018          -0.008           0.064
+21 1 lit pstre           0.762           0.014           0.734           0.790
+21 1 female h_q05e          -0.194           0.014          -0.221          -0.166
+21 1 curious pstre           0.001           0.021          -0.040           0.042
+21 1 life pstre           0.161           0.024           0.114           0.208
+22 1 i_q04b i_q04h           0.133           0.023           0.088           0.178
+22 1 i_q04b i_q04j          -0.134           0.023          -0.179          -0.090
+22 1 female homlang           0.035           0.016           0.004           0.066
+22 1 female lit          -0.042           0.015          -0.072          -0.011
+22 1 homlang lit           0.254           0.020           0.215           0.292
+22 1 h_q05e h_q05f           0.231           0.018           0.196           0.265
+22 1 curious life           0.450           0.023           0.404           0.495
+24 1 h_q05a           0.556           0.021           0.515           0.598
+24 1 h_q05c           0.680           0.023           0.635           0.725
+24 1 h_q05e           0.740           0.016           0.709           0.771
+24 1 h_q05f           0.679           0.016           0.649           0.710
+24 1 i_q04b           0.645           0.019           0.609           0.682
+24 1 i_q04d           0.542           0.014           0.514           0.570
+24 1 i_q04h           0.529           0.016           0.498           0.559
+24 1 i_q04j           0.615           0.017           0.582           0.648
+24 1 i_q04l           0.481           0.017           0.448           0.513
+24 1 i_q04m           0.621           0.014           0.594           0.648
+24 1 pstre           0.285           0.011           0.262           0.307
+24 1 life           0.826           0.017           0.792           0.860
+24 1 curious           0.918           0.010           0.897           0.938
+25 1 homlang           1.000           0.000           1.000           1.000
+25 1 female           1.000           0.000           1.000           1.000
+25 1 lit           1.000           0.000           1.000           1.000
+31 1 life h_q05a           0.680           0.024           0.634           0.726
+31 1 life h_q05c           0.600           0.025           0.551           0.648
+31 1 life h_q05e           0.459           0.016           0.428           0.491
+31 1 life h_q05f           0.692           0.018           0.656           0.729
+31 1 curious i_q04b           0.513           0.016           0.481           0.545
+31 1 curious i_q04d           0.517           0.012           0.494           0.540
+31 1 curious i_q04h           0.532           0.012           0.509           0.555
+31 1 curious i_q04j           0.520           0.014           0.493           0.547
+31 1 curious i_q04l           0.624           0.013           0.599           0.650
+31 1 curious i_q04m           0.486           0.011           0.464           0.507
+31 1 female curious          -0.045           0.031          -0.106           0.016
+31 1 homlang curious          -0.250           0.062          -0.371          -0.129
+31 1 lit curious           0.627           0.038           0.552           0.702
+31 1 female life          -0.030           0.037          -0.103           0.043
+31 1 homlang life          -0.583           0.064          -0.709          -0.458
+31 1 lit life           0.904           0.048           0.810           0.998
+31 1 female pstre          -0.028           0.010          -0.048          -0.007
+31 1 homlang pstre           0.041           0.027          -0.012           0.094
+31 1 lit pstre           0.705           0.018           0.670           0.740
+31 1 female h_q05e          -0.383           0.029          -0.440          -0.327
+31 1 curious pstre           0.000           0.009          -0.017           0.018
+31 1 life pstre           0.070           0.011           0.049           0.091
+32 1 i_q04b i_q04h           0.052           0.009           0.034           0.071
+32 1 i_q04b i_q04j          -0.061           0.010          -0.081          -0.042
+32 1 female homlang           0.005           0.002           0.001           0.010
+32 1 female lit          -0.010           0.004          -0.017          -0.003
+32 1 homlang lit           0.035           0.003           0.029           0.041
+32 1 h_q05e h_q05f           0.198           0.017           0.164           0.232
+32 1 curious life           0.450           0.023           0.404           0.495
+34 1 h_q05a           0.579           0.024           0.533           0.626
+34 1 h_q05c           0.764           0.025           0.714           0.813
+34 1 h_q05e           0.725           0.020           0.685           0.764
+34 1 h_q05f           1.016           0.025           0.966           1.065
+34 1 i_q04b           0.479           0.014           0.452           0.506
+34 1 i_q04d           0.316           0.010           0.297           0.335
+34 1 i_q04h           0.317           0.010           0.299           0.336
+34 1 i_q04j           0.432           0.012           0.408           0.456
+34 1 i_q04l           0.361           0.012           0.337           0.384
+34 1 i_q04m           0.386           0.010           0.365           0.406
+34 1 pstre           0.054           0.002           0.050           0.058
+34 1 life           0.826           0.017           0.792           0.860
+34 1 curious           0.918           0.010           0.897           0.938
+35 1 homlang           0.088           0.003           0.081           0.095
+35 1 female           0.250           0.000           0.250           0.250
+35 1 lit           0.221           0.006           0.209           0.233

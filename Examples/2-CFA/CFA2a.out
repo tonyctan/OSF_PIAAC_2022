@@ -1,0 +1,759 @@
+Mplus VERSION 8.2 (Mac)
+MUTHEN & MUTHEN
+03/19/2022   6:13 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:	Structural equation modeling with PIAAC data
+  	CFA
+  	Two-factor model of skills and continuous treatment
+  	Complex design: PVs, total weight, clustering, stratification
+
+  DATA: 	FILE IS piaac1-nor_pv1.dat;
+  	! TYPE = IMPUTATION;
+  	! Not needed here as the model does not contain any PV
+  		
+  		
+  VARIABLE:
+  	NAMES ARE
+  		AGE FEMALE B_Q01a
+  		D_Q11a D_Q11b D_Q11c D_Q11d
+  		F_Q03a F_Q03c F_Q05a F_Q05b
+  		G_Q01a G_Q01b G_Q01c G_Q01d
+  		G_Q01e G_Q01f G_Q01g G_Q01h
+  		G_Q02a G_Q02b G_Q02c G_Q02d
+  		G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+  		G_Q05a G_Q05c G_Q05d G_Q05e
+  		G_Q05f G_Q05g G_Q05h
+  		H_Q01a H_Q01b H_Q01c H_Q01d
+  		H_Q01e H_Q01f H_Q01g H_Q01h
+  		H_Q02a H_Q02b H_Q02c H_Q02d
+  		H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
+  		H_Q05a H_Q05c H_Q05d H_Q05e
+  		H_Q05f H_Q05g H_Q05h
+  		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  		I_Q06a
+  		I_Q07a I_Q07b
+  		HOMLANG IMGEN
+  		PVLIT PVNUM PVPSL
+  		SPFWT0
+  		SPFWT1-SPFWT80
+  		VARSTRAT VARUNIT;
+  		
+  	! Variables to be used
+  	! Newly defined variable appear at the end of this list
+  	USEVARIABLES ARE
+  		G_Q05a
+    		G_Q05c
+    		G_Q05e
+    		G_Q05f
+    		H_Q05a
+    		H_Q05c
+    		H_Q05e
+    		H_Q05f;
+  		
+  	! Missing data coding
+  	MISSING ARE ALL(-99);
+  		
+  	! Final participant weight
+  	WEIGHT = SPFWT0;
+  	
+  	! Clustering in sampling units
+  	CLUSTER = VARUNIT;
+  	
+  	! Stratification
+  	STRATIFICATION = VARSTRAT;
+  	
+
+  ANALYSIS:
+  	TYPE = COMPLEX;
+  	ESTIMATOR = MLR;
+  	H1ITERATIONS = 10000;
+
+  MODEL:
+  	
+  	! MEASUREMENT MODEL
+  	! Skills at work
+  	WORK BY
+  		G_Q05a
+    		G_Q05c
+    		G_Q05e
+    		G_Q05f;
+    		
+    	! Skills in everyday life
+    	LIFE BY
+    		H_Q05a
+    		H_Q05c
+    		H_Q05e
+    		H_Q05f;
+    		
+    	! Factor variances and covariance
+    	WORK;
+    	LIFE;
+    	WORK WITH LIFE;
+  	
+
+
+  OUTPUT: STDYX;	! Fully standardized parameters requested
+          STDY;	! Standardized parameter estimates requested
+          		! (some X-variables are dichotomous)
+          SAMPSTAT;	! Sample statistics
+          CINTERVAL;	! Confidence intervals
+          MOD(all);	! Modification indices
+
+
+
+*** WARNING
+  Clusters with the same IDs have been found in different strata.  These
+  clusters are assumed to be different because clusters are not allowed
+  to appear in more than one stratum.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  359
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Structural equation modeling with PIAAC data
+CFA
+Two-factor model of skills and continuous treatment
+Complex design: PVs, total weight, clustering, stratification
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        4769
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   G_Q05A      G_Q05C      G_Q05E      G_Q05F      H_Q05A      H_Q05C
+   H_Q05E      H_Q05F
+
+Continuous latent variables
+   WORK        LIFE
+
+Variables with special functions
+
+  Stratification        VARSTRAT
+  Cluster variable      VARUNIT
+  Weight variable       SPFWT0
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                          10000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  piaac1-nor_pv1.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             5
+     Number of strata                           80
+     Number of clusters                        163
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              G_Q05A        G_Q05C        G_Q05E        G_Q05F        H_Q05A
+              ________      ________      ________      ________      ________
+ G_Q05A         0.752
+ G_Q05C         0.752         0.752
+ G_Q05E         0.752         0.752         0.752
+ G_Q05F         0.752         0.752         0.752         0.752
+ H_Q05A         0.737         0.737         0.737         0.737         0.985
+ H_Q05C         0.737         0.737         0.737         0.737         0.984
+ H_Q05E         0.737         0.737         0.737         0.737         0.985
+ H_Q05F         0.737         0.737         0.737         0.737         0.985
+
+
+           Covariance Coverage
+              H_Q05C        H_Q05E        H_Q05F
+              ________      ________      ________
+ H_Q05C         0.984
+ H_Q05E         0.984         0.985
+ H_Q05F         0.984         0.985         0.985
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              G_Q05A        G_Q05C        G_Q05E        G_Q05F        H_Q05A
+              ________      ________      ________      ________      ________
+                3.275         2.778         1.575         2.440         3.296
+
+
+           Means
+              H_Q05C        H_Q05E        H_Q05F
+              ________      ________      ________
+                2.896         0.838         1.821
+
+
+           Covariances
+              G_Q05A        G_Q05C        G_Q05E        G_Q05F        H_Q05A
+              ________      ________      ________      ________      ________
+ G_Q05A         1.742
+ G_Q05C         1.009         1.869
+ G_Q05E         0.890         0.904         2.516
+ G_Q05F         1.129         1.157         1.307         2.357
+ H_Q05A         0.276         0.340         0.264         0.359         1.032
+ H_Q05C         0.098         0.334         0.161         0.223         0.424
+ H_Q05E         0.229         0.326         0.750         0.442         0.296
+ H_Q05F         0.110         0.316         0.179         0.559         0.468
+
+
+           Covariances
+              H_Q05C        H_Q05E        H_Q05F
+              ________      ________      ________
+ H_Q05C         1.116
+ H_Q05E         0.243         0.972
+ H_Q05F         0.392         0.511         1.486
+
+
+           Correlations
+              G_Q05A        G_Q05C        G_Q05E        G_Q05F        H_Q05A
+              ________      ________      ________      ________      ________
+ G_Q05A         1.000
+ G_Q05C         0.559         1.000
+ G_Q05E         0.425         0.417         1.000
+ G_Q05F         0.557         0.551         0.537         1.000
+ H_Q05A         0.206         0.245         0.164         0.230         1.000
+ H_Q05C         0.070         0.232         0.096         0.137         0.395
+ H_Q05E         0.176         0.242         0.479         0.292         0.295
+ H_Q05F         0.068         0.190         0.092         0.299         0.378
+
+
+           Correlations
+              H_Q05C        H_Q05E        H_Q05F
+              ________      ________      ________
+ H_Q05C         1.000
+ H_Q05E         0.233         1.000
+ H_Q05F         0.304         0.425         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -48514.434
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     G_Q05A                3.310      -1.769       0.000    9.68%       3.000      4.000      4.000
+            3585.000       1.730       1.579       4.000   73.39%       4.000      4.000
+     G_Q05C                2.813      -0.919       0.000   10.04%       2.000      3.000      3.000
+            3585.000       1.849      -0.452       4.000   43.65%       4.000      4.000
+     G_Q05E                1.635       0.310       0.000   38.16%       0.000      1.000      1.000
+            3585.000       2.515      -1.501       4.000   19.39%       2.000      3.000
+     G_Q05F                2.476      -0.537       0.000   17.63%       1.000      3.000      3.000
+            3585.000       2.320      -1.218       4.000   37.80%       3.000      4.000
+     H_Q05A                3.300      -1.628       0.000    2.85%       3.000      3.000      4.000
+            4698.000       1.031       2.148       4.000   57.41%       4.000      4.000
+     H_Q05C                2.900      -0.894       0.000    3.02%       2.000      3.000      3.000
+            4695.000       1.115       0.230       4.000   33.14%       3.000      4.000
+     H_Q05E                0.843       0.987       0.000   45.93%       0.000      0.000      1.000
+            4696.000       0.972       0.120       4.000    0.96%       1.000      2.000
+     H_Q05F                1.826       0.100       0.000   14.50%       1.000      1.000      2.000
+            4696.000       1.484      -0.982       4.000    9.77%       2.000      3.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       25
+
+Loglikelihood
+
+          H0 Value                      -49188.765
+          H0 Scaling Correction Factor      1.1812
+            for MLR
+          H1 Value                      -48514.434
+          H1 Scaling Correction Factor      1.2270
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   98427.530
+          Bayesian (BIC)                 98589.277
+          Sample-Size Adjusted BIC       98509.836
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                           1047.647*
+          Degrees of Freedom                    19
+          P-Value                           0.0000
+          Scaling Correction Factor         1.2873
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.107
+          90 Percent C.I.                    0.101  0.112
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.841
+          TLI                                0.765
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           6483.501
+          Degrees of Freedom                    28
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.064
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ WORK     BY
+    G_Q05A             1.000      0.000    999.000    999.000
+    G_Q05C             1.045      0.031     33.471      0.000
+    G_Q05E             1.082      0.040     27.320      0.000
+    G_Q05F             1.310      0.042     31.353      0.000
+
+ LIFE     BY
+    H_Q05A             1.000      0.000    999.000    999.000
+    H_Q05C             0.861      0.037     23.029      0.000
+    H_Q05E             0.941      0.060     15.739      0.000
+    H_Q05F             1.286      0.061     21.018      0.000
+
+ WORK     WITH
+    LIFE               0.283      0.020     14.285      0.000
+
+ Intercepts
+    G_Q05A             3.285      0.022    151.485      0.000
+    G_Q05C             2.787      0.024    116.141      0.000
+    G_Q05E             1.608      0.028     58.475      0.000
+    G_Q05F             2.444      0.024    103.639      0.000
+    H_Q05A             3.297      0.017    194.900      0.000
+    H_Q05C             2.896      0.015    187.816      0.000
+    H_Q05E             0.839      0.014     61.713      0.000
+    H_Q05F             1.821      0.018    101.317      0.000
+
+ Variances
+    WORK               0.879      0.051     17.118      0.000
+    LIFE               0.374      0.031     12.150      0.000
+
+ Residual Variances
+    G_Q05A             0.869      0.036     23.875      0.000
+    G_Q05C             0.909      0.039     23.414      0.000
+    G_Q05E             1.506      0.042     36.224      0.000
+    G_Q05F             0.842      0.041     20.753      0.000
+    H_Q05A             0.657      0.026     25.315      0.000
+    H_Q05C             0.838      0.024     35.470      0.000
+    H_Q05E             0.641      0.021     31.100      0.000
+    H_Q05F             0.867      0.028     30.874      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ WORK     BY
+    G_Q05A             0.709      0.014     49.214      0.000
+    G_Q05C             0.717      0.015     48.755      0.000
+    G_Q05E             0.637      0.012     51.674      0.000
+    G_Q05F             0.801      0.011     70.410      0.000
+
+ LIFE     BY
+    H_Q05A             0.602      0.019     32.427      0.000
+    H_Q05C             0.499      0.021     23.752      0.000
+    H_Q05E             0.584      0.016     37.006      0.000
+    H_Q05F             0.645      0.013     48.097      0.000
+
+ WORK     WITH
+    LIFE               0.493      0.026     18.805      0.000
+
+ Intercepts
+    G_Q05A             2.485      0.053     46.750      0.000
+    G_Q05C             2.038      0.037     55.611      0.000
+    G_Q05E             1.010      0.016     64.204      0.000
+    G_Q05F             1.594      0.024     66.878      0.000
+    H_Q05A             3.246      0.073     44.577      0.000
+    H_Q05C             2.742      0.039     69.524      0.000
+    H_Q05E             0.851      0.011     79.409      0.000
+    H_Q05F             1.494      0.017     88.100      0.000
+
+ Variances
+    WORK               1.000      0.000    999.000    999.000
+    LIFE               1.000      0.000    999.000    999.000
+
+ Residual Variances
+    G_Q05A             0.497      0.020     24.324      0.000
+    G_Q05C             0.486      0.021     23.068      0.000
+    G_Q05E             0.594      0.016     37.772      0.000
+    G_Q05F             0.358      0.018     19.647      0.000
+    H_Q05A             0.637      0.022     28.477      0.000
+    H_Q05C             0.751      0.021     35.911      0.000
+    H_Q05E             0.659      0.018     35.746      0.000
+    H_Q05F             0.583      0.017     33.688      0.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ WORK     BY
+    G_Q05A             0.709      0.014     49.214      0.000
+    G_Q05C             0.717      0.015     48.755      0.000
+    G_Q05E             0.637      0.012     51.674      0.000
+    G_Q05F             0.801      0.011     70.410      0.000
+
+ LIFE     BY
+    H_Q05A             0.602      0.019     32.427      0.000
+    H_Q05C             0.499      0.021     23.752      0.000
+    H_Q05E             0.584      0.016     37.006      0.000
+    H_Q05F             0.645      0.013     48.097      0.000
+
+ WORK     WITH
+    LIFE               0.493      0.026     18.805      0.000
+
+ Intercepts
+    G_Q05A             2.485      0.053     46.750      0.000
+    G_Q05C             2.038      0.037     55.611      0.000
+    G_Q05E             1.010      0.016     64.204      0.000
+    G_Q05F             1.594      0.024     66.878      0.000
+    H_Q05A             3.246      0.073     44.577      0.000
+    H_Q05C             2.742      0.039     69.524      0.000
+    H_Q05E             0.851      0.011     79.409      0.000
+    H_Q05F             1.494      0.017     88.100      0.000
+
+ Variances
+    WORK               1.000      0.000    999.000    999.000
+    LIFE               1.000      0.000    999.000    999.000
+
+ Residual Variances
+    G_Q05A             0.497      0.020     24.324      0.000
+    G_Q05C             0.486      0.021     23.068      0.000
+    G_Q05E             0.594      0.016     37.772      0.000
+    G_Q05F             0.358      0.018     19.647      0.000
+    H_Q05A             0.637      0.022     28.477      0.000
+    H_Q05C             0.751      0.021     35.911      0.000
+    H_Q05E             0.659      0.018     35.746      0.000
+    H_Q05F             0.583      0.017     33.688      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    G_Q05A             0.503      0.020     24.607      0.000
+    G_Q05C             0.514      0.021     24.378      0.000
+    G_Q05E             0.406      0.016     25.837      0.000
+    G_Q05F             0.642      0.018     35.205      0.000
+    H_Q05A             0.363      0.022     16.213      0.000
+    H_Q05C             0.249      0.021     11.876      0.000
+    H_Q05E             0.341      0.018     18.503      0.000
+    H_Q05F             0.417      0.017     24.049      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.138E-01
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ WORK     BY
+    G_Q05A           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    G_Q05C           0.965       0.984       0.994       1.045       1.097       1.106       1.126
+    G_Q05E           0.980       1.005       1.017       1.082       1.148       1.160       1.185
+    G_Q05F           1.203       1.228       1.241       1.310       1.379       1.392       1.418
+
+ LIFE     BY
+    H_Q05A           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    H_Q05C           0.764       0.787       0.799       0.861       0.922       0.934       0.957
+    H_Q05E           0.787       0.824       0.843       0.941       1.040       1.059       1.095
+    H_Q05F           1.128       1.166       1.185       1.286       1.386       1.405       1.443
+
+ WORK     WITH
+    LIFE             0.232       0.244       0.250       0.283       0.316       0.322       0.334
+
+ Intercepts
+    G_Q05A           3.229       3.243       3.249       3.285       3.321       3.328       3.341
+    G_Q05C           2.725       2.740       2.747       2.787       2.826       2.834       2.849
+    G_Q05E           1.537       1.554       1.563       1.608       1.653       1.662       1.679
+    G_Q05F           2.383       2.397       2.405       2.444       2.482       2.490       2.504
+    H_Q05A           3.253       3.264       3.269       3.297       3.325       3.330       3.340
+    H_Q05C           2.857       2.866       2.871       2.896       2.922       2.927       2.936
+    H_Q05E           0.804       0.812       0.817       0.839       0.861       0.866       0.874
+    H_Q05F           1.774       1.786       1.791       1.821       1.850       1.856       1.867
+
+ Variances
+    WORK             0.747       0.778       0.795       0.879       0.964       0.980       1.011
+    LIFE             0.295       0.314       0.324       0.374       0.425       0.435       0.454
+
+ Residual Variances
+    G_Q05A           0.775       0.798       0.809       0.869       0.929       0.940       0.963
+    G_Q05C           0.809       0.833       0.845       0.909       0.973       0.985       1.009
+    G_Q05E           1.399       1.424       1.437       1.506       1.574       1.587       1.613
+    G_Q05F           0.738       0.763       0.775       0.842       0.909       0.922       0.947
+    H_Q05A           0.591       0.607       0.615       0.657       0.700       0.708       0.724
+    H_Q05C           0.777       0.792       0.799       0.838       0.877       0.885       0.899
+    H_Q05E           0.588       0.600       0.607       0.641       0.675       0.681       0.694
+    H_Q05F           0.794       0.812       0.820       0.867       0.913       0.922       0.939
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ WORK     BY
+    G_Q05A           0.672       0.681       0.685       0.709       0.733       0.737       0.746
+    G_Q05C           0.679       0.688       0.693       0.717       0.741       0.746       0.755
+    G_Q05E           0.606       0.613       0.617       0.637       0.658       0.661       0.669
+    G_Q05F           0.772       0.779       0.782       0.801       0.820       0.823       0.830
+
+ LIFE     BY
+    H_Q05A           0.554       0.566       0.572       0.602       0.633       0.639       0.650
+    H_Q05C           0.444       0.457       0.464       0.499       0.533       0.540       0.553
+    H_Q05E           0.543       0.553       0.558       0.584       0.610       0.615       0.625
+    H_Q05F           0.611       0.619       0.623       0.645       0.667       0.672       0.680
+
+ WORK     WITH
+    LIFE             0.426       0.442       0.450       0.493       0.536       0.545       0.561
+
+ Intercepts
+    G_Q05A           2.348       2.381       2.397       2.485       2.572       2.589       2.622
+    G_Q05C           1.944       1.967       1.978       2.038       2.099       2.110       2.133
+    G_Q05E           0.969       0.979       0.984       1.010       1.036       1.041       1.050
+    G_Q05F           1.532       1.547       1.554       1.594       1.633       1.640       1.655
+    H_Q05A           3.058       3.103       3.126       3.246       3.365       3.388       3.433
+    H_Q05C           2.641       2.665       2.678       2.742       2.807       2.820       2.844
+    H_Q05E           0.823       0.830       0.833       0.851       0.868       0.872       0.878
+    H_Q05F           1.450       1.461       1.466       1.494       1.522       1.527       1.538
+
+ Variances
+    WORK             1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    LIFE             1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    G_Q05A           0.444       0.457       0.463       0.497       0.531       0.537       0.550
+    G_Q05C           0.432       0.445       0.452       0.486       0.521       0.528       0.540
+    G_Q05E           0.553       0.563       0.568       0.594       0.620       0.625       0.634
+    G_Q05F           0.311       0.322       0.328       0.358       0.388       0.394       0.405
+    H_Q05A           0.580       0.593       0.600       0.637       0.674       0.681       0.695
+    H_Q05C           0.698       0.710       0.717       0.751       0.786       0.792       0.805
+    H_Q05E           0.611       0.623       0.629       0.659       0.689       0.695       0.706
+    H_Q05F           0.539       0.550       0.555       0.583       0.612       0.617       0.628
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ WORK     BY
+    G_Q05A           0.672       0.681       0.685       0.709       0.733       0.737       0.746
+    G_Q05C           0.679       0.688       0.693       0.717       0.741       0.746       0.755
+    G_Q05E           0.606       0.613       0.617       0.637       0.658       0.661       0.669
+    G_Q05F           0.772       0.779       0.782       0.801       0.820       0.823       0.830
+
+ LIFE     BY
+    H_Q05A           0.554       0.566       0.572       0.602       0.633       0.639       0.650
+    H_Q05C           0.444       0.457       0.464       0.499       0.533       0.540       0.553
+    H_Q05E           0.543       0.553       0.558       0.584       0.610       0.615       0.625
+    H_Q05F           0.611       0.619       0.623       0.645       0.667       0.672       0.680
+
+ WORK     WITH
+    LIFE             0.426       0.442       0.450       0.493       0.536       0.545       0.561
+
+ Intercepts
+    G_Q05A           2.348       2.381       2.397       2.485       2.572       2.589       2.622
+    G_Q05C           1.944       1.967       1.978       2.038       2.099       2.110       2.133
+    G_Q05E           0.969       0.979       0.984       1.010       1.036       1.041       1.050
+    G_Q05F           1.532       1.547       1.554       1.594       1.633       1.640       1.655
+    H_Q05A           3.058       3.103       3.126       3.246       3.365       3.388       3.433
+    H_Q05C           2.641       2.665       2.678       2.742       2.807       2.820       2.844
+    H_Q05E           0.823       0.830       0.833       0.851       0.868       0.872       0.878
+    H_Q05F           1.450       1.461       1.466       1.494       1.522       1.527       1.538
+
+ Variances
+    WORK             1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    LIFE             1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    G_Q05A           0.444       0.457       0.463       0.497       0.531       0.537       0.550
+    G_Q05C           0.432       0.445       0.452       0.486       0.521       0.528       0.540
+    G_Q05E           0.553       0.563       0.568       0.594       0.620       0.625       0.634
+    G_Q05F           0.311       0.322       0.328       0.358       0.388       0.394       0.405
+    H_Q05A           0.580       0.593       0.600       0.637       0.674       0.681       0.695
+    H_Q05C           0.698       0.710       0.717       0.751       0.786       0.792       0.805
+    H_Q05E           0.611       0.623       0.629       0.659       0.689       0.695       0.706
+    H_Q05F           0.539       0.550       0.555       0.583       0.612       0.617       0.628
+
+
+MODEL MODIFICATION INDICES
+
+Minimum M.I. value for printing the modification index    10.000
+
+                                   M.I.     E.P.C.  Std E.P.C.  StdYX E.P.C.
+
+ON/BY Statements
+
+G_Q05A   ON LIFE     /
+LIFE     BY G_Q05A                66.743    -0.417     -0.255       -0.193
+G_Q05E   ON LIFE     /
+LIFE     BY G_Q05E                13.008     0.230      0.141        0.088
+H_Q05C   ON WORK     /
+WORK     BY H_Q05C                12.167    -0.101     -0.094       -0.089
+H_Q05E   ON WORK     /
+WORK     BY H_Q05E                75.131     0.235      0.221        0.224
+H_Q05F   ON WORK     /
+WORK     BY H_Q05F                25.711    -0.174     -0.163       -0.134
+
+ON Statements
+
+WORK     ON G_Q05A                66.826     0.423      0.451        0.596
+WORK     ON G_Q05E                12.994    -0.134     -0.143       -0.228
+WORK     ON H_Q05C                12.150    -0.080     -0.085       -0.090
+WORK     ON H_Q05E                75.137     0.244      0.260        0.257
+WORK     ON H_Q05F                25.695    -0.133     -0.142       -0.174
+LIFE     ON G_Q05A                66.759    -0.136     -0.222       -0.294
+LIFE     ON G_Q05E                13.008     0.043      0.071        0.113
+LIFE     ON H_Q05C                12.127     0.106      0.173        0.182
+LIFE     ON H_Q05E                75.095    -0.323     -0.528       -0.521
+LIFE     ON H_Q05F                25.699     0.177      0.289        0.352
+G_Q05A   ON G_Q05C                83.138     0.272      0.272        0.282
+G_Q05A   ON H_Q05C                27.584    -0.104     -0.104       -0.083
+G_Q05A   ON H_Q05E                42.290    -0.142     -0.142       -0.106
+G_Q05A   ON H_Q05F                75.132    -0.155     -0.155       -0.143
+G_Q05C   ON G_Q05A                83.076     0.285      0.285        0.275
+G_Q05C   ON G_Q05E                24.285    -0.102     -0.102       -0.119
+G_Q05C   ON G_Q05F                32.630    -0.239     -0.239       -0.268
+G_Q05C   ON H_Q05C                47.317     0.141      0.141        0.109
+G_Q05E   ON G_Q05C                24.284    -0.169     -0.169       -0.145
+G_Q05E   ON G_Q05F                32.715     0.251      0.251        0.242
+G_Q05E   ON H_Q05E               370.224     0.528      0.528        0.327
+G_Q05E   ON H_Q05F                29.198    -0.122     -0.122       -0.093
+G_Q05F   ON G_Q05C                32.590    -0.222     -0.222       -0.198
+G_Q05F   ON G_Q05E                32.734     0.141      0.141        0.146
+G_Q05F   ON H_Q05F                71.663     0.169      0.169        0.134
+H_Q05A   ON H_Q05C               135.368     0.240      0.240        0.249
+H_Q05A   ON H_Q05E                74.148    -0.236     -0.236       -0.229
+H_Q05C   ON G_Q05A                16.147    -0.064     -0.064       -0.080
+H_Q05C   ON G_Q05E                19.795    -0.057     -0.057       -0.087
+H_Q05C   ON G_Q05F                20.922    -0.065     -0.065       -0.095
+H_Q05C   ON H_Q05A               135.365     0.306      0.306        0.294
+H_Q05C   ON H_Q05E                46.498    -0.176     -0.176       -0.165
+H_Q05E   ON G_Q05E               488.131     0.261      0.261        0.422
+H_Q05E   ON G_Q05F                16.129     0.053      0.053        0.083
+H_Q05E   ON H_Q05A                74.094    -0.230     -0.230       -0.237
+H_Q05E   ON H_Q05C                46.458    -0.135     -0.135       -0.144
+H_Q05E   ON H_Q05F                69.775     0.215      0.215        0.265
+H_Q05F   ON G_Q05A                59.729    -0.140     -0.140       -0.152
+H_Q05F   ON G_Q05C                14.778    -0.068     -0.068       -0.076
+H_Q05F   ON G_Q05E               103.864    -0.148     -0.148       -0.193
+H_Q05F   ON H_Q05E                69.735     0.290      0.290        0.235
+
+WITH Statements
+
+G_Q05A   WITH WORK                66.765     0.367      0.392        0.420
+G_Q05A   WITH LIFE                66.749    -0.118     -0.193       -0.207
+G_Q05C   WITH G_Q05A              83.094     0.247      0.247        0.278
+G_Q05E   WITH WORK                13.005    -0.202     -0.216       -0.176
+G_Q05E   WITH LIFE                13.007     0.065      0.106        0.087
+G_Q05E   WITH G_Q05C              24.276    -0.153     -0.153       -0.131
+G_Q05F   WITH G_Q05C              32.606    -0.201     -0.201       -0.230
+G_Q05F   WITH G_Q05E              32.724     0.212      0.212        0.188
+H_Q05A   WITH G_Q05A              12.060     0.062      0.062        0.082
+H_Q05A   WITH G_Q05E              14.163    -0.085     -0.085       -0.086
+H_Q05C   WITH WORK                12.161    -0.067     -0.071       -0.078
+H_Q05C   WITH LIFE                12.141     0.089      0.145        0.158
+H_Q05C   WITH G_Q05C              50.315     0.140      0.140        0.161
+H_Q05C   WITH G_Q05E              12.109    -0.085     -0.085       -0.076
+H_Q05C   WITH G_Q05F              15.990    -0.083     -0.083       -0.099
+H_Q05C   WITH H_Q05A             135.398     0.201      0.201        0.271
+H_Q05E   WITH WORK                75.120     0.156      0.167        0.208
+H_Q05E   WITH LIFE                75.084    -0.207     -0.338       -0.423
+H_Q05E   WITH G_Q05A              16.273    -0.070     -0.070       -0.094
+H_Q05E   WITH G_Q05C              11.935    -0.062     -0.062       -0.081
+H_Q05E   WITH G_Q05E             500.354     0.495      0.495        0.504
+H_Q05E   WITH H_Q05A              74.142    -0.151     -0.151       -0.233
+H_Q05E   WITH H_Q05C              46.483    -0.113     -0.113       -0.154
+H_Q05F   WITH WORK                25.711    -0.116     -0.123       -0.133
+H_Q05F   WITH LIFE                25.713     0.153      0.250        0.269
+H_Q05F   WITH G_Q05A              45.640    -0.142     -0.142       -0.164
+H_Q05F   WITH G_Q05E              92.651    -0.257     -0.257       -0.225
+H_Q05F   WITH G_Q05F              96.804     0.226      0.226        0.264
+H_Q05F   WITH H_Q05E              69.741     0.186      0.186        0.250
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    /Users/ronnysc/Documents/CEMO/TEACHING/PIAAC2022-SEM/Examples/2-CFA/CFA2a.dgm
+
+     Beginning Time:  18:13:26
+        Ending Time:  18:13:26
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2018 Muthen & Muthen

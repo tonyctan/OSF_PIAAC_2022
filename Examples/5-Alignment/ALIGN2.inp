@@ -1,0 +1,844 @@
+TITLE:	Structural equation modeling with PIAAC data
+	Multi-group CFA
+	Single-factor model of curiosity and continuous treatment--modified
+	Complex design: Total weights
+	Grouping by: country (CNTRYID)
+	ALIGNMENT-with-CFA METHOD
+
+DATA: 	FILE IS piaac1-all-curiosity.dat;
+	! TYPE = IMPUTATION;
+	! Not needed here as the model does not contain any PV
+		
+		
+VARIABLE: 
+	NAMES ARE 
+		CNTRYID
+		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+		SPFWT0
+		HDI2012 UAI;
+		
+	! Variables to be used
+	! Newly defined variable appear at the end of this list
+	USEVARIABLES ARE 
+		I_Q04b 
+		I_Q04d 
+		I_Q04h 
+		I_Q04j 
+		I_Q04l
+		I_Q04m;
+		
+	! Missing data coding
+	MISSING ARE ALL(-99);
+		
+	! Final participant weight
+	WEIGHT = SPFWT0;
+	
+	! Grouping variable and its levels
+	GROUPING IS CNTRYID (56=BEL 124=CAN 152=CHL
+			203=CZE 208=DNK 233=EST 246=FIN
+			250=FRA 276=DEU 300=GRC 372=IRL
+			376=ISR 380=ITA 392=JPN 410=KOR
+			440=LTU 528=NLD 554=NZL 578=NOR
+			616=POL 702=SGP 703=SVK 705=SVN
+			724=ESP 752=SWE 826=GBR 840=USA);
+
+
+ANALYSIS:
+
+	ESTIMATOR = MLR;
+	H1ITERATIONS = 10000;
+	
+	! Use multiple processors to speed the estimation up
+	PROCESSORS = 4;
+
+
+
+MODEL:
+	! MEASUREMENT MODEL
+	! Curiousity
+	CURIOUS BY
+		I_Q04b 
+		I_Q04d 
+		I_Q04h 
+		I_Q04j 
+		I_Q04l
+		I_Q04m;
+		
+	! Model modifications
+	! Residual covariances
+	I_Q04B WITH I_Q04H;
+	I_Q04B WITH I_Q04J;
+	
+	
+	! What follows are the measurement models for each
+	! country with the starting values from the fixed
+	! alignment method and the first factor loading fixed
+	! its starting value for identification purposes.
+	! The same goes for the intercept of the first item.
+	
+	
+
+MODEL BEL:
+
+     curious BY i_q04b@0.61699;
+     curious BY i_q04d*0.65494;
+     curious BY i_q04h*0.64218;
+     curious BY i_q04j*0.85774;
+     curious BY i_q04l*0.78497;
+     curious BY i_q04m*0.66670;
+
+     i_q04b WITH i_q04h*0.13225;
+     i_q04b WITH i_q04j*-0.04397;
+
+     [ i_q04b@2.39141 ];
+     [ i_q04d*2.89114 ];
+     [ i_q04h*2.71984 ];
+     [ i_q04j*2.30106 ];
+     [ i_q04l*2.26712 ];
+     [ i_q04m*2.90367 ];
+     [ curious*-0.22648 ];
+
+     i_q04b*0.47643;
+     i_q04d*0.40803;
+     i_q04h*0.37138;
+     i_q04j*0.47363;
+     i_q04l*0.35064;
+     i_q04m*0.38378;
+     curious*0.94914;
+
+MODEL CAN:
+
+     curious BY i_q04b@0.63856;
+     curious BY i_q04d*0.65617;
+     curious BY i_q04h*0.66706;
+     curious BY i_q04j*0.77142;
+     curious BY i_q04l*0.84628;
+     curious BY i_q04m*0.61914;
+
+     i_q04b WITH i_q04h*0.13935;
+     i_q04b WITH i_q04j*-0.03938;
+
+     [ i_q04b@2.18370 ];
+     [ i_q04d*2.91779 ];
+     [ i_q04h*2.62592 ];
+     [ i_q04j*2.61051 ];
+     [ i_q04l*2.41036 ];
+     [ i_q04m*2.88673 ];
+     [ curious*0.33725 ];
+
+     i_q04b*0.59081;
+     i_q04d*0.35807;
+     i_q04h*0.40575;
+     i_q04j*0.40533;
+     i_q04l*0.31790;
+     i_q04m*0.38384;
+     curious*0.78004;
+
+MODEL CHL:
+
+     curious BY i_q04b@0.67710;
+     curious BY i_q04d*0.63381;
+     curious BY i_q04h*0.66115;
+     curious BY i_q04j*0.78068;
+     curious BY i_q04l*0.74316;
+     curious BY i_q04m*0.67679;
+
+     i_q04b WITH i_q04h*0.04781;
+     i_q04b WITH i_q04j*-0.12775;
+
+     [ i_q04b@2.07425 ];
+     [ i_q04d*3.01475 ];
+     [ i_q04h*2.63204 ];
+     [ i_q04j*2.60845 ];
+     [ i_q04l*2.46095 ];
+     [ i_q04m*2.81531 ];
+     [ curious*0.35882 ];
+
+     i_q04b*0.62603;
+     i_q04d*0.36868;
+     i_q04h*0.50743;
+     i_q04j*0.55105;
+     i_q04l*0.43523;
+     i_q04m*0.57493;
+     curious*0.93302;
+
+MODEL CZE:
+
+     curious BY i_q04b@0.58568;
+     curious BY i_q04d*0.67706;
+     curious BY i_q04h*0.66114;
+     curious BY i_q04j*0.85263;
+     curious BY i_q04l*0.83775;
+     curious BY i_q04m*0.51242;
+
+     i_q04b WITH i_q04h*0.03532;
+     i_q04b WITH i_q04j*-0.06189;
+
+     [ i_q04b@2.14831 ];
+     [ i_q04d*2.72627 ];
+     [ i_q04h*2.70688 ];
+     [ i_q04j*2.47145 ];
+     [ i_q04l*2.42154 ];
+     [ i_q04m*3.08335 ];
+     [ curious*-0.05545 ];
+
+     i_q04b*0.54302;
+     i_q04d*0.48272;
+     i_q04h*0.46572;
+     i_q04j*0.64113;
+     i_q04l*0.60291;
+     i_q04m*0.48069;
+     curious*0.85196;
+
+MODEL DNK:
+
+     curious BY i_q04b@0.66269;
+     curious BY i_q04d*0.64628;
+     curious BY i_q04h*0.63033;
+     curious BY i_q04j*0.78541;
+     curious BY i_q04l*0.83126;
+     curious BY i_q04m*0.65821;
+
+     i_q04b WITH i_q04h*0.11711;
+     i_q04b WITH i_q04j*-0.07786;
+
+     [ i_q04b@2.11268 ];
+     [ i_q04d*3.01224 ];
+     [ i_q04h*2.66926 ];
+     [ i_q04j*2.61050 ];
+     [ i_q04l*2.41416 ];
+     [ i_q04m*2.79841 ];
+     [ curious*0.34301 ];
+
+     i_q04b*0.62626;
+     i_q04d*0.32576;
+     i_q04h*0.43443;
+     i_q04j*0.39228;
+     i_q04l*0.35222;
+     i_q04m*0.43650;
+     curious*0.65022;
+
+MODEL EST:
+
+     curious BY i_q04b@0.62643;
+     curious BY i_q04d*0.71385;
+     curious BY i_q04h*0.63794;
+     curious BY i_q04j*0.85187;
+     curious BY i_q04l*0.81856;
+     curious BY i_q04m*0.58937;
+
+     i_q04b WITH i_q04h*0.08120;
+     i_q04b WITH i_q04j*-0.02975;
+
+     [ i_q04b@2.27137 ];
+     [ i_q04d*2.72969 ];
+     [ i_q04h*2.69772 ];
+     [ i_q04j*2.38176 ];
+     [ i_q04l*2.42257 ];
+     [ i_q04m*2.90143 ];
+     [ curious*-0.13075 ];
+
+     i_q04b*0.49116;
+     i_q04d*0.37096;
+     i_q04h*0.36022;
+     i_q04j*0.43142;
+     i_q04l*0.32096;
+     i_q04m*0.43496;
+     curious*0.86595;
+
+MODEL FIN:
+
+     curious BY i_q04b@0.67630;
+     curious BY i_q04d*0.58708;
+     curious BY i_q04h*0.57615;
+     curious BY i_q04j*0.79749;
+     curious BY i_q04l*0.83106;
+     curious BY i_q04m*0.68845;
+
+     i_q04b WITH i_q04h*0.12245;
+     i_q04b WITH i_q04j*-0.07040;
+
+     [ i_q04b@2.34648 ];
+     [ i_q04d*2.93563 ];
+     [ i_q04h*2.78078 ];
+     [ i_q04j*2.54062 ];
+     [ i_q04l*2.20306 ];
+     [ i_q04m*2.81224 ];
+     [ curious*0.49552 ];
+
+     i_q04b*0.48815;
+     i_q04d*0.33980;
+     i_q04h*0.35183;
+     i_q04j*0.39010;
+     i_q04l*0.36439;
+     i_q04m*0.34791;
+     curious*0.51347;
+
+MODEL FRA:
+
+     curious BY i_q04b@0.67001;
+     curious BY i_q04d*0.64971;
+     curious BY i_q04h*0.54102;
+     curious BY i_q04j*0.85866;
+     curious BY i_q04l*0.82123;
+     curious BY i_q04m*0.57967;
+
+     i_q04b WITH i_q04h*0.09672;
+     i_q04b WITH i_q04j*-0.03407;
+
+     [ i_q04b@2.21239 ];
+     [ i_q04d*2.93776 ];
+     [ i_q04h*2.33879 ];
+     [ i_q04j*2.53194 ];
+     [ i_q04l*2.43822 ];
+     [ i_q04m*2.92403 ];
+     [ curious*0.15694 ];
+
+     i_q04b*0.64593;
+     i_q04d*0.35659;
+     i_q04h*0.77794;
+     i_q04j*0.44915;
+     i_q04l*0.43159;
+     i_q04m*0.39571;
+     curious*0.71838;
+
+MODEL DEU:
+
+     curious BY i_q04b@0.55311;
+     curious BY i_q04d*0.71613;
+     curious BY i_q04h*0.53133;
+     curious BY i_q04j*0.80426;
+     curious BY i_q04l*0.85539;
+     curious BY i_q04m*0.64906;
+
+     i_q04b WITH i_q04h*0.11249;
+     i_q04b WITH i_q04j*-0.04562;
+
+     [ i_q04b@2.15318 ];
+     [ i_q04d*2.91124 ];
+     [ i_q04h*2.56135 ];
+     [ i_q04j*2.49408 ];
+     [ i_q04l*2.46679 ];
+     [ i_q04m*3.05645 ];
+     [ curious*-0.06740 ];
+
+     i_q04b*0.48787;
+     i_q04d*0.41860;
+     i_q04h*0.54807;
+     i_q04j*0.43796;
+     i_q04l*0.38869;
+     i_q04m*0.41472;
+     curious*0.69638;
+
+MODEL GRC:
+
+     curious BY i_q04b@0.61774;
+     curious BY i_q04d*0.62636;
+     curious BY i_q04h*0.69794;
+     curious BY i_q04j*0.78507;
+     curious BY i_q04l*0.75791;
+     curious BY i_q04m*0.70608;
+
+     i_q04b WITH i_q04h*0.11495;
+     i_q04b WITH i_q04j*0.01841;
+
+     [ i_q04b@2.35696 ];
+     [ i_q04d*2.98440 ];
+     [ i_q04h*2.62349 ];
+     [ i_q04j*2.36214 ];
+     [ i_q04l*2.29451 ];
+     [ i_q04m*2.86518 ];
+     [ curious*0.07129 ];
+
+     i_q04b*0.55093;
+     i_q04d*0.36498;
+     i_q04h*0.40062;
+     i_q04j*0.46034;
+     i_q04l*0.42265;
+     i_q04m*0.45073;
+     curious*0.94817;
+
+MODEL IRL:
+
+     curious BY i_q04b@0.58333;
+     curious BY i_q04d*0.65709;
+     curious BY i_q04h*0.66140;
+     curious BY i_q04j*0.79049;
+     curious BY i_q04l*0.84148;
+     curious BY i_q04m*0.68350;
+
+     i_q04b WITH i_q04h*0.10234;
+     i_q04b WITH i_q04j*-0.04607;
+
+     [ i_q04b@2.07382 ];
+     [ i_q04d*2.85866 ];
+     [ i_q04h*2.58435 ];
+     [ i_q04j*2.73786 ];
+     [ i_q04l*2.49387 ];
+     [ i_q04m*2.92191 ];
+     [ curious*0.06044 ];
+
+     i_q04b*0.59427;
+     i_q04d*0.38727;
+     i_q04h*0.41036;
+     i_q04j*0.40126;
+     i_q04l*0.36763;
+     i_q04m*0.39968;
+     curious*0.82795;
+
+MODEL ISR:
+
+     curious BY i_q04b@0.61919;
+     curious BY i_q04d*0.62846;
+     curious BY i_q04h*0.67241;
+     curious BY i_q04j*0.84278;
+     curious BY i_q04l*0.83759;
+     curious BY i_q04m*0.61722;
+
+     i_q04b WITH i_q04h*0.05347;
+     i_q04b WITH i_q04j*-0.05444;
+
+     [ i_q04b@2.16473 ];
+     [ i_q04d*3.01183 ];
+     [ i_q04h*2.67725 ];
+     [ i_q04j*2.27161 ];
+     [ i_q04l*2.42316 ];
+     [ i_q04m*2.86137 ];
+     [ curious*0.18989 ];
+
+     i_q04b*0.66297;
+     i_q04d*0.42988;
+     i_q04h*0.50330;
+     i_q04j*0.62609;
+     i_q04l*0.41375;
+     i_q04m*0.51274;
+     curious*1.15149;
+
+MODEL ITA:
+
+     curious BY i_q04b@0.60018;
+     curious BY i_q04d*0.65953;
+     curious BY i_q04h*0.66434;
+     curious BY i_q04j*0.82926;
+     curious BY i_q04l*0.77610;
+     curious BY i_q04m*0.66181;
+
+     i_q04b WITH i_q04h*0.07763;
+     i_q04b WITH i_q04j*-0.02969;
+
+     [ i_q04b@2.27137 ];
+     [ i_q04d*2.87828 ];
+     [ i_q04h*2.67113 ];
+     [ i_q04j*2.43252 ];
+     [ i_q04l*2.46123 ];
+     [ i_q04m*2.83633 ];
+     [ curious*0.13338 ];
+
+     i_q04b*0.56957;
+     i_q04d*0.30782;
+     i_q04h*0.35731;
+     i_q04j*0.43598;
+     i_q04l*0.37126;
+     i_q04m*0.33268;
+     curious*0.86524;
+
+MODEL JPN:
+
+     curious BY i_q04b@0.62022;
+     curious BY i_q04d*0.72880;
+     curious BY i_q04h*0.65182;
+     curious BY i_q04j*0.78431;
+     curious BY i_q04l*0.65645;
+     curious BY i_q04m*0.65792;
+
+     i_q04b WITH i_q04h*0.03127;
+     i_q04b WITH i_q04j*-0.10830;
+
+     [ i_q04b@2.65543 ];
+     [ i_q04d*2.97865 ];
+     [ i_q04h*2.56480 ];
+     [ i_q04j*2.24242 ];
+     [ i_q04l*2.15124 ];
+     [ i_q04m*3.04936 ];
+     [ curious*-0.93317 ];
+
+     i_q04b*0.54349;
+     i_q04d*0.51892;
+     i_q04h*0.65605;
+     i_q04j*0.47473;
+     i_q04l*0.57366;
+     i_q04m*0.50880;
+     curious*1.06595;
+
+MODEL KOR:
+
+     curious BY i_q04b@0.62851;
+     curious BY i_q04d*0.66126;
+     curious BY i_q04h*0.65144;
+     curious BY i_q04j*0.74960;
+     curious BY i_q04l*0.77306;
+     curious BY i_q04m*0.74989;
+
+     i_q04b WITH i_q04h*0.06137;
+     i_q04b WITH i_q04j*-0.08636;
+
+     [ i_q04b@2.62983 ];
+     [ i_q04d*2.83073 ];
+     [ i_q04h*2.64380 ];
+     [ i_q04j*2.33058 ];
+     [ i_q04l*2.40848 ];
+     [ i_q04m*2.93304 ];
+     [ curious*-1.02918 ];
+
+     i_q04b*0.52716;
+     i_q04d*0.65101;
+     i_q04h*0.63674;
+     i_q04j*0.52480;
+     i_q04l*0.40019;
+     i_q04m*0.56036;
+     curious*1.39082;
+
+MODEL LTU:
+
+     curious BY i_q04b@0.51985;
+     curious BY i_q04d*0.73896;
+     curious BY i_q04h*0.67480;
+     curious BY i_q04j*0.81461;
+     curious BY i_q04l*0.81677;
+     curious BY i_q04m*0.61016;
+
+     i_q04b WITH i_q04h*0.10560;
+     i_q04b WITH i_q04j*-0.06318;
+
+     [ i_q04b@2.25407 ];
+     [ i_q04d*2.75042 ];
+     [ i_q04h*2.85195 ];
+     [ i_q04j*2.27123 ];
+     [ i_q04l*2.24372 ];
+     [ i_q04m*3.11312 ];
+     [ curious*-0.24826 ];
+
+     i_q04b*0.89780;
+     i_q04d*0.73488;
+     i_q04h*0.67738;
+     i_q04j*0.67489;
+     i_q04l*0.60149;
+     i_q04m*0.81769;
+     curious*1.59867;
+
+MODEL NLD:
+
+     curious BY i_q04b@0.65234;
+     curious BY i_q04d*0.63882;
+     curious BY i_q04h*0.66235;
+     curious BY i_q04j*0.81840;
+     curious BY i_q04l*0.80384;
+     curious BY i_q04m*0.62296;
+
+     i_q04b WITH i_q04h*0.11946;
+     i_q04b WITH i_q04j*-0.07355;
+
+     [ i_q04b@2.26460 ];
+     [ i_q04d*2.94351 ];
+     [ i_q04h*2.76503 ];
+     [ i_q04j*2.24888 ];
+     [ i_q04l*2.14854 ];
+     [ i_q04m*2.90207 ];
+     [ curious*-0.20003 ];
+
+     i_q04b*0.59646;
+     i_q04d*0.38776;
+     i_q04h*0.40260;
+     i_q04j*0.53559;
+     i_q04l*0.45565;
+     i_q04m*0.44251;
+     curious*1.04122;
+
+MODEL NZL:
+
+     curious BY i_q04b@0.61663;
+     curious BY i_q04d*0.67365;
+     curious BY i_q04h*0.64061;
+     curious BY i_q04j*0.76364;
+     curious BY i_q04l*0.85467;
+     curious BY i_q04m*0.67601;
+
+     i_q04b WITH i_q04h*0.16279;
+     i_q04b WITH i_q04j*-0.03697;
+
+     [ i_q04b@2.22717 ];
+     [ i_q04d*2.87879 ];
+     [ i_q04h*2.60665 ];
+     [ i_q04j*2.66955 ];
+     [ i_q04l*2.44222 ];
+     [ i_q04m*2.84872 ];
+     [ curious*0.32066 ];
+
+     i_q04b*0.54099;
+     i_q04d*0.34216;
+     i_q04h*0.42844;
+     i_q04j*0.41142;
+     i_q04l*0.31345;
+     i_q04m*0.39863;
+     curious*0.73823;
+
+MODEL NOR:
+
+     curious BY i_q04b@0.65864;
+     curious BY i_q04d*0.66590;
+     curious BY i_q04h*0.67935;
+     curious BY i_q04j*0.70165;
+     curious BY i_q04l*0.83496;
+     curious BY i_q04m*0.63453;
+
+     i_q04b WITH i_q04h*0.06360;
+     i_q04b WITH i_q04j*-0.06292;
+
+     [ i_q04b@2.10496 ];
+     [ i_q04d*2.97943 ];
+     [ i_q04h*2.72405 ];
+     [ i_q04j*2.77444 ];
+     [ i_q04l*2.28129 ];
+     [ i_q04m*2.80701 ];
+     [ curious*0.23772 ];
+
+     i_q04b*0.48950;
+     i_q04d*0.32506;
+     i_q04h*0.33115;
+     i_q04j*0.41532;
+     i_q04l*0.34425;
+     i_q04m*0.38706;
+     curious*0.58269;
+
+MODEL POL:
+
+     curious BY i_q04b@0.56923;
+     curious BY i_q04d*0.69843;
+     curious BY i_q04h*0.68035;
+     curious BY i_q04j*0.74951;
+     curious BY i_q04l*0.76742;
+     curious BY i_q04m*0.70419;
+
+     i_q04b WITH i_q04h*0.09570;
+     i_q04b WITH i_q04j*-0.02238;
+
+     [ i_q04b@2.18180 ];
+     [ i_q04d*2.65228 ];
+     [ i_q04h*2.61539 ];
+     [ i_q04j*2.68723 ];
+     [ i_q04l*2.53145 ];
+     [ i_q04m*2.85803 ];
+     [ curious*0 ];
+
+     i_q04b*0.57840;
+     i_q04d*0.40439;
+     i_q04h*0.37406;
+     i_q04j*0.41735;
+     i_q04l*0.41566;
+     i_q04m*0.36486;
+     curious*1;
+
+MODEL SGP:
+
+     curious BY i_q04b@0.66964;
+     curious BY i_q04d*0.70418;
+     curious BY i_q04h*0.68189;
+     curious BY i_q04j*0.71435;
+     curious BY i_q04l*0.77511;
+     curious BY i_q04m*0.62768;
+
+     i_q04b WITH i_q04h*0.09546;
+     i_q04b WITH i_q04j*-0.02925;
+
+     [ i_q04b@2.29340 ];
+     [ i_q04d*2.77424 ];
+     [ i_q04h*2.59104 ];
+     [ i_q04j*2.47559 ];
+     [ i_q04l*2.44838 ];
+     [ i_q04m*2.94623 ];
+     [ curious*-0.26938 ];
+
+     i_q04b*0.46770;
+     i_q04d*0.37339;
+     i_q04h*0.38718;
+     i_q04j*0.46000;
+     i_q04l*0.31275;
+     i_q04m*0.40598;
+     curious*1.19737;
+
+MODEL SVK:
+
+     curious BY i_q04b@0.57668;
+     curious BY i_q04d*0.66263;
+     curious BY i_q04h*0.68507;
+     curious BY i_q04j*0.78297;
+     curious BY i_q04l*0.78875;
+     curious BY i_q04m*0.70430;
+
+     i_q04b WITH i_q04h*0.06329;
+     i_q04b WITH i_q04j*-0.00165;
+
+     [ i_q04b@2.23728 ];
+     [ i_q04d*2.67150 ];
+     [ i_q04h*2.63939 ];
+     [ i_q04j*2.56952 ];
+     [ i_q04l*2.55195 ];
+     [ i_q04m*2.81486 ];
+     [ curious*0.08594 ];
+
+     i_q04b*0.54945;
+     i_q04d*0.37531;
+     i_q04h*0.32803;
+     i_q04j*0.42940;
+     i_q04l*0.28942;
+     i_q04m*0.34203;
+     curious*1.32528;
+
+MODEL SVN:
+
+     curious BY i_q04b@0.64111;
+     curious BY i_q04d*0.71516;
+     curious BY i_q04h*0.64740;
+     curious BY i_q04j*0.76204;
+     curious BY i_q04l*0.77492;
+     curious BY i_q04m*0.67700;
+
+     i_q04b WITH i_q04h*0.06483;
+     i_q04b WITH i_q04j*-0.06242;
+
+     [ i_q04b@2.29664 ];
+     [ i_q04d*2.64811 ];
+     [ i_q04h*2.69597 ];
+     [ i_q04j*2.60812 ];
+     [ i_q04l*2.41470 ];
+     [ i_q04m*2.83068 ];
+     [ curious*0.03401 ];
+
+     i_q04b*0.44661;
+     i_q04d*0.34479;
+     i_q04h*0.31670;
+     i_q04j*0.42095;
+     i_q04l*0.31719;
+     i_q04m*0.34907;
+     curious*0.80140;
+
+MODEL ESP:
+
+     curious BY i_q04b@0.62693;
+     curious BY i_q04d*0.66964;
+     curious BY i_q04h*0.70254;
+     curious BY i_q04j*0.76426;
+     curious BY i_q04l*0.76842;
+     curious BY i_q04m*0.64832;
+
+     i_q04b WITH i_q04h*0.10967;
+     i_q04b WITH i_q04j*-0.04848;
+
+     [ i_q04b@2.20606 ];
+     [ i_q04d*2.97714 ];
+     [ i_q04h*2.56601 ];
+     [ i_q04j*2.55521 ];
+     [ i_q04l*2.19790 ];
+     [ i_q04m*2.97120 ];
+     [ curious*0.24925 ];
+
+     i_q04b*0.63683;
+     i_q04d*0.35795;
+     i_q04h*0.49570;
+     i_q04j*0.53848;
+     i_q04l*0.65249;
+     i_q04m*0.42123;
+     curious*0.81317;
+
+MODEL SWE:
+
+     curious BY i_q04b@0.63997;
+     curious BY i_q04d*0.57495;
+     curious BY i_q04h*0.53217;
+     curious BY i_q04j*0.86280;
+     curious BY i_q04l*0.93184;
+     curious BY i_q04m*0.61717;
+
+     i_q04b WITH i_q04h*0.16507;
+     i_q04b WITH i_q04j*-0.00742;
+
+     [ i_q04b@2.31514 ];
+     [ i_q04d*3.04043 ];
+     [ i_q04h*2.63874 ];
+     [ i_q04j*2.31417 ];
+     [ i_q04l*2.24422 ];
+     [ i_q04m*2.86152 ];
+     [ curious*0.36369 ];
+
+     i_q04b*0.56604;
+     i_q04d*0.36706;
+     i_q04h*0.49686;
+     i_q04j*0.48299;
+     i_q04l*0.31882;
+     i_q04m*0.37929;
+     curious*0.67302;
+
+MODEL GBR:
+
+     curious BY i_q04b@0.61848;
+     curious BY i_q04d*0.65470;
+     curious BY i_q04h*0.63854;
+     curious BY i_q04j*0.76301;
+     curious BY i_q04l*0.84850;
+     curious BY i_q04m*0.68371;
+
+     i_q04b WITH i_q04h*0.16321;
+     i_q04b WITH i_q04j*-0.05708;
+
+     [ i_q04b@2.09601 ];
+     [ i_q04d*2.85697 ];
+     [ i_q04h*2.56228 ];
+     [ i_q04j*2.76463 ];
+     [ i_q04l*2.50462 ];
+     [ i_q04m*2.93652 ];
+     [ curious*0.05973 ];
+
+     i_q04b*0.63508;
+     i_q04d*0.42657;
+     i_q04h*0.45974;
+     i_q04j*0.37459;
+     i_q04l*0.29855;
+     i_q04m*0.43336;
+     curious*0.93870;
+
+MODEL USA:
+
+     curious BY i_q04b@0.64641;
+     curious BY i_q04d*0.64268;
+     curious BY i_q04h*0.65733;
+     curious BY i_q04j*0.78034;
+     curious BY i_q04l*0.84487;
+     curious BY i_q04m*0.62375;
+
+     i_q04b WITH i_q04h*0.14604;
+     i_q04b WITH i_q04j*-0.05657;
+
+     [ i_q04b@2.17351 ];
+     [ i_q04d*2.94703 ];
+     [ i_q04h*2.60467 ];
+     [ i_q04j*2.61944 ];
+     [ i_q04l*2.40940 ];
+     [ i_q04m*2.88972 ];
+     [ curious*0.44775 ];
+
+     i_q04b*0.58056;
+     i_q04d*0.34714;
+     i_q04h*0.43092;
+     i_q04j*0.38781;
+     i_q04l*0.33215;
+     i_q04m*0.39506;
+     curious*0.83234;
+
+	
+	
+OUTPUT: STDYX;	! Fully standardized parameters requested
+        STDY;	! Standardized parameter estimates requested 
+        		! (some X-variables are dichotomous)
+        SAMPSTAT;	! Sample statistics 
+        CINTERVAL;	! Confidence intervals
+        

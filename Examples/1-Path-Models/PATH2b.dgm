@@ -1,0 +1,117 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+ Structural equation modeling with PIAAC data
+ PATH MODEL
+ Path model CURIOUS-LIFE-PSTRE without the direct c-effect
+ Complex design: PVs, total weight, clustering, stratification
+
+DATA:
+  FILE IS piaac1-nor_pvlist.dat;
+ TYPE = IMPUTATION;
+VARIABLE:
+ NAMES ARE
+  AGE FEMALE B_Q01a
+  D_Q11a D_Q11b D_Q11c D_Q11d
+  F_Q03a F_Q03c F_Q05a F_Q05b
+  G_Q01a G_Q01b G_Q01c G_Q01d
+  G_Q01e G_Q01f G_Q01g G_Q01h
+  G_Q02a G_Q02b G_Q02c G_Q02d
+  G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+  G_Q05a G_Q05c G_Q05d G_Q05e
+  G_Q05f G_Q05g G_Q05h
+  H_Q01a H_Q01b H_Q01c H_Q01d
+  H_Q01e H_Q01f H_Q01g H_Q01h
+  H_Q02a H_Q02b H_Q02c H_Q02d
+  H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
+  H_Q05a H_Q05c H_Q05d H_Q05e
+  H_Q05f H_Q05g H_Q05h
+  I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  I_Q06a
+  I_Q07a I_Q07b
+  HOMLANG IMGEN
+  PVLIT PVNUM PVPSL
+  SPFWT0
+  SPFWT1-SPFWT80
+  VARSTRAT VARUNIT;
+ USEVARIABLES ARE
+  PSTRE
+  CURIOUS
+  LIFE;
+ MISSING ARE ALL(-99);
+ WEIGHT = SPFWT0;
+ CLUSTER = VARUNIT;
+ STRATIFICATION = VARSTRAT;
+DEFINE:
+ PSTRE = PVPSL/100;
+ LIT = PVLIT/100;
+ CURIOUS = (I_Q04b+
+ I_Q04d+
+ I_Q04h+
+ I_Q04j+
+ I_Q04l+
+ I_Q04m)/6;
+ LIFE = (H_Q05a+
+ H_Q05c+
+ H_Q05e+
+ H_Q05f)/4;
+ANALYSIS:
+ TYPE = COMPLEX;
+ ESTIMATOR = MLR;
+ H1ITERATIONS = 10000;
+OUTPUT:
+ STDYX;
+        STDY;
+        SAMPSTAT;
+        CINTERVAL;
+MODEL:
+ PSTRE ON
+  LIFE(b);
+ LIFE ON
+  CURIOUS(a);
+ CURIOUS;
+INPUT_END
+3
+3
+3
+3
+MLR
+1
+GENERAL
+0
+3
+0
+0
+pstre life curious
+3
+2 1 0
+0
+0
+1 1 life pstre           0.198           0.011           0.176           0.220
+91 1 life pstre b
+1 1 curious life           0.484           0.021           0.443           0.525
+91 1 curious life a
+4 1 pstre           0.141           0.005           0.132           0.150
+4 1 life           0.505           0.012           0.481           0.529
+5 1 curious           0.345           0.007           0.331           0.358
+11 1 life pstre           0.374           0.019           0.336           0.411
+91 1 life pstre b
+11 1 curious life           0.371           0.015           0.341           0.401
+91 1 curious life a
+14 1 pstre           0.860           0.014           0.832           0.888
+14 1 life           0.862           0.011           0.840           0.885
+15 1 curious           1.000           0.000           1.000           1.000
+21 1 life pstre           0.374           0.019           0.336           0.411
+91 1 life pstre b
+21 1 curious life           0.371           0.015           0.341           0.401
+91 1 curious life a
+24 1 pstre           0.860           0.014           0.832           0.888
+24 1 life           0.862           0.011           0.840           0.885
+25 1 curious           1.000           0.000           1.000           1.000
+31 1 life pstre           0.198           0.011           0.176           0.220
+91 1 life pstre b
+31 1 curious life           0.484           0.021           0.443           0.525
+91 1 curious life a
+34 1 pstre           0.141           0.005           0.132           0.150
+34 1 life           0.505           0.012           0.481           0.529
+35 1 curious           0.345           0.007           0.331           0.358

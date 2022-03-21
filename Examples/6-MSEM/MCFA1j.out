@@ -1,0 +1,651 @@
+Mplus VERSION 8.2 (Mac)
+MUTHEN & MUTHEN
+03/17/2022   6:48 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:	Structural equation modeling with PIAAC data
+  	Multilevel CFA
+  	Single-factor model of curiosity and continuous treatment--modified
+  	Complex design: Total weights, clustering
+  	Clustered by: country (CNTRYID)
+  	Level 1--CFA modified
+  	Level 2--Saturated model, random slope of a factor loading
+
+  DATA: 	FILE IS piaac1-all-curiosity.dat;
+  	! TYPE = IMPUTATION;
+  	! Not needed here as the model does not contain any PV
+  		
+  		
+  VARIABLE:
+  	NAMES ARE
+  		CNTRYID
+  		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  		SPFWT0
+  		HDI2012 UAI;
+  		
+  	! Variables to be used
+  	! Newly defined variable appear at the end of this list
+  	USEVARIABLES ARE
+  		I_Q04b
+  		I_Q04d
+  		I_Q04h
+  		I_Q04j
+  		I_Q04l
+  		I_Q04m;
+  		
+  	! Missing data coding
+  	MISSING ARE ALL(-99);
+  		
+  	! Final participant weight
+  	! WEIGHT = SPFWT0;
+  	! Not possible with Bayes estimation in Mplus
+  	
+  	! Clustering by countries
+  	CLUSTER = CNTRYID;
+
+
+  ANALYSIS:
+  	TYPE = TWOLEVEL RANDOM;
+  	ESTIMATOR = BAYES;
+  	FBITERATIONS = 10000;
+  	
+  	! Use multiple processors to speed the estimation up
+  	PROCESSORS = 4;
+
+
+
+  MODEL:
+  	%WITHIN%
+  	! Level 1: Individual participants
+  	
+  	! MEASUREMENT MODEL
+  	! Curiousity
+  	CURIOUSw BY
+  		I_Q04b
+  		I_Q04d
+  		I_Q04h
+  		I_Q04l
+  		I_Q04m;
+  		
+  	! Model modifications
+  	! Residual covariances
+  	I_Q04b WITH I_Q04h;
+  	I_Q04l WITH I_Q04j;
+  	
+  	! Random slope of a factor loading
+  	s | CURIOUSw BY I_Q04j;
+  	
+  		
+  	
+  	%BETWEEN%
+  	! Level 2: Countries
+  	
+  	! Saturated model
+  	! Intercepts
+  	[I_Q04b-I_Q04m];
+  	[s];
+  	! Variances estimated
+  	I_Q04b-I_Q04m;
+  	s;
+  	! Covariances
+  	I_Q04b-I_Q04m WITH I_Q04b-I_Q04m;
+  	s WITH I_Q04b-I_Q04m;
+
+  	
+  	
+  OUTPUT: STDYX;	! Fully standardized parameters requested
+          SAMPSTAT;	! Sample statistics
+          CINTERVAL;	! Confidence intervals
+          !MOD(all);	! Modification indices
+
+
+
+*** WARNING in ANALYSIS command
+  For ESTIMATOR=BAYES, the actual number of PROCESSORS used is equal to the number
+  of MCMC chains.  One processor will be used for each MCMC chain.
+*** WARNING in OUTPUT command
+  SAMPSTAT option is not available for ESTIMATOR=BAYES.  Use TYPE=BASIC.
+  Request for SAMPSTAT is ignored.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  2134
+   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Structural equation modeling with PIAAC data
+Multilevel CFA
+Single-factor model of curiosity and continuous treatment--modified
+Complex design: Total weights, clustering
+Clustered by: country (CNTRYID)
+Level 1--CFA modified
+Level 2--Saturated model, random slope of a factor loading
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                      179102
+
+Number of dependent variables                                    6
+Number of independent variables                                  0
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   I_Q04B      I_Q04D      I_Q04H      I_Q04J      I_Q04L      I_Q04M
+
+Continuous latent variables
+   CURIOUSW    S
+
+Variables with special functions
+
+  Cluster variable      CNTRYID
+
+Estimator                                                    BAYES
+Specifications for Bayesian Estimation
+  Point estimate                                            MEDIAN
+  Number of Markov chain Monte Carlo (MCMC) chains               2
+  Random seed for the first chain                                0
+  Starting value information                           UNPERTURBED
+  Algorithm used for Markov chain Monte Carlo           GIBBS(PX1)
+  Fixed number of iterations                                 10000
+  K-th iteration used for thinning                               1
+
+Input data file(s)
+  piaac1-all-curiosity.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of clusters                         27
+
+       Size (s)    Cluster ID with Size s
+
+       4463        752
+       4586        380
+       4896        840
+       4916        300
+       4942        578
+       4978        56
+       5050        440
+       5081        528
+       5172        392
+       5185        152
+       5292        705
+       5309        376
+       5378        276
+       5393        702
+       5454        246
+       5692        703
+       5963        372
+       5965        724
+       6072        554
+       6079        203
+       6650        410
+       6894        250
+       7273        208
+       7573        233
+       8804        826
+       9364        616
+      26678        124
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+     Number of missing data patterns            45
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.995
+ I_Q04D         0.995         1.000
+ I_Q04H         0.994         0.997         0.997
+ I_Q04J         0.995         0.999         0.996         0.999
+ I_Q04L         0.993         0.997         0.995         0.996         0.997
+ I_Q04M         0.995         0.999         0.997         0.999         0.996
+
+
+           Covariance Coverage
+              I_Q04M
+              ________
+ I_Q04M         0.999
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     I_Q04B                2.274      -0.170       0.000    4.35%       2.000      2.000      2.000
+          178260.000       0.943      -0.149       4.000   10.47%       2.000      3.000
+     I_Q04D                2.911      -0.695       0.000    1.65%       2.000      3.000      3.000
+          179051.000       0.878       0.205       4.000   29.51%       3.000      4.000
+     I_Q04H                2.671      -0.514       0.000    2.50%       2.000      3.000      3.000
+          178585.000       0.892       0.116       4.000   19.07%       3.000      3.000
+     I_Q04J                2.572      -0.495       0.000    4.68%       2.000      2.000      3.000
+          178915.000       1.161      -0.316       4.000   21.13%       3.000      4.000
+     I_Q04L                2.453      -0.372       0.000    4.46%       2.000      2.000      3.000
+          178519.000       1.071      -0.299       4.000   15.84%       3.000      3.000
+     I_Q04M                2.931      -0.798       0.000    1.89%       2.000      3.000      3.000
+          178964.000       0.861       0.526       4.000   29.26%       3.000      4.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     USE THE FBITERATIONS OPTION TO INCREASE THE NUMBER OF ITERATIONS BY A FACTOR
+     OF AT LEAST TWO TO CHECK CONVERGENCE AND THAT THE PSR VALUE DOES NOT INCREASE.
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                              48
+
+Information Criteria
+
+          Deviance (DIC)                      2507523.724
+          Estimated Number of Parameters (pD)     200.148
+
+
+
+MODEL RESULTS
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+
+Within Level
+
+ CURIOUSW BY
+    I_Q04B             1.000       0.000      0.000       1.000       1.000
+    I_Q04D             1.118       0.005      0.000       1.109       1.127      *
+    I_Q04H             1.094       0.004      0.000       1.086       1.102      *
+    I_Q04L             1.211       0.005      0.000       1.201       1.222      *
+    I_Q04M             1.059       0.005      0.000       1.049       1.068      *
+
+ I_Q04B   WITH
+    I_Q04H             0.089       0.002      0.000       0.086       0.092      *
+
+ I_Q04L   WITH
+    I_Q04J             0.140       0.002      0.000       0.136       0.143      *
+
+ Variances
+    CURIOUSW           0.353       0.003      0.000       0.348       0.359      *
+
+ Residual Variances
+    I_Q04B             0.569       0.002      0.000       0.565       0.573      *
+    I_Q04D             0.360       0.002      0.000       0.357       0.363      *
+    I_Q04H             0.417       0.002      0.000       0.413       0.420      *
+    I_Q04J             0.551       0.002      0.000       0.546       0.555      *
+    I_Q04L             0.461       0.002      0.000       0.457       0.465      *
+    I_Q04M             0.422       0.002      0.000       0.418       0.425      *
+
+Between Level
+
+ S        WITH
+    I_Q04B            -0.009       0.014      0.178      -0.044       0.013
+    I_Q04D            -0.022       0.027      0.091      -0.092       0.014
+    I_Q04H            -0.016       0.022      0.139      -0.072       0.017
+    I_Q04J            -0.049       0.040      0.013      -0.154      -0.006      *
+    I_Q04L            -0.025       0.029      0.093      -0.099       0.016
+    I_Q04M            -0.014       0.020      0.134      -0.062       0.015
+
+ I_Q04B   WITH
+    I_Q04D             0.081       0.054      0.000       0.030       0.232      *
+    I_Q04H             0.065       0.045      0.001       0.023       0.189      *
+    I_Q04J             0.087       0.067      0.007       0.019       0.272      *
+    I_Q04L             0.069       0.054      0.006       0.015       0.217      *
+    I_Q04M             0.050       0.038      0.004       0.013       0.156      *
+
+ I_Q04D   WITH
+    I_Q04H             0.134       0.084      0.000       0.056       0.371      *
+    I_Q04J             0.215       0.133      0.000       0.090       0.585      *
+    I_Q04L             0.170       0.106      0.000       0.069       0.475      *
+    I_Q04M             0.120       0.075      0.000       0.051       0.330      *
+
+ I_Q04H   WITH
+    I_Q04J             0.178       0.112      0.000       0.073       0.488      *
+    I_Q04L             0.142       0.089      0.000       0.057       0.393      *
+    I_Q04M             0.102       0.063      0.000       0.044       0.278      *
+
+ I_Q04J   WITH
+    I_Q04L             0.267       0.153      0.000       0.126       0.699      *
+    I_Q04M             0.161       0.099      0.000       0.069       0.436      *
+
+ I_Q04L   WITH
+    I_Q04M             0.130       0.080      0.000       0.057       0.356      *
+
+ Means
+    I_Q04B             2.275       0.051      0.000       2.175       2.377      *
+    I_Q04D             2.893       0.090      0.000       2.712       3.075      *
+    I_Q04H             2.659       0.076      0.000       2.508       2.812      *
+    I_Q04J             2.522       0.122      0.000       2.279       2.771      *
+    I_Q04L             2.414       0.099      0.000       2.216       2.613      *
+    I_Q04M             2.915       0.067      0.000       2.782       3.050      *
+    S                  1.150       0.031      0.000       1.088       1.211      *
+
+ Variances
+    I_Q04B             0.059       0.035      0.000       0.028       0.155      *
+    I_Q04D             0.192       0.109      0.000       0.092       0.497      *
+    I_Q04H             0.137       0.077      0.000       0.067       0.352      *
+    I_Q04J             0.351       0.197      0.000       0.170       0.903      *
+    I_Q04L             0.229       0.127      0.000       0.111       0.595      *
+    I_Q04M             0.104       0.059      0.000       0.051       0.271      *
+    S                  0.022       0.012      0.000       0.011       0.057      *
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+
+Within-Level Standardized Estimates Averaged Over Clusters
+
+ S | CURIOUSW BY
+    I_Q04J             0.675       0.003      0.000       0.670       0.680      *
+
+ CURIOUSW BY
+    I_Q04B             0.619       0.003      0.000       0.613       0.624      *
+    I_Q04D             0.742       0.002      0.000       0.738       0.747      *
+    I_Q04H             0.709       0.003      0.000       0.704       0.714      *
+    I_Q04L             0.727       0.003      0.000       0.722       0.732      *
+    I_Q04M             0.695       0.003      0.000       0.691       0.700      *
+
+ I_Q04B   WITH
+    I_Q04H             0.182       0.003      0.000       0.177       0.188      *
+
+ I_Q04L   WITH
+    I_Q04J             0.277       0.003      0.000       0.271       0.282      *
+
+ Variances
+    CURIOUSW           1.003       0.012      0.000       0.982       1.025      *
+
+ Residual Variances
+    I_Q04B             0.617       0.004      0.000       0.611       0.624      *
+    I_Q04D             0.449       0.004      0.000       0.442       0.456      *
+    I_Q04H             0.497       0.004      0.000       0.490       0.504      *
+    I_Q04J             0.543       0.004      0.000       0.536       0.550      *
+    I_Q04L             0.471       0.004      0.000       0.465       0.479      *
+    I_Q04M             0.516       0.004      0.000       0.509       0.523      *
+
+Between Level
+
+ S        WITH
+    I_Q04B            -0.273       0.264      0.178      -0.709       0.304
+    I_Q04D            -0.371       0.248      0.091      -0.757       0.194
+    I_Q04H            -0.311       0.257      0.139      -0.723       0.264
+    I_Q04J            -0.590       0.199      0.013      -0.854      -0.087      *
+    I_Q04L            -0.380       0.248      0.093      -0.757       0.197
+    I_Q04M            -0.312       0.257      0.134      -0.730       0.270
+
+ I_Q04B   WITH
+    I_Q04D             0.788       0.129      0.000       0.434       0.930      *
+    I_Q04H             0.754       0.140      0.001       0.380       0.918      *
+    I_Q04J             0.636       0.184      0.007       0.168       0.872      *
+    I_Q04L             0.635       0.184      0.006       0.163       0.875      *
+    I_Q04M             0.671       0.172      0.004       0.223       0.887      *
+
+ I_Q04D   WITH
+    I_Q04H             0.847       0.098      0.000       0.583       0.951      *
+    I_Q04J             0.849       0.096      0.000       0.579       0.951      *
+    I_Q04L             0.832       0.105      0.000       0.544       0.944      *
+    I_Q04M             0.867       0.090      0.000       0.625       0.958      *
+
+ I_Q04H   WITH
+    I_Q04J             0.829       0.107      0.000       0.541       0.945      *
+    I_Q04L             0.824       0.109      0.000       0.528       0.943      *
+    I_Q04M             0.872       0.083      0.000       0.641       0.961      *
+
+ I_Q04J   WITH
+    I_Q04L             0.950       0.035      0.000       0.851       0.985      *
+    I_Q04M             0.858       0.090      0.000       0.609       0.956      *
+
+ I_Q04L   WITH
+    I_Q04M             0.863       0.088      0.000       0.622       0.956      *
+
+ Means
+    I_Q04B             9.382       2.014      0.000       5.754      13.622      *
+    I_Q04D             6.596       1.397      0.000       4.079       9.558      *
+    I_Q04H             7.196       1.511      0.000       4.461      10.293      *
+    I_Q04J             4.254       0.908      0.000       2.618       6.139      *
+    I_Q04L             5.055       1.074      0.000       3.102       7.264      *
+    I_Q04M             9.032       1.904      0.000       5.588      13.010      *
+    S                  7.769       1.641      0.000       4.812      11.205      *
+
+ Variances
+    I_Q04B             1.000       0.000      0.000       1.000       1.000
+    I_Q04D             1.000       0.000      0.000       1.000       1.000
+    I_Q04H             1.000       0.000      0.000       1.000       1.000
+    I_Q04J             1.000       0.000      0.000       1.000       1.000
+    I_Q04L             1.000       0.000      0.000       1.000       1.000
+    I_Q04M             1.000       0.000      0.000       1.000       1.000
+    S                  1.000       0.000      0.000       1.000       1.000
+
+
+R-SQUARE
+
+Within-Level R-Square Averaged Across Clusters
+
+                                Posterior  One-Tailed         95% C.I.
+    Variable        Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%
+
+    I_Q04B             0.383       0.004      0.000       0.376       0.389
+    I_Q04D             0.551       0.004      0.000       0.544       0.558
+    I_Q04H             0.503       0.004      0.000       0.496       0.510
+    I_Q04J             0.457       0.004      0.000       0.450       0.464
+    I_Q04L             0.529       0.004      0.000       0.521       0.535
+    I_Q04M             0.484       0.004      0.000       0.477       0.491
+
+Between Level
+
+
+CREDIBILITY INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ CURIOUSW BY
+    I_Q04B           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04D           1.107       1.109       1.111       1.118       1.126       1.127       1.131
+    I_Q04H           1.083       1.086       1.087       1.094       1.101       1.102       1.105
+    I_Q04L           1.198       1.201       1.202       1.211       1.220       1.222       1.225
+    I_Q04M           1.046       1.049       1.051       1.059       1.067       1.068       1.071
+
+ I_Q04B   WITH
+    I_Q04H           0.085       0.086       0.086       0.089       0.091       0.092       0.093
+
+ I_Q04L   WITH
+    I_Q04J           0.135       0.136       0.137       0.140       0.142       0.143       0.144
+
+ Variances
+    CURIOUSW         0.346       0.348       0.349       0.353       0.358       0.359       0.360
+
+ Residual Variances
+    I_Q04B           0.563       0.565       0.565       0.569       0.573       0.573       0.575
+    I_Q04D           0.356       0.357       0.357       0.360       0.362       0.363       0.364
+    I_Q04H           0.412       0.413       0.414       0.417       0.420       0.420       0.421
+    I_Q04J           0.545       0.546       0.547       0.551       0.555       0.555       0.557
+    I_Q04L           0.456       0.457       0.458       0.461       0.465       0.465       0.467
+    I_Q04M           0.417       0.418       0.419       0.422       0.425       0.425       0.426
+
+Between Level
+
+ S        WITH
+    I_Q04B          -0.070      -0.044      -0.035      -0.009       0.008       0.013       0.025
+    I_Q04D          -0.140      -0.092      -0.073      -0.022       0.007       0.014       0.034
+    I_Q04H          -0.112      -0.072      -0.057      -0.016       0.010       0.017       0.036
+    I_Q04J          -0.228      -0.154      -0.129      -0.049      -0.014      -0.006       0.012
+    I_Q04L          -0.156      -0.099      -0.080      -0.025       0.007       0.016       0.038
+    I_Q04M          -0.100      -0.062      -0.049      -0.014       0.008       0.015       0.031
+
+ I_Q04B   WITH
+    I_Q04D           0.019       0.030       0.036       0.081       0.194       0.232       0.327
+    I_Q04H           0.014       0.023       0.028       0.065       0.158       0.189       0.275
+    I_Q04J          -0.004       0.019       0.028       0.087       0.224       0.272       0.393
+    I_Q04L          -0.001       0.015       0.022       0.069       0.182       0.217       0.326
+    I_Q04M           0.002       0.013       0.018       0.050       0.129       0.156       0.229
+
+ I_Q04D   WITH
+    I_Q04H           0.041       0.056       0.065       0.134       0.312       0.371       0.520
+    I_Q04J           0.067       0.090       0.104       0.215       0.497       0.585       0.857
+    I_Q04L           0.051       0.069       0.080       0.170       0.394       0.475       0.669
+    I_Q04M           0.039       0.051       0.058       0.120       0.275       0.330       0.463
+
+ I_Q04H   WITH
+    I_Q04J           0.049       0.073       0.084       0.178       0.411       0.488       0.702
+    I_Q04L           0.040       0.057       0.067       0.142       0.330       0.393       0.539
+    I_Q04M           0.034       0.044       0.051       0.102       0.233       0.278       0.400
+
+ I_Q04J   WITH
+    I_Q04L           0.100       0.126       0.140       0.267       0.591       0.699       0.976
+    I_Q04M           0.052       0.069       0.079       0.161       0.368       0.436       0.628
+
+ I_Q04L   WITH
+    I_Q04M           0.042       0.057       0.064       0.130       0.298       0.356       0.500
+
+ Means
+    I_Q04B           2.130       2.175       2.194       2.275       2.359       2.377       2.417
+    I_Q04D           2.639       2.712       2.745       2.893       3.041       3.075       3.151
+    I_Q04H           2.448       2.508       2.537       2.659       2.785       2.812       2.875
+    I_Q04J           2.187       2.279       2.323       2.522       2.725       2.771       2.860
+    I_Q04L           2.144       2.216       2.255       2.414       2.578       2.613       2.688
+    I_Q04M           2.726       2.782       2.806       2.915       3.026       3.050       3.102
+    S                1.060       1.088       1.099       1.150       1.199       1.211       1.235
+
+ Variances
+    I_Q04B           0.023       0.028       0.031       0.059       0.130       0.155       0.218
+    I_Q04D           0.076       0.092       0.103       0.192       0.418       0.497       0.682
+    I_Q04H           0.055       0.067       0.074       0.137       0.299       0.352       0.509
+    I_Q04J           0.140       0.170       0.188       0.351       0.761       0.903       1.286
+    I_Q04L           0.088       0.111       0.123       0.229       0.497       0.595       0.820
+    I_Q04M           0.043       0.051       0.056       0.104       0.227       0.271       0.383
+    S                0.009       0.011       0.012       0.022       0.047       0.057       0.080
+
+
+CREDIBILITY INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ CURIOUSW BY
+    I_Q04B           0.000       0.613       0.000       0.619       0.000       0.624       0.000
+    I_Q04D           0.000       0.738       0.000       0.742       0.000       0.747       0.000
+    I_Q04H           0.000       0.704       0.000       0.709       0.000       0.714       0.000
+    I_Q04L           0.000       0.722       0.000       0.727       0.000       0.732       0.000
+    I_Q04M           0.000       0.691       0.000       0.695       0.000       0.700       0.000
+
+ I_Q04B   WITH
+    I_Q04H           0.000       0.177       0.000       0.182       0.000       0.188       0.000
+
+ I_Q04L   WITH
+    I_Q04J           0.000       0.271       0.000       0.277       0.000       0.282       0.000
+
+ Variances
+    CURIOUSW         0.000       0.982       0.000       1.003       0.000       1.025       0.000
+
+ Residual Variances
+    I_Q04B           0.000       0.611       0.000       0.617       0.000       0.624       0.000
+    I_Q04D           0.000       0.442       0.000       0.449       0.000       0.456       0.000
+    I_Q04H           0.000       0.490       0.000       0.497       0.000       0.504       0.000
+    I_Q04J           0.000       0.536       0.000       0.543       0.000       0.550       0.000
+    I_Q04L           0.000       0.465       0.000       0.471       0.000       0.479       0.000
+    I_Q04M           0.000       0.509       0.000       0.516       0.000       0.523       0.000
+
+Between Level
+
+ S        WITH
+    I_Q04B          -0.795      -0.709      -0.652      -0.273       0.220       0.304       0.474
+    I_Q04D          -0.836      -0.757      -0.711      -0.371       0.101       0.194       0.376
+    I_Q04H          -0.801      -0.723      -0.674      -0.311       0.170       0.264       0.440
+    I_Q04J          -0.902      -0.854      -0.827      -0.590      -0.192      -0.087       0.133
+    I_Q04L          -0.838      -0.757      -0.713      -0.380       0.102       0.197       0.389
+    I_Q04M          -0.812      -0.730      -0.680      -0.312       0.170       0.270       0.442
+
+ I_Q04B   WITH
+    I_Q04D           0.245       0.434       0.513       0.788       0.917       0.930       0.953
+    I_Q04H           0.202       0.380       0.463       0.754       0.901       0.918       0.943
+    I_Q04J          -0.026       0.168       0.263       0.636       0.847       0.872       0.913
+    I_Q04L          -0.007       0.163       0.254       0.635       0.847       0.875       0.912
+    I_Q04M           0.030       0.223       0.317       0.671       0.864       0.887       0.925
+
+ I_Q04D   WITH
+    I_Q04H           0.419       0.583       0.642       0.847       0.941       0.951       0.967
+    I_Q04J           0.443       0.579       0.643       0.849       0.940       0.951       0.966
+    I_Q04L           0.372       0.544       0.611       0.832       0.932       0.944       0.961
+    I_Q04M           0.472       0.625       0.679       0.867       0.949       0.958       0.970
+
+ I_Q04H   WITH
+    I_Q04J           0.371       0.541       0.602       0.829       0.933       0.945       0.962
+    I_Q04L           0.377       0.528       0.593       0.824       0.931       0.943       0.961
+    I_Q04M           0.528       0.641       0.696       0.872       0.952       0.961       0.974
+
+ I_Q04J   WITH
+    I_Q04L           0.792       0.851       0.874       0.950       0.981       0.985       0.990
+    I_Q04M           0.483       0.609       0.666       0.858       0.945       0.956       0.969
+
+ I_Q04L   WITH
+    I_Q04M           0.480       0.622       0.678       0.863       0.946       0.956       0.970
+
+ Means
+    I_Q04B           4.888       5.754       6.294       9.382      12.965      13.622      14.963
+    I_Q04D           3.359       4.079       4.427       6.596       9.034       9.558      10.522
+    I_Q04H           3.731       4.461       4.862       7.196       9.785      10.293      11.460
+    I_Q04J           2.186       2.618       2.869       4.254       5.835       6.139       6.781
+    I_Q04L           2.638       3.102       3.383       5.055       6.902       7.264       8.159
+    I_Q04M           4.684       5.588       6.087       9.032      12.361      13.010      14.183
+    S                4.042       4.812       5.268       7.769      10.609      11.205      12.399
+
+ Variances
+    I_Q04B           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04D           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04H           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04J           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04L           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04M           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    S                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for multilevel analysis.
+  No diagram output was produced.
+
+
+     Beginning Time:  18:48:41
+        Ending Time:  19:12:02
+       Elapsed Time:  00:23:21
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2018 Muthen & Muthen

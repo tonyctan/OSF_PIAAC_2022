@@ -1,0 +1,1686 @@
+Mplus VERSION 8.2 (Mac)
+MUTHEN & MUTHEN
+03/21/2022   1:53 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:	Structural equation modeling with PIAAC data
+  	Multi-group CFA
+  	Single-factor model of curiosity and continuous treatment--modified
+  	Complex design: Total weight, clustering, stratification
+  	Grouping by: FEMALE
+  	Equality constraints on parameters: FL, Int
+  	MULTIPLE MEASUREMENT INVARIANCE LEVELS
+
+  DATA: 	FILE IS piaac1-nor_pv1.dat;
+  	! TYPE = IMPUTATION;
+  	! Not needed here as the model does not contain any PV
+  		
+  		
+  VARIABLE:
+  	NAMES ARE
+  		AGE FEMALE B_Q01a
+  		D_Q11a D_Q11b D_Q11c D_Q11d
+  		F_Q03a F_Q03c F_Q05a F_Q05b
+  		G_Q01a G_Q01b G_Q01c G_Q01d
+  		G_Q01e G_Q01f G_Q01g G_Q01h
+  		G_Q02a G_Q02b G_Q02c G_Q02d
+  		G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+  		G_Q05a G_Q05c G_Q05d G_Q05e
+  		G_Q05f G_Q05g G_Q05h
+  		H_Q01a H_Q01b H_Q01c H_Q01d
+  		H_Q01e H_Q01f H_Q01g H_Q01h
+  		H_Q02a H_Q02b H_Q02c H_Q02d
+  		H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
+  		H_Q05a H_Q05c H_Q05d H_Q05e
+  		H_Q05f H_Q05g H_Q05h
+  		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+  		I_Q06a
+  		I_Q07a I_Q07b
+  		HOMLANG IMGEN
+  		PVLIT PVNUM PVPSL
+  		SPFWT0
+  		SPFWT1-SPFWT80
+  		VARSTRAT VARUNIT;
+  		
+  	! Variables to be used
+  	! Newly defined variable appear at the end of this list
+  	USEVARIABLES ARE
+  		I_Q04b
+  		I_Q04d
+  		I_Q04h
+  		I_Q04j
+  		I_Q04l
+  		I_Q04m;
+  		
+  	! Missing data coding
+  	MISSING ARE ALL(-99);
+  		
+  	! Final participant weight
+  	WEIGHT = SPFWT0;
+  	
+  	! Clustering in sampling units
+  	CLUSTER = VARUNIT;
+  	
+  	! Stratification
+  	STRATIFICATION = VARSTRAT;
+  	
+  	! Grouping variable and its levels
+  	GROUPING IS FEMALE (0=Men 1=Women);
+  	
+
+  ANALYSIS:
+  	TYPE = COMPLEX;
+  	ESTIMATOR = MLR;
+  	H1ITERATIONS = 10000;
+  	
+  	MODEL = CONFIGURAL METRIC SCALAR;
+
+  MODEL:
+  	
+  	! MEASUREMENT MODEL
+  	! Curiousity
+  	CURIOUS BY
+  		I_Q04b
+  		I_Q04d
+  		I_Q04h
+  		I_Q04j
+  		I_Q04l
+  		I_Q04m;
+  		
+  	! Model modifications
+  	! Residual covariance
+  	I_Q04B WITH I_Q04H;
+  	I_Q04B WITH I_Q04J;
+  	
+  	
+
+
+  OUTPUT: STDYX;	! Fully standardized parameters requested
+          STDY;	! Standardized parameter estimates requested
+          		! (some X-variables are dichotomous)
+          SAMPSTAT;	! Sample statistics
+          CINTERVAL;	! Confidence intervals
+          !MOD(all);	! Modification indices
+
+
+
+*** WARNING
+  Clusters with the same IDs have been found in different strata.  These
+  clusters are assumed to be different because clusters are not allowed
+  to appear in more than one stratum.
+*** WARNING in OUTPUT command
+  STANDARDIZED (STD, STDY, STDYX) options are not available when performing measurement
+  invariance testing with multiple models with the MODEL option of the ANALYSIS command.
+  Request for STANDARDIZED (STD, STDY, STDYX) is ignored.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  186
+   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Structural equation modeling with PIAAC data
+Multi-group CFA
+Single-factor model of curiosity and continuous treatment--modified
+Complex design: Total weight, clustering, stratification
+Grouping by: FEMALE
+Equality constraints on parameters: FL, Int
+MULTIPLE MEASUREMENT INVARIANCE LEVELS
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 2
+Number of observations
+   Group MEN                                                  2555
+   Group WOMEN                                                2387
+   Total sample size                                          4942
+
+Number of dependent variables                                    6
+Number of independent variables                                  0
+Number of continuous latent variables                            1
+
+Observed dependent variables
+
+  Continuous
+   I_Q04B      I_Q04D      I_Q04H      I_Q04J      I_Q04L      I_Q04M
+
+Continuous latent variables
+   CURIOUS
+
+Variables with special functions
+
+  Grouping variable     FEMALE
+  Stratification        VARSTRAT
+  Cluster variable      VARUNIT
+  Weight variable       SPFWT0
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                          10000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  piaac1-nor_pv1.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Total number of strata                       80
+   Total number of clusters                    163
+
+   Group MEN
+     Number of missing data patterns            10
+     Number of strata                           80
+     Number of clusters                        160
+
+   Group WOMEN
+     Number of missing data patterns            12
+     Number of strata                           80
+     Number of clusters                        163
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR MEN
+
+
+           Covariance Coverage
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.996
+ I_Q04D         0.996         1.000
+ I_Q04H         0.995         0.998         0.998
+ I_Q04J         0.996         0.999         0.998         0.999
+ I_Q04L         0.994         0.996         0.995         0.996         0.996
+ I_Q04M         0.996         0.999         0.997         0.998         0.996
+
+
+           Covariance Coverage
+              I_Q04M
+              ________
+ I_Q04M         0.999
+
+
+     PROPORTION OF DATA PRESENT FOR WOMEN
+
+
+           Covariance Coverage
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.996
+ I_Q04D         0.996         1.000
+ I_Q04H         0.995         0.996         0.996
+ I_Q04J         0.995         0.999         0.995         0.999
+ I_Q04L         0.993         0.995         0.992         0.995         0.995
+ I_Q04M         0.995         0.999         0.996         0.998         0.995
+
+
+           Covariance Coverage
+              I_Q04M
+              ________
+ I_Q04M         0.999
+
+
+SAMPLE STATISTICS
+
+
+
+     ESTIMATED SAMPLE STATISTICS FOR MEN
+
+
+           Means
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                2.305         3.138         2.910         2.940         2.517
+
+
+           Means
+              I_Q04M
+              ________
+                2.974
+
+
+           Covariances
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.765
+ I_Q04D         0.276         0.576
+ I_Q04H         0.339         0.289         0.605
+ I_Q04J         0.212         0.262         0.257         0.700
+ I_Q04L         0.335         0.295         0.332         0.350         0.759
+ I_Q04M         0.214         0.267         0.233         0.290         0.293
+
+
+           Covariances
+              I_Q04M
+              ________
+ I_Q04M         0.621
+
+
+           Correlations
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         1.000
+ I_Q04D         0.415         1.000
+ I_Q04H         0.498         0.489         1.000
+ I_Q04J         0.289         0.412         0.395         1.000
+ I_Q04L         0.439         0.446         0.490         0.481         1.000
+ I_Q04M         0.311         0.447         0.381         0.439         0.427
+
+
+           Correlations
+              I_Q04M
+              ________
+ I_Q04M         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR WOMEN
+
+
+           Means
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                2.216         3.138         2.860         2.942         2.441
+
+
+           Means
+              I_Q04M
+              ________
+                2.941
+
+
+           Covariances
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.717
+ I_Q04D         0.265         0.591
+ I_Q04H         0.314         0.296         0.594
+ I_Q04J         0.191         0.245         0.250         0.704
+ I_Q04L         0.325         0.299         0.334         0.373         0.739
+ I_Q04M         0.201         0.261         0.236         0.277         0.318
+
+
+           Covariances
+              I_Q04M
+              ________
+ I_Q04M         0.622
+
+
+           Correlations
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         1.000
+ I_Q04D         0.407         1.000
+ I_Q04H         0.481         0.500         1.000
+ I_Q04J         0.269         0.379         0.386         1.000
+ I_Q04L         0.447         0.452         0.504         0.517         1.000
+ I_Q04M         0.302         0.430         0.389         0.418         0.469
+
+
+           Correlations
+              I_Q04M
+              ________
+ I_Q04M         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -31594.952
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR MEN
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     I_Q04B                2.305      -0.081       0.000    1.92%       2.000      2.000      2.000
+            2546.000       0.765      -0.015       4.000    8.33%       2.000      3.000
+     I_Q04D                3.138      -0.632       0.000    0.27%       3.000      3.000      3.000
+            2555.000       0.576       0.329       4.000   33.70%       3.000      4.000
+     I_Q04H                2.910      -0.405       0.000    0.35%       2.000      3.000      3.000
+            2549.000       0.604       0.136       4.000   22.40%       3.000      4.000
+     I_Q04J                2.940      -0.543       0.000    0.59%       2.000      3.000      3.000
+            2552.000       0.700       0.142       4.000   25.94%       3.000      4.000
+     I_Q04L                2.518      -0.152       0.000    1.02%       2.000      2.000      3.000
+            2546.000       0.758      -0.169       4.000   12.57%       3.000      3.000
+     I_Q04M                2.974      -0.506       0.000    0.39%       2.000      3.000      3.000
+            2553.000       0.620       0.192       4.000   25.50%       3.000      4.000
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR WOMEN
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     I_Q04B                2.217      -0.009       0.000    2.02%       2.000      2.000      2.000
+            2378.000       0.717       0.227       4.000    7.02%       2.000      3.000
+     I_Q04D                3.138      -0.583       0.000    0.17%       3.000      3.000      3.000
+            2387.000       0.591       0.016       4.000   35.61%       3.000      4.000
+     I_Q04H                2.860      -0.279       0.000    0.25%       2.000      3.000      3.000
+            2378.000       0.594      -0.082       4.000   20.77%       3.000      4.000
+     I_Q04J                2.943      -0.520       0.000    0.46%       2.000      3.000      3.000
+            2384.000       0.704       0.040       4.000   26.80%       3.000      4.000
+     I_Q04L                2.442      -0.108       0.000    0.97%       2.000      2.000      2.000
+            2375.000       0.738      -0.133       4.000   10.74%       3.000      3.000
+     I_Q04M                2.940      -0.489       0.000    0.38%       2.000      3.000      3.000
+            2384.000       0.622       0.234       4.000   24.33%       3.000      4.000
+
+MODEL FIT INFORMATION
+
+Invariance Testing
+
+                   Number of                   Degrees of
+     Model        Parameters      Chi-Square    Freedom     P-Value
+
+     Configural        40            138.331        14       0.0000
+     Metric            35            147.749        19       0.0000
+     Scalar            30            170.610        24       0.0000
+
+                                               Degrees of
+     Models Compared              Chi-Square    Freedom     P-Value
+
+     Metric against Configural         3.342         5       0.6474
+     Scalar against Configural        21.000        10       0.0211
+     Scalar against Metric            18.735         5       0.0022
+
+
+MODEL FIT INFORMATION FOR THE CONFIGURAL MODEL
+
+Number of Free Parameters                       40
+
+Loglikelihood
+
+          H0 Value                      -31692.066
+          H0 Scaling Correction Factor      1.2185
+            for MLR
+          H1 Value                      -31594.952
+          H1 Scaling Correction Factor      1.2666
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   63464.133
+          Bayesian (BIC)                 63724.354
+          Sample-Size Adjusted BIC       63597.248
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                            138.331*
+          Degrees of Freedom                    14
+          P-Value                           0.0000
+          Scaling Correction Factor         1.4041
+            for MLR
+
+Chi-Square Contribution and P-Value From Each Group (degrees of freedom = 7)
+
+          MEN                               61.489     0.000
+          WOMEN                             76.842     0.000
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.060
+          90 Percent C.I.                    0.051  0.069
+          Probability RMSEA <= .05           0.033
+
+CFI/TLI
+
+          CFI                                0.978
+          TLI                                0.954
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           5809.721
+          Degrees of Freedom                    30
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.023
+
+
+MODEL FIT INFORMATION FOR THE METRIC MODEL
+
+Number of Free Parameters                       35
+
+Loglikelihood
+
+          H0 Value                      -31694.012
+          H0 Scaling Correction Factor      1.2263
+            for MLR
+          H1 Value                      -31594.952
+          H1 Scaling Correction Factor      1.2666
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   63458.023
+          Bayesian (BIC)                 63685.717
+          Sample-Size Adjusted BIC       63574.499
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                            147.749*
+          Degrees of Freedom                    19
+          P-Value                           0.0000
+          Scaling Correction Factor         1.3409
+            for MLR
+
+Chi-Square Contribution From Each Group
+
+          MEN                               65.833
+          WOMEN                             81.916
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.052
+          90 Percent C.I.                    0.045  0.060
+          Probability RMSEA <= .05           0.296
+
+CFI/TLI
+
+          CFI                                0.978
+          TLI                                0.965
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           5809.721
+          Degrees of Freedom                    30
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.024
+
+
+MODEL FIT INFORMATION FOR THE SCALAR MODEL
+
+Number of Free Parameters                       30
+
+Loglikelihood
+
+          H0 Value                      -31703.490
+          H0 Scaling Correction Factor      1.2620
+            for MLR
+          H1 Value                      -31594.952
+          H1 Scaling Correction Factor      1.2666
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   63466.979
+          Bayesian (BIC)                 63662.145
+          Sample-Size Adjusted BIC       63566.816
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                            170.610*
+          Degrees of Freedom                    24
+          P-Value                           0.0000
+          Scaling Correction Factor         1.2723
+            for MLR
+
+Chi-Square Contribution From Each Group
+
+          MEN                               76.667
+          WOMEN                             93.943
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.050
+          90 Percent C.I.                    0.043  0.057
+          Probability RMSEA <= .05           0.511
+
+CFI/TLI
+
+          CFI                                0.975
+          TLI                                0.968
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           5809.721
+          Degrees of Freedom                    30
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.027
+
+
+
+MODEL RESULTS FOR THE CONFIGURAL MODEL
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MEN
+
+ CURIOUS  BY
+    I_Q04B             1.000      0.000    999.000    999.000
+    I_Q04D             1.000      0.047     21.099      0.000
+    I_Q04H             1.010      0.044     23.015      0.000
+    I_Q04J             1.049      0.057     18.399      0.000
+    I_Q04L             1.210      0.051     23.880      0.000
+    I_Q04M             0.942      0.051     18.498      0.000
+
+ I_Q04B   WITH
+    I_Q04H             0.069      0.012      5.757      0.000
+    I_Q04J            -0.060      0.013     -4.508      0.000
+
+ Means
+    CURIOUS            0.000      0.000    999.000    999.000
+
+ Intercepts
+    I_Q04B             2.305      0.018    131.600      0.000
+    I_Q04D             3.138      0.014    217.679      0.000
+    I_Q04H             2.910      0.014    200.751      0.000
+    I_Q04J             2.940      0.017    175.960      0.000
+    I_Q04L             2.517      0.017    146.724      0.000
+    I_Q04M             2.974      0.014    216.403      0.000
+
+ Variances
+    CURIOUS            0.264      0.023     11.595      0.000
+
+ Residual Variances
+    I_Q04B             0.500      0.022     23.127      0.000
+    I_Q04D             0.312      0.012     25.651      0.000
+    I_Q04H             0.336      0.015     22.352      0.000
+    I_Q04J             0.409      0.019     21.770      0.000
+    I_Q04L             0.372      0.017     22.493      0.000
+    I_Q04M             0.386      0.016     24.857      0.000
+
+Group WOMEN
+
+ CURIOUS  BY
+    I_Q04B             1.000      0.000    999.000    999.000
+    I_Q04D             1.031      0.049     21.044      0.000
+    I_Q04H             1.057      0.052     20.258      0.000
+    I_Q04J             1.094      0.071     15.415      0.000
+    I_Q04L             1.337      0.067     20.030      0.000
+    I_Q04M             0.994      0.051     19.537      0.000
+
+ I_Q04B   WITH
+    I_Q04H             0.059      0.013      4.357      0.000
+    I_Q04J            -0.065      0.014     -4.759      0.000
+
+ Means
+    CURIOUS            0.000      0.000    999.000    999.000
+
+ Intercepts
+    I_Q04B             2.216      0.015    151.368      0.000
+    I_Q04D             3.138      0.017    184.765      0.000
+    I_Q04H             2.860      0.014    199.009      0.000
+    I_Q04J             2.942      0.017    171.751      0.000
+    I_Q04L             2.441      0.016    151.988      0.000
+    I_Q04M             2.941      0.013    219.847      0.000
+
+ Variances
+    CURIOUS            0.238      0.022     10.741      0.000
+
+ Residual Variances
+    I_Q04B             0.478      0.017     28.830      0.000
+    I_Q04D             0.339      0.016     21.563      0.000
+    I_Q04H             0.328      0.017     18.902      0.000
+    I_Q04J             0.419      0.015     27.780      0.000
+    I_Q04L             0.314      0.016     20.108      0.000
+    I_Q04M             0.387      0.014     27.571      0.000
+
+
+MODEL RESULTS FOR THE METRIC MODEL
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MEN
+
+ CURIOUS  BY
+    I_Q04B             1.000      0.000    999.000    999.000
+    I_Q04D             1.016      0.037     27.731      0.000
+    I_Q04H             1.033      0.034     30.167      0.000
+    I_Q04J             1.071      0.046     23.179      0.000
+    I_Q04L             1.272      0.045     28.392      0.000
+    I_Q04M             0.967      0.037     26.052      0.000
+
+ I_Q04B   WITH
+    I_Q04H             0.072      0.012      6.138      0.000
+    I_Q04J            -0.058      0.013     -4.370      0.000
+
+ Means
+    CURIOUS            0.000      0.000    999.000    999.000
+
+ Intercepts
+    I_Q04B             2.305      0.018    131.583      0.000
+    I_Q04D             3.138      0.014    217.677      0.000
+    I_Q04H             2.910      0.014    200.741      0.000
+    I_Q04J             2.940      0.017    175.965      0.000
+    I_Q04L             2.517      0.017    146.705      0.000
+    I_Q04M             2.974      0.014    216.388      0.000
+
+ Variances
+    CURIOUS            0.251      0.018     13.772      0.000
+
+ Residual Variances
+    I_Q04B             0.505      0.020     24.759      0.000
+    I_Q04D             0.313      0.012     25.976      0.000
+    I_Q04H             0.337      0.015     22.662      0.000
+    I_Q04J             0.410      0.018     22.534      0.000
+    I_Q04L             0.367      0.015     23.873      0.000
+    I_Q04M             0.386      0.015     25.843      0.000
+
+Group WOMEN
+
+ CURIOUS  BY
+    I_Q04B             1.000      0.000    999.000    999.000
+    I_Q04D             1.016      0.037     27.731      0.000
+    I_Q04H             1.033      0.034     30.167      0.000
+    I_Q04J             1.071      0.046     23.179      0.000
+    I_Q04L             1.272      0.045     28.392      0.000
+    I_Q04M             0.967      0.037     26.052      0.000
+
+ I_Q04B   WITH
+    I_Q04H             0.055      0.013      4.311      0.000
+    I_Q04J            -0.068      0.013     -5.143      0.000
+
+ Means
+    CURIOUS            0.000      0.000    999.000    999.000
+
+ Intercepts
+    I_Q04B             2.216      0.015    151.316      0.000
+    I_Q04D             3.138      0.017    184.762      0.000
+    I_Q04H             2.860      0.014    198.951      0.000
+    I_Q04J             2.942      0.017    171.763      0.000
+    I_Q04L             2.441      0.016    152.027      0.000
+    I_Q04M             2.941      0.013    219.836      0.000
+
+ Variances
+    CURIOUS            0.251      0.017     14.817      0.000
+
+ Residual Variances
+    I_Q04B             0.473      0.016     29.658      0.000
+    I_Q04D             0.336      0.015     22.074      0.000
+    I_Q04H             0.326      0.016     20.113      0.000
+    I_Q04J             0.419      0.015     27.855      0.000
+    I_Q04L             0.320      0.015     21.364      0.000
+    I_Q04M             0.388      0.014     27.780      0.000
+
+
+MODEL RESULTS FOR THE SCALAR MODEL
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MEN
+
+ CURIOUS  BY
+    I_Q04B             1.000      0.000    999.000    999.000
+    I_Q04D             1.011      0.037     27.388      0.000
+    I_Q04H             1.031      0.034     29.988      0.000
+    I_Q04J             1.066      0.046     23.173      0.000
+    I_Q04L             1.270      0.045     28.409      0.000
+    I_Q04M             0.964      0.037     26.019      0.000
+
+ I_Q04B   WITH
+    I_Q04H             0.072      0.012      6.108      0.000
+    I_Q04J            -0.058      0.013     -4.401      0.000
+
+ Means
+    CURIOUS            0.000      0.000    999.000    999.000
+
+ Intercepts
+    I_Q04B             2.280      0.013    173.143      0.000
+    I_Q04D             3.155      0.012    260.026      0.000
+    I_Q04H             2.904      0.013    223.718      0.000
+    I_Q04J             2.960      0.014    214.586      0.000
+    I_Q04L             2.502      0.015    167.727      0.000
+    I_Q04M             2.975      0.011    280.873      0.000
+
+ Variances
+    CURIOUS            0.252      0.018     13.711      0.000
+
+ Residual Variances
+    I_Q04B             0.505      0.020     24.806      0.000
+    I_Q04D             0.314      0.012     26.097      0.000
+    I_Q04H             0.336      0.015     22.660      0.000
+    I_Q04J             0.411      0.018     22.459      0.000
+    I_Q04L             0.367      0.015     23.780      0.000
+    I_Q04M             0.386      0.015     25.867      0.000
+
+Group WOMEN
+
+ CURIOUS  BY
+    I_Q04B             1.000      0.000    999.000    999.000
+    I_Q04D             1.011      0.037     27.388      0.000
+    I_Q04H             1.031      0.034     29.988      0.000
+    I_Q04J             1.066      0.046     23.173      0.000
+    I_Q04L             1.270      0.045     28.409      0.000
+    I_Q04M             0.964      0.037     26.019      0.000
+
+ I_Q04B   WITH
+    I_Q04H             0.055      0.013      4.267      0.000
+    I_Q04J            -0.068      0.013     -5.177      0.000
+
+ Means
+    CURIOUS           -0.037      0.015     -2.426      0.015
+
+ Intercepts
+    I_Q04B             2.280      0.013    173.143      0.000
+    I_Q04D             3.155      0.012    260.026      0.000
+    I_Q04H             2.904      0.013    223.718      0.000
+    I_Q04J             2.960      0.014    214.586      0.000
+    I_Q04L             2.502      0.015    167.727      0.000
+    I_Q04M             2.975      0.011    280.873      0.000
+
+ Variances
+    CURIOUS            0.252      0.017     14.675      0.000
+
+ Residual Variances
+    I_Q04B             0.473      0.016     29.448      0.000
+    I_Q04D             0.337      0.015     22.136      0.000
+    I_Q04H             0.326      0.016     20.052      0.000
+    I_Q04J             0.419      0.015     28.291      0.000
+    I_Q04L             0.320      0.015     21.333      0.000
+    I_Q04M             0.388      0.014     27.770      0.000
+
+
+QUALITY OF NUMERICAL RESULTS FOR THE CONFIGURAL MODEL
+
+     Condition Number for the Information Matrix              0.594E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+QUALITY OF NUMERICAL RESULTS FOR THE METRIC MODEL
+
+     Condition Number for the Information Matrix              0.127E-01
+       (ratio of smallest to largest eigenvalue)
+
+
+QUALITY OF NUMERICAL RESULTS FOR THE SCALAR MODEL
+
+     Condition Number for the Information Matrix              0.676E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MEN
+
+ CURIOUS  BY
+    I_Q04B           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04D           0.916       0.939       0.950       1.011       1.072       1.083       1.106
+    I_Q04H           0.942       0.963       0.974       1.031       1.087       1.098       1.119
+    I_Q04J           0.947       0.976       0.990       1.066       1.142       1.156       1.184
+    I_Q04L           1.155       1.182       1.196       1.270       1.343       1.357       1.385
+    I_Q04M           0.868       0.891       0.903       0.964       1.025       1.036       1.059
+
+ I_Q04B   WITH
+    I_Q04H           0.042       0.049       0.053       0.072       0.092       0.095       0.102
+    I_Q04J          -0.092      -0.084      -0.080      -0.058      -0.036      -0.032      -0.024
+
+ Means
+    CURIOUS          0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Intercepts
+    I_Q04B           2.246       2.254       2.258       2.280       2.301       2.305       2.313
+    I_Q04D           3.124       3.132       3.135       3.155       3.175       3.179       3.187
+    I_Q04H           2.871       2.879       2.883       2.904       2.925       2.929       2.937
+    I_Q04J           2.925       2.933       2.937       2.960       2.983       2.987       2.996
+    I_Q04L           2.464       2.473       2.478       2.502       2.527       2.531       2.541
+    I_Q04M           2.948       2.955       2.958       2.975       2.993       2.996       3.003
+
+ Variances
+    CURIOUS          0.205       0.216       0.222       0.252       0.283       0.288       0.300
+
+ Residual Variances
+    I_Q04B           0.452       0.465       0.471       0.505       0.538       0.545       0.557
+    I_Q04D           0.283       0.290       0.294       0.314       0.334       0.338       0.345
+    I_Q04H           0.298       0.307       0.312       0.336       0.361       0.366       0.375
+    I_Q04J           0.364       0.375       0.381       0.411       0.441       0.447       0.458
+    I_Q04L           0.327       0.336       0.341       0.367       0.392       0.397       0.406
+    I_Q04M           0.348       0.357       0.362       0.386       0.411       0.415       0.425
+
+Group WOMEN
+
+ CURIOUS  BY
+    I_Q04B           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    I_Q04D           0.916       0.939       0.950       1.011       1.072       1.083       1.106
+    I_Q04H           0.942       0.963       0.974       1.031       1.087       1.098       1.119
+    I_Q04J           0.947       0.976       0.990       1.066       1.142       1.156       1.184
+    I_Q04L           1.155       1.182       1.196       1.270       1.343       1.357       1.385
+    I_Q04M           0.868       0.891       0.903       0.964       1.025       1.036       1.059
+
+ I_Q04B   WITH
+    I_Q04H           0.022       0.030       0.034       0.055       0.076       0.080       0.088
+    I_Q04J          -0.102      -0.094      -0.090      -0.068      -0.047      -0.043      -0.034
+
+ Means
+    CURIOUS         -0.077      -0.068      -0.063      -0.037      -0.012      -0.007       0.002
+
+ Intercepts
+    I_Q04B           2.246       2.254       2.258       2.280       2.301       2.305       2.313
+    I_Q04D           3.124       3.132       3.135       3.155       3.175       3.179       3.187
+    I_Q04H           2.871       2.879       2.883       2.904       2.925       2.929       2.937
+    I_Q04J           2.925       2.933       2.937       2.960       2.983       2.987       2.996
+    I_Q04L           2.464       2.473       2.478       2.502       2.527       2.531       2.541
+    I_Q04M           2.948       2.955       2.958       2.975       2.993       2.996       3.003
+
+ Variances
+    CURIOUS          0.208       0.219       0.224       0.252       0.281       0.286       0.297
+
+ Residual Variances
+    I_Q04B           0.432       0.442       0.447       0.473       0.500       0.505       0.515
+    I_Q04D           0.298       0.307       0.312       0.337       0.362       0.367       0.377
+    I_Q04H           0.284       0.294       0.299       0.326       0.353       0.358       0.368
+    I_Q04J           0.381       0.390       0.395       0.419       0.444       0.448       0.457
+    I_Q04L           0.281       0.291       0.295       0.320       0.345       0.349       0.359
+    I_Q04M           0.352       0.360       0.365       0.388       0.411       0.415       0.424
+
+
+TECHNICAL 1 OUTPUT FOR THE CONFIGURAL MODEL
+
+
+     PARAMETER SPECIFICATION FOR MEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              I_Q04M
+              ________
+                  6
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B             0
+ I_Q04D             7
+ I_Q04H             8
+ I_Q04J             9
+ I_Q04L            10
+ I_Q04M            11
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B            12
+ I_Q04D             0            13
+ I_Q04H            14             0            15
+ I_Q04J            16             0             0            17
+ I_Q04L             0             0             0             0            18
+ I_Q04M             0             0             0             0             0
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M            19
+
+
+           ALPHA
+              CURIOUS
+              ________
+                  0
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS            0
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS           20
+
+
+     PARAMETER SPECIFICATION FOR WOMEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                 21            22            23            24            25
+
+
+           NU
+              I_Q04M
+              ________
+                 26
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B             0
+ I_Q04D            27
+ I_Q04H            28
+ I_Q04J            29
+ I_Q04L            30
+ I_Q04M            31
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B            32
+ I_Q04D             0            33
+ I_Q04H            34             0            35
+ I_Q04J            36             0             0            37
+ I_Q04L             0             0             0             0            38
+ I_Q04M             0             0             0             0             0
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M            39
+
+
+           ALPHA
+              CURIOUS
+              ________
+                  0
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS            0
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS           40
+
+
+     STARTING VALUES FOR MEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                2.305         3.138         2.910         2.940         2.518
+
+
+           NU
+              I_Q04M
+              ________
+                2.974
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B         1.000
+ I_Q04D         0.894
+ I_Q04H         1.027
+ I_Q04J         0.899
+ I_Q04L         1.057
+ I_Q04M         0.802
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.383
+ I_Q04D         0.000         0.288
+ I_Q04H         0.000         0.000         0.302
+ I_Q04J         0.000         0.000         0.000         0.350
+ I_Q04L         0.000         0.000         0.000         0.000         0.379
+ I_Q04M         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M         0.310
+
+
+           ALPHA
+              CURIOUS
+              ________
+                0.000
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS        0.000
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS        0.050
+
+
+     STARTING VALUES FOR WOMEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                2.305         3.138         2.910         2.940         2.518
+
+
+           NU
+              I_Q04M
+              ________
+                2.974
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B         1.000
+ I_Q04D         0.948
+ I_Q04H         1.068
+ I_Q04J         0.949
+ I_Q04L         1.151
+ I_Q04M         0.865
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.383
+ I_Q04D         0.000         0.288
+ I_Q04H         0.000         0.000         0.302
+ I_Q04J         0.000         0.000         0.000         0.350
+ I_Q04L         0.000         0.000         0.000         0.000         0.379
+ I_Q04M         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M         0.310
+
+
+           ALPHA
+              CURIOUS
+              ________
+                0.000
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS        0.000
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS        0.050
+
+
+TECHNICAL 1 OUTPUT FOR THE METRIC MODEL
+
+
+     PARAMETER SPECIFICATION FOR MEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              I_Q04M
+              ________
+                  6
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B             0
+ I_Q04D             7
+ I_Q04H             8
+ I_Q04J             9
+ I_Q04L            10
+ I_Q04M            11
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B            12
+ I_Q04D             0            13
+ I_Q04H            14             0            15
+ I_Q04J            16             0             0            17
+ I_Q04L             0             0             0             0            18
+ I_Q04M             0             0             0             0             0
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M            19
+
+
+           ALPHA
+              CURIOUS
+              ________
+                  0
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS            0
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS           20
+
+
+     PARAMETER SPECIFICATION FOR WOMEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                 21            22            23            24            25
+
+
+           NU
+              I_Q04M
+              ________
+                 26
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B             0
+ I_Q04D             7
+ I_Q04H             8
+ I_Q04J             9
+ I_Q04L            10
+ I_Q04M            11
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B            27
+ I_Q04D             0            28
+ I_Q04H            29             0            30
+ I_Q04J            31             0             0            32
+ I_Q04L             0             0             0             0            33
+ I_Q04M             0             0             0             0             0
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M            34
+
+
+           ALPHA
+              CURIOUS
+              ________
+                  0
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS            0
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS           35
+
+
+     STARTING VALUES FOR MEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                2.305         3.138         2.910         2.940         2.518
+
+
+           NU
+              I_Q04M
+              ________
+                2.974
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B         1.000
+ I_Q04D         0.894
+ I_Q04H         1.027
+ I_Q04J         0.899
+ I_Q04L         1.057
+ I_Q04M         0.802
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.383
+ I_Q04D         0.000         0.288
+ I_Q04H         0.000         0.000         0.302
+ I_Q04J         0.000         0.000         0.000         0.350
+ I_Q04L         0.000         0.000         0.000         0.000         0.379
+ I_Q04M         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M         0.310
+
+
+           ALPHA
+              CURIOUS
+              ________
+                0.000
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS        0.000
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS        0.050
+
+
+     STARTING VALUES FOR WOMEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                2.305         3.138         2.910         2.940         2.518
+
+
+           NU
+              I_Q04M
+              ________
+                2.974
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B         1.000
+ I_Q04D         0.948
+ I_Q04H         1.068
+ I_Q04J         0.949
+ I_Q04L         1.151
+ I_Q04M         0.865
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.383
+ I_Q04D         0.000         0.288
+ I_Q04H         0.000         0.000         0.302
+ I_Q04J         0.000         0.000         0.000         0.350
+ I_Q04L         0.000         0.000         0.000         0.000         0.379
+ I_Q04M         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M         0.310
+
+
+           ALPHA
+              CURIOUS
+              ________
+                0.000
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS        0.000
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS        0.050
+
+
+TECHNICAL 1 OUTPUT FOR THE SCALAR MODEL
+
+
+     PARAMETER SPECIFICATION FOR MEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              I_Q04M
+              ________
+                  6
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B             0
+ I_Q04D             7
+ I_Q04H             8
+ I_Q04J             9
+ I_Q04L            10
+ I_Q04M            11
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B            12
+ I_Q04D             0            13
+ I_Q04H            14             0            15
+ I_Q04J            16             0             0            17
+ I_Q04L             0             0             0             0            18
+ I_Q04M             0             0             0             0             0
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M            19
+
+
+           ALPHA
+              CURIOUS
+              ________
+                  0
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS            0
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS           20
+
+
+     PARAMETER SPECIFICATION FOR WOMEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              I_Q04M
+              ________
+                  6
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B             0
+ I_Q04D             7
+ I_Q04H             8
+ I_Q04J             9
+ I_Q04L            10
+ I_Q04M            11
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B            21
+ I_Q04D             0            22
+ I_Q04H            23             0            24
+ I_Q04J            25             0             0            26
+ I_Q04L             0             0             0             0            27
+ I_Q04M             0             0             0             0             0
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M            28
+
+
+           ALPHA
+              CURIOUS
+              ________
+                 29
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS            0
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS           30
+
+
+     STARTING VALUES FOR MEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                2.305         3.138         2.910         2.940         2.518
+
+
+           NU
+              I_Q04M
+              ________
+                2.974
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B         1.000
+ I_Q04D         0.894
+ I_Q04H         1.027
+ I_Q04J         0.899
+ I_Q04L         1.057
+ I_Q04M         0.802
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.383
+ I_Q04D         0.000         0.288
+ I_Q04H         0.000         0.000         0.302
+ I_Q04J         0.000         0.000         0.000         0.350
+ I_Q04L         0.000         0.000         0.000         0.000         0.379
+ I_Q04M         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M         0.310
+
+
+           ALPHA
+              CURIOUS
+              ________
+                0.000
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS        0.000
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS        0.050
+
+
+     STARTING VALUES FOR WOMEN
+
+
+           NU
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+                2.305         3.138         2.910         2.940         2.518
+
+
+           NU
+              I_Q04M
+              ________
+                2.974
+
+
+           LAMBDA
+              CURIOUS
+              ________
+ I_Q04B         1.000
+ I_Q04D         0.948
+ I_Q04H         1.068
+ I_Q04J         0.949
+ I_Q04L         1.151
+ I_Q04M         0.865
+
+
+           THETA
+              I_Q04B        I_Q04D        I_Q04H        I_Q04J        I_Q04L
+              ________      ________      ________      ________      ________
+ I_Q04B         0.383
+ I_Q04D         0.000         0.288
+ I_Q04H         0.000         0.000         0.302
+ I_Q04J         0.000         0.000         0.000         0.350
+ I_Q04L         0.000         0.000         0.000         0.000         0.379
+ I_Q04M         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              I_Q04M
+              ________
+ I_Q04M         0.310
+
+
+           ALPHA
+              CURIOUS
+              ________
+                0.000
+
+
+           BETA
+              CURIOUS
+              ________
+ CURIOUS        0.000
+
+
+           PSI
+              CURIOUS
+              ________
+ CURIOUS        0.050
+
+
+TECHNICAL 9 OUTPUT
+
+Error messages for the Configural Model:
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Error messages for the Metric Model:
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Error messages for the Scalar Model:
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are not available for multiple invariance models.
+  No diagram output was produced.
+
+
+     Beginning Time:  13:53:00
+        Ending Time:  13:53:00
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2018 Muthen & Muthen
