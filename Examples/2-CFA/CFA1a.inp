@@ -6,25 +6,25 @@ TITLE:	Structural equation modeling with PIAAC data
 DATA: 	FILE IS piaac1-nor_pv1.dat;
 	! TYPE = IMPUTATION;
 	! Not needed here as the model does not contain any PV
-		
-		
-VARIABLE: 
-	NAMES ARE 
+
+
+VARIABLE:
+	NAMES ARE
 		AGE FEMALE B_Q01a
 		D_Q11a D_Q11b D_Q11c D_Q11d
 		F_Q03a F_Q03c F_Q05a F_Q05b
 		G_Q01a G_Q01b G_Q01c G_Q01d
 		G_Q01e G_Q01f G_Q01g G_Q01h
 		G_Q02a G_Q02b G_Q02c G_Q02d
-		G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h 
-		G_Q05a G_Q05c G_Q05d G_Q05e 
+		G_Q03b G_Q03c G_Q03d G_Q03f G_Q03g G_Q03h
+		G_Q05a G_Q05c G_Q05d G_Q05e
 		G_Q05f G_Q05g G_Q05h
-		H_Q01a H_Q01b H_Q01c H_Q01d 
+		H_Q01a H_Q01b H_Q01c H_Q01d
 		H_Q01e H_Q01f H_Q01g H_Q01h
 		H_Q02a H_Q02b H_Q02c H_Q02d
 		H_Q03b H_Q03c H_Q03d H_Q03f H_Q03g H_Q03h
-		H_Q05a H_Q05c H_Q05d H_Q05e 
-		H_Q05f H_Q05g H_Q05h 
+		H_Q05a H_Q05c H_Q05d H_Q05e
+		H_Q05f H_Q05g H_Q05h
 		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
 		I_Q06a
 		I_Q07a I_Q07b
@@ -33,29 +33,29 @@ VARIABLE:
 		SPFWT0
 		SPFWT1-SPFWT80
 		VARSTRAT VARUNIT;
-		
+
 	! Variables to be used
 	! Newly defined variable appear at the end of this list
-	USEVARIABLES ARE 
-		I_Q04b 
-		I_Q04d 
-		I_Q04h 
-		I_Q04j 
+	USEVARIABLES ARE
+		I_Q04b
+		I_Q04d
+		I_Q04h
+		I_Q04j
 		I_Q04l
 		I_Q04m;
-		
+
 	! Missing data coding
 	MISSING ARE ALL(-99);
-		
+
 	! Final participant weight
 	WEIGHT = SPFWT0;
-	
+
 	! Clustering in sampling units
 	CLUSTER = VARUNIT;
-	
+
 	! Stratification
 	STRATIFICATION = VARSTRAT;
-	
+
 
 ANALYSIS:
 	TYPE = COMPLEX;
@@ -63,23 +63,22 @@ ANALYSIS:
 	H1ITERATIONS = 10000;
 
 MODEL:
-	
+
 	! MEASUREMENT MODEL
 	! Curiousity
 	CURIOUS BY
-		I_Q04b 
-		I_Q04d 
-		I_Q04h 
-		I_Q04j 
+		I_Q04b
+		I_Q04d
+		I_Q04h
+		I_Q04j
 		I_Q04l
 		I_Q04m;
-	
-	
+
 
 
 OUTPUT: STDYX;	! Fully standardized parameters requested
-        STDY;	! Standardized parameter estimates requested 
+        STDY;	! Standardized parameter estimates requested
         		! (some X-variables are dichotomous)
-        SAMPSTAT;	! Sample statistics 
+        SAMPSTAT;	! Sample statistics
         CINTERVAL;	! Confidence intervals
         MOD(all);	! Modification indices

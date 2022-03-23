@@ -1,6 +1,6 @@
-Mplus VERSION 8.2 (Mac)
+Mplus VERSION 8.5 (Linux)
 MUTHEN & MUTHEN
-03/19/2022   6:03 PM
+03/22/2022  10:19 AM
 
 INPUT INSTRUCTIONS
 
@@ -12,8 +12,8 @@ INPUT INSTRUCTIONS
   DATA: 	FILE IS piaac1-nor_pvlist.dat;
   	TYPE = IMPUTATION;
   	! Needed here as the model contains PVs
-  		
-  		
+
+
   VARIABLE:
   	NAMES ARE
   		AGE FEMALE B_Q01a
@@ -39,23 +39,23 @@ INPUT INSTRUCTIONS
   		SPFWT0
   		SPFWT1-SPFWT80
   		VARSTRAT VARUNIT;
-  		
+
   	! Variables to be used
   	! Newly defined variable appear at the end of this list
   	USEVARIABLES ARE
   		PSTRE
   		CURIOUS
   		LIFE;
-  		
+
   	! Missing data coding
   	MISSING ARE ALL(-99);
-  		
+
   	! Final participant weight
   	WEIGHT = SPFWT0;
-  	
+
   	! Clustering in sampling units
   	CLUSTER = VARUNIT;
-  	
+
   	! Stratification
   	STRATIFICATION = VARSTRAT;
 
@@ -64,7 +64,7 @@ INPUT INSTRUCTIONS
   	! Scale down the achievement scores to avoid convergence issues
   	PSTRE = PVPSL/100;
   	LIT = PVLIT/100;
-  	
+
   	! Create scale means as composite scores
   	CURIOUS = (I_Q04b+
   	I_Q04d+
@@ -72,7 +72,7 @@ INPUT INSTRUCTIONS
   	I_Q04j+
   	I_Q04l+
   	I_Q04m)/6;
-  	
+
   	LIFE = (H_Q05a+
   	H_Q05c+
   	H_Q05e+
@@ -85,24 +85,24 @@ INPUT INSTRUCTIONS
   	H1ITERATIONS = 10000;
 
   MODEL:
-  	
+
   	! STRUCTURAL MODEL
   	! Direct effects
   	PSTRE ON
   		LIFE(b);
-  		
+
   	LIFE ON
   		CURIOUS(a);
-  	
+
   	! Variances and covariances of predictors to let FIML work
   	! Variance
   	CURIOUS;
-  	
-  	
+
+
   MODEL INDIRECT:
   	! Indirect effects
   	PSTRE IND CURIOUS;
-  	
+
 
   MODEL CONSTRAINT:
   	! Estimate indirect and total effects by hand
@@ -112,7 +112,7 @@ INPUT INSTRUCTIONS
 
   OUTPUT: STDYX;	! Fully standardized parameters requested
           STDY;	! Standardized parameter estimates requested
-          		! (some X-variables are dichotomous)
+  				! (some X-variables are dichotomous)
           SAMPSTAT;	! Sample statistics
           CINTERVAL;	! Confidence intervals
 
@@ -389,21 +389,21 @@ RMSEA (Root Mean Square Error Of Approximation)
         Std Dev                              0.008
         Number of successful computations       10
 
-             Proportions                   Percentiles
-        Expected    Observed         Expected       Observed
-           0.990       1.000            0.088          0.098
-           0.980       1.000            0.090          0.098
-           0.950       1.000            0.093          0.098
-           0.900       1.000            0.096          0.098
-           0.800       0.700            0.100          0.098
-           0.700       0.600            0.102          0.099
-           0.500       0.400            0.107          0.105
-           0.300       0.300            0.111          0.107
-           0.200       0.200            0.114          0.112
-           0.100       0.100            0.117          0.117
-           0.050       0.100            0.120          0.117
-           0.020       0.100            0.124          0.117
-           0.010       0.000            0.126          0.117
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       1.000
+           0.800       1.000
+           0.700       1.000
+           0.500       1.000
+           0.300       1.000
+           0.200       1.000
+           0.100       0.300
+           0.050       0.000
+           0.020       0.000
+           0.010       0.000
 
 CFI/TLI
 
@@ -413,21 +413,21 @@ CFI/TLI
         Std Dev                              0.009
         Number of successful computations       10
 
-             Proportions                   Percentiles
-        Expected    Observed         Expected       Observed
-           0.990       1.000            0.919          0.920
-           0.980       0.900            0.921          0.920
-           0.950       0.900            0.925          0.920
-           0.900       0.900            0.928          0.920
-           0.800       0.800            0.932          0.920
-           0.700       0.700            0.935          0.933
-           0.500       0.700            0.940          0.941
-           0.300       0.400            0.945          0.946
-           0.200       0.100            0.948          0.947
-           0.100       0.100            0.952          0.947
-           0.050       0.000            0.955          0.947
-           0.020       0.000            0.959          0.947
-           0.010       0.000            0.961          0.947
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       0.900
+           0.900       0.000
+           0.800       0.000
+           0.700       0.000
+           0.500       0.000
+           0.300       0.000
+           0.200       0.000
+           0.100       0.000
+           0.050       0.000
+           0.020       0.000
+           0.010       0.000
 
     TLI
 
@@ -435,21 +435,21 @@ CFI/TLI
         Std Dev                              0.028
         Number of successful computations       10
 
-             Proportions                   Percentiles
-        Expected    Observed         Expected       Observed
-           0.990       1.000            0.756          0.760
-           0.980       0.900            0.763          0.760
-           0.950       0.900            0.774          0.760
-           0.900       0.900            0.784          0.760
-           0.800       0.800            0.797          0.760
-           0.700       0.700            0.805          0.799
-           0.500       0.700            0.820          0.822
-           0.300       0.400            0.834          0.839
-           0.200       0.100            0.843          0.840
-           0.100       0.100            0.855          0.841
-           0.050       0.000            0.865          0.841
-           0.020       0.000            0.877          0.841
-           0.010       0.000            0.884          0.841
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       1.000
+           0.800       0.300
+           0.700       0.000
+           0.500       0.000
+           0.300       0.000
+           0.200       0.000
+           0.100       0.000
+           0.050       0.000
+           0.020       0.000
+           0.010       0.000
 
 SRMR (Standardized Root Mean Square Residual)
 
@@ -457,21 +457,21 @@ SRMR (Standardized Root Mean Square Residual)
         Std Dev                              0.003
         Number of successful computations       10
 
-             Proportions                   Percentiles
-        Expected    Observed         Expected       Observed
-           0.990       1.000            0.032          0.033
-           0.980       1.000            0.032          0.033
-           0.950       0.900            0.034          0.033
-           0.900       0.900            0.035          0.033
-           0.800       0.800            0.036          0.033
-           0.700       0.600            0.037          0.036
-           0.500       0.600            0.038          0.039
-           0.300       0.300            0.040          0.039
-           0.200       0.200            0.041          0.040
-           0.100       0.200            0.042          0.042
-           0.050       0.000            0.043          0.042
-           0.020       0.000            0.044          0.042
-           0.010       0.000            0.045          0.042
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       1.000
+           0.800       1.000
+           0.700       1.000
+           0.500       1.000
+           0.300       1.000
+           0.200       1.000
+           0.100       1.000
+           0.050       1.000
+           0.020       0.000
+           0.010       0.000
 
 
 MODEL RESULTS
@@ -584,8 +584,7 @@ Effects from CURIOUS to PSTRE
   Total                0.096      0.007     13.654      0.000      0.224
   Total indirect       0.096      0.007     13.654      0.000      0.224
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     CURIOUS            0.096      0.007     13.654      0.000      0.224
@@ -605,8 +604,7 @@ Effects from CURIOUS to PSTRE
   Total                0.139      0.010     14.384      0.000      0.217
   Total indirect       0.139      0.010     14.384      0.000      0.217
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     CURIOUS            0.139      0.010     14.384      0.000      0.217
@@ -623,8 +621,7 @@ Effects from CURIOUS to PSTRE
   Total                0.139      0.010     14.384      0.000      0.217
   Total indirect       0.139      0.010     14.384      0.000      0.217
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     CURIOUS            0.139      0.010     14.384      0.000      0.217
@@ -723,8 +720,7 @@ Effects from CURIOUS to PSTRE
   Total              0.078       0.082       0.084       0.096       0.107       0.109       0.114
   Total indirect     0.078       0.082       0.084       0.096       0.107       0.109       0.114
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     CURIOUS          0.078       0.082       0.084       0.096       0.107       0.109       0.114
@@ -743,8 +739,7 @@ Effects from CURIOUS to PSTRE
   Total              0.114       0.120       0.123       0.139       0.155       0.158       0.164
   Total indirect     0.114       0.120       0.123       0.139       0.155       0.158       0.164
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     CURIOUS          0.114       0.120       0.123       0.139       0.155       0.158       0.164
@@ -760,8 +755,7 @@ Effects from CURIOUS to PSTRE
   Total              0.114       0.120       0.123       0.139       0.155       0.158       0.164
   Total indirect     0.114       0.120       0.123       0.139       0.155       0.158       0.164
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     CURIOUS          0.114       0.120       0.123       0.139       0.155       0.158       0.164
@@ -890,11 +884,11 @@ DIAGRAM INFORMATION
   If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
 
   Diagram output
-    /Users/ronnysc/Documents/CEMO/TEACHING/PIAAC2022-SEM/Examples/1-PathModels/PATH2b.dgm
+    PATH2b.dgm
 
-     Beginning Time:  18:03:49
-        Ending Time:  18:03:51
-       Elapsed Time:  00:00:02
+     Beginning Time:  10:19:16
+        Ending Time:  10:19:21
+       Elapsed Time:  00:00:05
 
 
 
@@ -907,4 +901,4 @@ Fax: (310) 391-8971
 Web: www.StatModel.com
 Support: Support@StatModel.com
 
-Copyright (c) 1998-2018 Muthen & Muthen
+Copyright (c) 1998-2020 Muthen & Muthen

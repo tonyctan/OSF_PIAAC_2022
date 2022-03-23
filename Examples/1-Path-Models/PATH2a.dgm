@@ -88,39 +88,39 @@ pstre life curious
 2 1 0
 0
 0
-1 1 curious pstre           0.092           0.014           0.065           0.120
+1 1 curious pstre 0.092 0.014 0.065 0.120
 91 1 curious pstre c
-1 1 life pstre           0.171           0.012           0.147           0.196
+1 1 life pstre 0.171 0.012 0.147 0.196
 91 1 life pstre b
-1 1 curious life           0.482           0.021           0.441           0.523
+1 1 curious life 0.482 0.021 0.441 0.523
 91 1 curious life a
-4 1 pstre           0.139           0.005           0.130           0.148
-4 1 life           0.505           0.012           0.481           0.528
-5 1 curious           0.345           0.007           0.331           0.358
-11 1 curious pstre           0.134           0.021           0.093           0.174
+4 1 pstre 0.139 0.005 0.130 0.148
+4 1 life 0.505 0.012 0.481 0.528
+5 1 curious 0.345 0.007 0.331 0.358
+11 1 curious pstre 0.134 0.021 0.093 0.174
 91 1 curious pstre c
-11 1 life pstre           0.323           0.021           0.282           0.365
+11 1 life pstre 0.323 0.021 0.282 0.365
 91 1 life pstre b
-11 1 curious life           0.370           0.015           0.340           0.400
+11 1 curious life 0.370 0.015 0.340 0.400
 91 1 curious life a
-14 1 pstre           0.845           0.015           0.817           0.874
-14 1 life           0.863           0.011           0.841           0.886
-15 1 curious           1.000           0.000           1.000           1.000
-21 1 curious pstre           0.134           0.021           0.093           0.174
+14 1 pstre 0.845 0.015 0.817 0.874
+14 1 life 0.863 0.011 0.841 0.886
+15 1 curious 1.000 0.000 1.000 1.000
+21 1 curious pstre 0.134 0.021 0.093 0.174
 91 1 curious pstre c
-21 1 life pstre           0.323           0.021           0.282           0.365
+21 1 life pstre 0.323 0.021 0.282 0.365
 91 1 life pstre b
-21 1 curious life           0.370           0.015           0.340           0.400
+21 1 curious life 0.370 0.015 0.340 0.400
 91 1 curious life a
-24 1 pstre           0.845           0.015           0.817           0.874
-24 1 life           0.863           0.011           0.841           0.886
-25 1 curious           1.000           0.000           1.000           1.000
-31 1 curious pstre           0.092           0.014           0.065           0.120
+24 1 pstre 0.845 0.015 0.817 0.874
+24 1 life 0.863 0.011 0.841 0.886
+25 1 curious 1.000 0.000 1.000 1.000
+31 1 curious pstre 0.092 0.014 0.065 0.120
 91 1 curious pstre c
-31 1 life pstre           0.171           0.012           0.147           0.196
+31 1 life pstre 0.171 0.012 0.147 0.196
 91 1 life pstre b
-31 1 curious life           0.482           0.021           0.441           0.523
+31 1 curious life 0.482 0.021 0.441 0.523
 91 1 curious life a
-34 1 pstre           0.139           0.005           0.130           0.148
-34 1 life           0.505           0.012           0.481           0.528
-35 1 curious           0.345           0.007           0.331           0.358
+34 1 pstre 0.139 0.005 0.130 0.148
+34 1 life 0.505 0.012 0.481 0.528
+35 1 curious 0.345 0.007 0.331 0.358

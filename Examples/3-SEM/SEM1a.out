@@ -1,6 +1,6 @@
-Mplus VERSION 8.2 (Mac)
+Mplus VERSION 8.5 (Linux)
 MUTHEN & MUTHEN
-03/19/2022   6:15 PM
+03/23/2022   9:42 AM
 
 INPUT INSTRUCTIONS
 
@@ -12,8 +12,8 @@ INPUT INSTRUCTIONS
   DATA: 	FILE IS piaac1-nor_pvlist.dat;
   	TYPE = IMPUTATION;
   	! Needed here as the model contains PVs
-  		
-  		
+
+
   VARIABLE:
   	NAMES ARE
   		AGE FEMALE B_Q01a
@@ -39,7 +39,7 @@ INPUT INSTRUCTIONS
   		SPFWT0
   		SPFWT1-SPFWT80
   		VARSTRAT VARUNIT;
-  		
+
   	! Variables to be used
   	! Newly defined variable appear at the end of this list
   	USEVARIABLES ARE
@@ -57,16 +57,16 @@ INPUT INSTRUCTIONS
   		FEMALE
   		LIT
   		PSTRE;
-  		
+
   	! Missing data coding
   	MISSING ARE ALL(-99);
-  		
+
   	! Final participant weight
   	WEIGHT = SPFWT0;
-  	
+
   	! Clustering in sampling units
   	CLUSTER = VARUNIT;
-  	
+
   	! Stratification
   	STRATIFICATION = VARSTRAT;
 
@@ -75,7 +75,7 @@ INPUT INSTRUCTIONS
   	! Scale down the achievement scores to avoid convergence issues
   	PSTRE = PVPSL/100;
   	LIT = PVLIT/100;
-  	
+
 
   ANALYSIS:
   	TYPE = COMPLEX;
@@ -83,7 +83,7 @@ INPUT INSTRUCTIONS
   	H1ITERATIONS = 10000;
 
   MODEL:
-  	
+
   	! MEASUREMENT MODELS
   	! Everyday life skills
   	LIFE BY
@@ -91,7 +91,7 @@ INPUT INSTRUCTIONS
   		H_Q05c
   		H_Q05e
   		H_Q05f;
-  		
+
   	! Curiousity
   	CURIOUS BY
   		I_Q04b
@@ -100,12 +100,12 @@ INPUT INSTRUCTIONS
   		I_Q04j
   		I_Q04l
   		I_Q04m;
-  		
+
   	! Model modifications
   	! Residual covariance
   	I_Q04B WITH I_Q04H;
   	I_Q04B WITH I_Q04J;
-  	
+
   	! STRUCTURAL MODEL
   	! Direct effects
   	PSTRE ON
@@ -114,18 +114,18 @@ INPUT INSTRUCTIONS
   		FEMALE
   		HOMLANG
   		LIT;
-  		
+
   	CURIOUS ON
   		FEMALE
   		HOMLANG
   		LIT;
-  		
+
   	LIFE ON
   		FEMALE
   		HOMLANG
   		LIT;
-  		
-  	
+
+
   	! Variances and covariances of predictors/residuals to let FIML work
   	! Variances
   	CURIOUS;
@@ -133,26 +133,26 @@ INPUT INSTRUCTIONS
   	FEMALE;
   	HOMLANG;
   	LIT;
-  	
+
   	! Covariances
   	! Residuals of mediators
   	CURIOUS WITH LIFE;
   	! Predictors
   	FEMALE WITH HOMLANG LIT;
   	HOMLANG WITH LIT;
-  	
-  	
+
+
   MODEL INDIRECT:
   	! Indirect effects
   	PSTRE IND FEMALE;
   	PSTRE IND HOMLANG;
   	PSTRE IND LIT;
-  	
+
 
 
   OUTPUT: STDYX;	! Fully standardized parameters requested
           STDY;	! Standardized parameter estimates requested
-          		! (some X-variables are dichotomous)
+  				! (some X-variables are dichotomous)
           SAMPSTAT;	! Sample statistics
           CINTERVAL;	! Confidence intervals
           !mod(all);
@@ -584,21 +584,21 @@ RMSEA (Root Mean Square Error Of Approximation)
         Std Dev                              0.001
         Number of successful computations       10
 
-             Proportions                   Percentiles
-        Expected    Observed         Expected       Observed
-           0.990       1.000            0.056          0.056
-           0.980       1.000            0.056          0.056
-           0.950       1.000            0.056          0.056
-           0.900       0.800            0.057          0.056
-           0.800       0.800            0.057          0.056
-           0.700       0.800            0.057          0.057
-           0.500       0.500            0.057          0.057
-           0.300       0.200            0.058          0.057
-           0.200       0.200            0.058          0.058
-           0.100       0.100            0.058          0.058
-           0.050       0.100            0.058          0.058
-           0.020       0.000            0.059          0.058
-           0.010       0.000            0.059          0.058
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       1.000
+           0.800       1.000
+           0.700       1.000
+           0.500       1.000
+           0.300       1.000
+           0.200       1.000
+           0.100       1.000
+           0.050       0.000
+           0.020       0.000
+           0.010       0.000
 
 CFI/TLI
 
@@ -608,21 +608,21 @@ CFI/TLI
         Std Dev                              0.001
         Number of successful computations       10
 
-             Proportions                   Percentiles
-        Expected    Observed         Expected       Observed
-           0.990       1.000            0.923          0.924
-           0.980       1.000            0.924          0.924
-           0.950       1.000            0.924          0.924
-           0.900       0.900            0.925          0.924
-           0.800       0.700            0.925          0.924
-           0.700       0.500            0.926          0.925
-           0.500       0.500            0.926          0.926
-           0.300       0.400            0.927          0.927
-           0.200       0.300            0.927          0.927
-           0.100       0.100            0.928          0.928
-           0.050       0.100            0.928          0.928
-           0.020       0.000            0.929          0.928
-           0.010       0.000            0.929          0.928
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       0.000
+           0.800       0.000
+           0.700       0.000
+           0.500       0.000
+           0.300       0.000
+           0.200       0.000
+           0.100       0.000
+           0.050       0.000
+           0.020       0.000
+           0.010       0.000
 
     TLI
 
@@ -630,21 +630,21 @@ CFI/TLI
         Std Dev                              0.002
         Number of successful computations       10
 
-             Proportions                   Percentiles
-        Expected    Observed         Expected       Observed
-           0.990       1.000            0.895          0.896
-           0.980       1.000            0.895          0.896
-           0.950       1.000            0.896          0.896
-           0.900       0.900            0.896          0.896
-           0.800       0.700            0.897          0.896
-           0.700       0.500            0.898          0.897
-           0.500       0.500            0.899          0.898
-           0.300       0.400            0.899          0.899
-           0.200       0.300            0.900          0.900
-           0.100       0.100            0.901          0.900
-           0.050       0.100            0.901          0.900
-           0.020       0.000            0.902          0.900
-           0.010       0.000            0.902          0.900
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       0.800
+           0.800       0.000
+           0.700       0.000
+           0.500       0.000
+           0.300       0.000
+           0.200       0.000
+           0.100       0.000
+           0.050       0.000
+           0.020       0.000
+           0.010       0.000
 
 SRMR (Standardized Root Mean Square Residual)
 
@@ -652,21 +652,21 @@ SRMR (Standardized Root Mean Square Residual)
         Std Dev                              0.000
         Number of successful computations       10
 
-             Proportions                   Percentiles
-        Expected    Observed         Expected       Observed
-           0.990       1.000            0.040          0.040
-           0.980       1.000            0.040          0.040
-           0.950       0.900            0.040          0.040
-           0.900       0.900            0.041          0.040
-           0.800       0.800            0.041          0.040
-           0.700       0.700            0.041          0.041
-           0.500       0.500            0.041          0.041
-           0.300       0.400            0.041          0.041
-           0.200       0.200            0.041          0.041
-           0.100       0.100            0.041          0.041
-           0.050       0.000            0.041          0.041
-           0.020       0.000            0.042          0.041
-           0.010       0.000            0.042          0.041
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       1.000
+           0.800       1.000
+           0.700       1.000
+           0.500       1.000
+           0.300       1.000
+           0.200       1.000
+           0.100       1.000
+           0.050       1.000
+           0.020       0.000
+           0.010       0.000
 
 
 MODEL RESULTS
@@ -986,12 +986,12 @@ Effects from FEMALE to PSTRE
   Total               -0.030      0.010     -2.841      0.004      0.512
   Total indirect      -0.012      0.003     -3.957      0.000      0.160
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     FEMALE            -0.012      0.003     -3.872      0.000      0.177
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     FEMALE             0.000      0.000     -0.222      0.824      0.482
@@ -1006,12 +1006,12 @@ Effects from HOMLANG to PSTRE
   Total                0.000      0.027      0.018      0.986      0.658
   Total indirect      -0.037      0.007     -5.515      0.000      0.320
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     HOMLANG           -0.037      0.007     -5.003      0.000      0.407
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     HOMLANG            0.000      0.002     -0.187      0.852      0.643
@@ -1026,12 +1026,12 @@ Effects from LIT to PSTRE
   Total                0.768      0.014     55.212      0.000      0.501
   Total indirect       0.065      0.009      7.597      0.000      0.541
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     LIT                0.064      0.010      6.071      0.000      0.624
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     LIT                0.001      0.006      0.187      0.851      0.673
@@ -1055,12 +1055,12 @@ Effects from FEMALE to PSTRE
   Total               -0.034      0.012     -2.863      0.004      0.503
   Total indirect      -0.014      0.003     -3.980      0.000      0.157
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     FEMALE            -0.014      0.004     -3.900      0.000      0.171
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     FEMALE             0.000      0.000     -0.225      0.822      0.483
@@ -1075,12 +1075,12 @@ Effects from HOMLANG to PSTRE
   Total                0.000      0.018      0.017      0.987      0.659
   Total indirect      -0.025      0.005     -5.554      0.000      0.315
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     HOMLANG           -0.025      0.005     -5.072      0.000      0.394
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     HOMLANG            0.000      0.002     -0.190      0.849      0.643
@@ -1095,12 +1095,12 @@ Effects from LIT to PSTRE
   Total                0.831      0.008    105.385      0.000      0.395
   Total indirect       0.070      0.009      7.503      0.000      0.554
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     LIT                0.069      0.011      6.101      0.000      0.624
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     LIT                0.001      0.006      0.189      0.850      0.674
@@ -1121,12 +1121,12 @@ Effects from FEMALE to PSTRE
   Total               -0.034      0.012     -2.863      0.004      0.503
   Total indirect      -0.014      0.003     -3.980      0.000      0.157
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     FEMALE            -0.014      0.004     -3.900      0.000      0.171
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     FEMALE             0.000      0.000     -0.225      0.822      0.483
@@ -1141,12 +1141,12 @@ Effects from HOMLANG to PSTRE
   Total                0.000      0.018      0.017      0.987      0.659
   Total indirect      -0.025      0.005     -5.554      0.000      0.315
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     HOMLANG           -0.025      0.005     -5.072      0.000      0.394
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     HOMLANG            0.000      0.002     -0.190      0.849      0.643
@@ -1161,12 +1161,12 @@ Effects from LIT to PSTRE
   Total                0.831      0.008    105.385      0.000      0.395
   Total indirect       0.070      0.009      7.503      0.000      0.554
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     LIT                0.069      0.011      6.101      0.000      0.624
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     LIT                0.001      0.006      0.189      0.850      0.674
@@ -1461,12 +1461,12 @@ Effects from FEMALE to PSTRE
   Total             -0.057      -0.050      -0.047      -0.030      -0.013      -0.009      -0.003
   Total indirect    -0.020      -0.018      -0.017      -0.012      -0.007      -0.006      -0.004
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     FEMALE          -0.020      -0.018      -0.017      -0.012      -0.007      -0.006      -0.004
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     FEMALE          -0.001      -0.001      -0.001       0.000       0.001       0.001       0.001
@@ -1481,12 +1481,12 @@ Effects from HOMLANG to PSTRE
   Total             -0.069      -0.052      -0.044       0.000       0.045       0.053       0.069
   Total indirect    -0.054      -0.050      -0.048      -0.037      -0.026      -0.024      -0.020
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     HOMLANG         -0.056      -0.051      -0.049      -0.037      -0.025      -0.022      -0.018
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     HOMLANG         -0.006      -0.005      -0.004       0.000       0.003       0.004       0.005
@@ -1501,12 +1501,12 @@ Effects from LIT to PSTRE
   Total              0.732       0.741       0.745       0.768       0.791       0.796       0.804
   Total indirect     0.043       0.048       0.051       0.065       0.079       0.081       0.087
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     LIT              0.037       0.043       0.046       0.064       0.081       0.084       0.091
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     LIT             -0.014      -0.010      -0.008       0.001       0.010       0.012       0.016
@@ -1529,12 +1529,12 @@ Effects from FEMALE to PSTRE
   Total             -0.065      -0.058      -0.054      -0.034      -0.015      -0.011      -0.003
   Total indirect    -0.023      -0.021      -0.020      -0.014      -0.008      -0.007      -0.005
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     FEMALE          -0.023      -0.021      -0.019      -0.014      -0.008      -0.007      -0.005
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     FEMALE          -0.001      -0.001      -0.001       0.000       0.001       0.001       0.001
@@ -1549,12 +1549,12 @@ Effects from HOMLANG to PSTRE
   Total             -0.047      -0.036      -0.030       0.000       0.030       0.036       0.048
   Total indirect    -0.037      -0.034      -0.033      -0.025      -0.018      -0.016      -0.014
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     HOMLANG         -0.038      -0.035      -0.033      -0.025      -0.017      -0.015      -0.012
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     HOMLANG         -0.004      -0.003      -0.003       0.000       0.002       0.003       0.004
@@ -1569,12 +1569,12 @@ Effects from LIT to PSTRE
   Total              0.810       0.815       0.818       0.831       0.843       0.846       0.851
   Total indirect     0.046       0.052       0.055       0.070       0.085       0.088       0.094
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     LIT              0.040       0.047       0.050       0.069       0.087       0.091       0.098
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     LIT             -0.015      -0.011      -0.009       0.001       0.011       0.013       0.017
@@ -1594,12 +1594,12 @@ Effects from FEMALE to PSTRE
   Total             -0.065      -0.058      -0.054      -0.034      -0.015      -0.011      -0.003
   Total indirect    -0.023      -0.021      -0.020      -0.014      -0.008      -0.007      -0.005
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     FEMALE          -0.023      -0.021      -0.019      -0.014      -0.008      -0.007      -0.005
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     FEMALE          -0.001      -0.001      -0.001       0.000       0.001       0.001       0.001
@@ -1614,12 +1614,12 @@ Effects from HOMLANG to PSTRE
   Total             -0.047      -0.036      -0.030       0.000       0.030       0.036       0.048
   Total indirect    -0.037      -0.034      -0.033      -0.025      -0.018      -0.016      -0.014
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     HOMLANG         -0.038      -0.035      -0.033      -0.025      -0.017      -0.015      -0.012
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     HOMLANG         -0.004      -0.003      -0.003       0.000       0.002       0.003       0.004
@@ -1634,12 +1634,12 @@ Effects from LIT to PSTRE
   Total              0.810       0.815       0.818       0.831       0.843       0.846       0.851
   Total indirect     0.046       0.052       0.055       0.070       0.085       0.088       0.094
 
-  Specific indirect
-
+  Specific indirect 1
     PSTRE
     LIFE
     LIT              0.040       0.047       0.050       0.069       0.087       0.091       0.098
 
+  Specific indirect 2
     PSTRE
     CURIOUS
     LIT             -0.015      -0.011      -0.009       0.001       0.011       0.013       0.017
@@ -1958,17 +1958,9 @@ TECHNICAL 1 OUTPUT
  LIT            0.112
 
 
-DIAGRAM INFORMATION
-
-  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
-  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
-
-  Diagram output
-    /Users/ronnysc/Documents/CEMO/TEACHING/PIAAC2022-SEM/Examples/3-SEM/SEM1a.dgm
-
-     Beginning Time:  18:15:37
-        Ending Time:  18:15:42
-       Elapsed Time:  00:00:05
+     Beginning Time:  09:42:25
+        Ending Time:  09:42:32
+       Elapsed Time:  00:00:07
 
 
 
@@ -1981,4 +1973,4 @@ Fax: (310) 391-8971
 Web: www.StatModel.com
 Support: Support@StatModel.com
 
-Copyright (c) 1998-2018 Muthen & Muthen
+Copyright (c) 1998-2020 Muthen & Muthen

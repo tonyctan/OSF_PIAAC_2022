@@ -1,0 +1,39 @@
+
+TITLE:
+    One-factor CFA for New Zealand
+
+
+DATA:
+    file = "../../piaac1-all-curiosity.dat"; ! Dataset is saved two layers up
+
+
+VARIABLE:
+    NAMES =
+        CNTRYID
+        I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+        SPFWT0
+        HDI2012 UAI
+        ;
+
+    USEVARIABLES = I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m;
+
+    USEOBSERVATIONS = CNTRYID eq 554;
+
+    MISSING = all(-99);
+
+    ! Final participant weight
+	WEIGHT = SPFWT0;
+
+
+ANALYSIS:
+    ESTIMATOR = MLR;
+
+
+MODEL:
+    CURIOUS by I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m;
+
+    I_Q04b with I_Q04h;
+    I_Q04b with I_Q04j;
+
+OUTPUT:
+    stdyx stdy sampstat cinterval;

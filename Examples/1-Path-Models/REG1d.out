@@ -1,6 +1,6 @@
-Mplus VERSION 8.2 (Mac)
+Mplus VERSION 8.5 (Linux)
 MUTHEN & MUTHEN
-03/19/2022   6:09 PM
+03/22/2022   1:21 PM
 
 INPUT INSTRUCTIONS
 
@@ -8,13 +8,13 @@ INPUT INSTRUCTIONS
   	PATH MODEL
   	Regression model
   	Complex design: PVs, total weight, replication weights
-  	
-  	
+
+
   DATA: 	FILE IS piaac1-nor_pvlist.dat;
   	TYPE = IMPUTATION;
   	! Needed here as the model contains PVs
-  		
-  		
+
+
   VARIABLE:
   	NAMES ARE
   		AGE FEMALE B_Q01a
@@ -40,20 +40,20 @@ INPUT INSTRUCTIONS
   		SPFWT0
   		SPFWT1-SPFWT80
   		VARSTRAT VARUNIT;
-  		
+
   	! Variables to be used
   	! Newly defined variable appear at the end of this list
   	USEVARIABLES ARE
   		PSTRE
   		CURIOUS
   		LIFE;
-  		
+
   	! Missing data coding
   	MISSING ARE ALL(-99);
-  		
+
   	! Final participant weight
   	WEIGHT = SPFWT0;
-  	
+
   	! Replication weights
   	REPWEIGHTS = SPFWT1-SPFWT80;
 
@@ -62,7 +62,7 @@ INPUT INSTRUCTIONS
   	! Scale down the achievement scores to avoid convergence issues
   	PSTRE = PVPSL/100;
   	LIT = PVLIT/100;
-  	
+
   	! Create scale means as composite scores
   	CURIOUS = (I_Q04b+
   	I_Q04d+
@@ -70,7 +70,7 @@ INPUT INSTRUCTIONS
   	I_Q04j+
   	I_Q04l+
   	I_Q04m)/6;
-  	
+
   	LIFE = (H_Q05a+
   	H_Q05c+
   	H_Q05e+
@@ -81,19 +81,19 @@ INPUT INSTRUCTIONS
   	TYPE = COMPLEX;
   	ESTIMATOR = MLR;
   	H1ITERATIONS = 10000;
-  	
+
   	! Replication standard errors
   	REPSE = JACKKNIFE2;
 
   MODEL:
-  	
+
   	! STRUCTURAL MODEL
-  	
+
   	! Structural paths
   	PSTRE ON
   		CURIOUS
   		LIFE;
-  	
+
   	! Variances and covariances of predictors to let FIML work
   	! Variances
   	CURIOUS;
@@ -104,7 +104,7 @@ INPUT INSTRUCTIONS
 
   OUTPUT: STDYX;	! Fully standardized parameters requested
           STDY;	! Standardized parameter estimates requested
-          		! (some X-variables are dichotomous)
+  				! (some X-variables are dichotomous)
           SAMPSTAT;	! Sample statistics
           CINTERVAL;	! Confidence intervals
 
@@ -531,17 +531,9 @@ TECHNICAL 1 OUTPUT
  LIFE           0.000         0.000         0.289
 
 
-DIAGRAM INFORMATION
-
-  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
-  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
-
-  Diagram output
-    /Users/ronnysc/Documents/CEMO/TEACHING/PIAAC2022-SEM/Examples/1-PathModels/REG1d.dgm
-
-     Beginning Time:  18:09:22
-        Ending Time:  18:09:34
-       Elapsed Time:  00:00:12
+     Beginning Time:  13:21:54
+        Ending Time:  13:22:11
+       Elapsed Time:  00:00:17
 
 
 
@@ -554,4 +546,4 @@ Fax: (310) 391-8971
 Web: www.StatModel.com
 Support: Support@StatModel.com
 
-Copyright (c) 1998-2018 Muthen & Muthen
+Copyright (c) 1998-2020 Muthen & Muthen

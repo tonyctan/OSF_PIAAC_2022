@@ -1,6 +1,6 @@
-Mplus VERSION 8.2 (Mac)
+Mplus VERSION 8.5 (Linux)
 MUTHEN & MUTHEN
-03/21/2022   1:53 PM
+03/23/2022  10:15 AM
 
 INPUT INSTRUCTIONS
 
@@ -15,8 +15,8 @@ INPUT INSTRUCTIONS
   DATA: 	FILE IS piaac1-nor_pv1.dat;
   	! TYPE = IMPUTATION;
   	! Not needed here as the model does not contain any PV
-  		
-  		
+
+
   VARIABLE:
   	NAMES ARE
   		AGE FEMALE B_Q01a
@@ -42,7 +42,7 @@ INPUT INSTRUCTIONS
   		SPFWT0
   		SPFWT1-SPFWT80
   		VARSTRAT VARUNIT;
-  		
+
   	! Variables to be used
   	! Newly defined variable appear at the end of this list
   	USEVARIABLES ARE
@@ -52,32 +52,32 @@ INPUT INSTRUCTIONS
   		I_Q04j
   		I_Q04l
   		I_Q04m;
-  		
+
   	! Missing data coding
   	MISSING ARE ALL(-99);
-  		
+
   	! Final participant weight
   	WEIGHT = SPFWT0;
-  	
+
   	! Clustering in sampling units
   	CLUSTER = VARUNIT;
-  	
+
   	! Stratification
   	STRATIFICATION = VARSTRAT;
-  	
+
   	! Grouping variable and its levels
   	GROUPING IS FEMALE (0=Men 1=Women);
-  	
+
 
   ANALYSIS:
   	TYPE = COMPLEX;
   	ESTIMATOR = MLR;
   	H1ITERATIONS = 10000;
-  	
+
   	MODEL = CONFIGURAL METRIC SCALAR;
 
   MODEL:
-  	
+
   	! MEASUREMENT MODEL
   	! Curiousity
   	CURIOUS BY
@@ -87,13 +87,11 @@ INPUT INSTRUCTIONS
   		I_Q04j
   		I_Q04l
   		I_Q04m;
-  		
+
   	! Model modifications
   	! Residual covariance
   	I_Q04B WITH I_Q04H;
   	I_Q04B WITH I_Q04J;
-  	
-  	
 
 
   OUTPUT: STDYX;	! Fully standardized parameters requested
@@ -1662,14 +1660,8 @@ THE MODEL ESTIMATION TERMINATED NORMALLY
 
 
 
-DIAGRAM INFORMATION
-
-  Mplus diagrams are not available for multiple invariance models.
-  No diagram output was produced.
-
-
-     Beginning Time:  13:53:00
-        Ending Time:  13:53:00
+     Beginning Time:  10:15:02
+        Ending Time:  10:15:02
        Elapsed Time:  00:00:00
 
 
@@ -1683,4 +1675,4 @@ Fax: (310) 391-8971
 Web: www.StatModel.com
 Support: Support@StatModel.com
 
-Copyright (c) 1998-2018 Muthen & Muthen
+Copyright (c) 1998-2020 Muthen & Muthen

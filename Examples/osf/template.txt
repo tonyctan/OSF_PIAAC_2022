@@ -1,0 +1,123 @@
+[[init]]
+    iterators = countryID;
+    countryID =
+        56
+        124
+        152
+        203
+        208
+        233
+        246
+        250
+        276
+        300
+        372
+        376
+        380
+        392
+        410
+        440
+        528
+        554
+        578
+        616
+        702
+        703
+        705
+        724
+        752
+        826
+        840
+    ;
+    countryISO#countryID =
+        "BEL"
+        "CAN"
+        "CHL"
+        "CZE"
+        "DNK"
+        "EST"
+        "FIN"
+        "FRA"
+        "DEU"
+        "GRC"
+        "IRL"
+        "ISR"
+        "ITA"
+        "JPN"
+        "KOR"
+        "LTU"
+        "NLD"
+        "NZL"
+        "NOR"
+        "POL"
+        "SGP"
+        "SVK"
+        "SVN"
+        "ESP"
+        "SWE"
+        "GBR"
+        "USA"
+    ;
+    title#countryID =
+        "Belgium"
+        "Canada"
+        "Chile"
+        "Czech Republic"
+        "Denmark"
+        "Estonia"
+        "Finland"
+        "France"
+        "Germany"
+        "Greece"
+        "Ireland"
+        "Israel"
+        "Italy"
+        "Japan"
+        "Korea"
+        "Lithuania"
+        "the Netherlands"
+        "New Zealand"
+        "Norway"
+        "Poland"
+        "Singapore"
+        "Slovak Republic"
+        "Slovenia"
+        "Spain"
+        "Sweden"
+        "the United Kingdom"
+        "the United States"
+    ;
+
+    outputDirectory = "./batch/[[countryISO#countryID]]";
+    filename = "[[countryISO#countryID]].inp";
+[[/init]]
+
+TITLE:
+    One-factor CFA for [[title#countryID]]
+
+DATA:
+    file = "../../piaac1-all-curiosity.dat"; ! Dataset is saved two layers up
+
+VARIABLE:
+    NAMES =
+        CNTRYID
+        I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
+        SPFWT0
+        HDI2012 UAI
+        ;
+    USEVARIABLES = I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m;
+    USEOBSERVATIONS = CNTRYID eq [[countryID]];
+    MISSING = all(-99);
+    ! Final participant weight
+	WEIGHT = SPFWT0;
+
+ANALYSIS:
+    ESTIMATOR = MLR;
+
+MODEL:
+    CURIOUS by I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m;
+    I_Q04b with I_Q04h;
+    I_Q04b with I_Q04j;
+
+OUTPUT:
+    stdyx stdy sampstat cinterval;

@@ -1,0 +1,35 @@
+------Begin Mplus Model Run: 23Mar2022 13:34:00------
+Run options:
+	Recursive (run models in subdirectories): TRUE
+	Show output on console: FALSE
+	Replace existing outfile: always
+------
+Currently running model: BEL.inp
+Currently running model: CAN.inp
+Currently running model: CHL.inp
+Currently running model: CZE.inp
+Currently running model: DEU.inp
+Currently running model: DNK.inp
+Currently running model: ESP.inp
+Currently running model: EST.inp
+Currently running model: FIN.inp
+Currently running model: FRA.inp
+Currently running model: GBR.inp
+Currently running model: GRC.inp
+Currently running model: IRL.inp
+Currently running model: ISR.inp
+Currently running model: ITA.inp
+Currently running model: JPN.inp
+Currently running model: KOR.inp
+Currently running model: LTU.inp
+Currently running model: NLD.inp
+Currently running model: NOR.inp
+Currently running model: NZL.inp
+Currently running model: POL.inp
+Currently running model: SGP.inp
+Currently running model: SVK.inp
+Currently running model: SVN.inp
+Currently running model: SWE.inp
+Currently running model: USA.inp
+
+------End Mplus Model Run: 23Mar2022 13:34:30------

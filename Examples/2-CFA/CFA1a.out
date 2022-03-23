@@ -1,6 +1,6 @@
-Mplus VERSION 8.2 (Mac)
+Mplus VERSION 8.5 (Linux)
 MUTHEN & MUTHEN
-03/19/2022   6:10 PM
+03/23/2022   1:19 PM
 
 INPUT INSTRUCTIONS
 
@@ -12,8 +12,8 @@ INPUT INSTRUCTIONS
   DATA: 	FILE IS piaac1-nor_pv1.dat;
   	! TYPE = IMPUTATION;
   	! Not needed here as the model does not contain any PV
-  		
-  		
+
+
   VARIABLE:
   	NAMES ARE
   		AGE FEMALE B_Q01a
@@ -39,7 +39,7 @@ INPUT INSTRUCTIONS
   		SPFWT0
   		SPFWT1-SPFWT80
   		VARSTRAT VARUNIT;
-  		
+
   	! Variables to be used
   	! Newly defined variable appear at the end of this list
   	USEVARIABLES ARE
@@ -49,19 +49,19 @@ INPUT INSTRUCTIONS
   		I_Q04j
   		I_Q04l
   		I_Q04m;
-  		
+
   	! Missing data coding
   	MISSING ARE ALL(-99);
-  		
+
   	! Final participant weight
   	WEIGHT = SPFWT0;
-  	
+
   	! Clustering in sampling units
   	CLUSTER = VARUNIT;
-  	
+
   	! Stratification
   	STRATIFICATION = VARSTRAT;
-  	
+
 
   ANALYSIS:
   	TYPE = COMPLEX;
@@ -69,7 +69,7 @@ INPUT INSTRUCTIONS
   	H1ITERATIONS = 10000;
 
   MODEL:
-  	
+
   	! MEASUREMENT MODEL
   	! Curiousity
   	CURIOUS BY
@@ -79,8 +79,7 @@ INPUT INSTRUCTIONS
   		I_Q04j
   		I_Q04l
   		I_Q04m;
-  	
-  	
+
 
 
   OUTPUT: STDYX;	! Fully standardized parameters requested
@@ -578,17 +577,9 @@ I_Q04M   WITH I_Q04H              28.292    -0.041     -0.041       -0.120
 I_Q04M   WITH I_Q04J              41.467     0.056      0.056        0.134
 
 
-DIAGRAM INFORMATION
-
-  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
-  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
-
-  Diagram output
-    /Users/ronnysc/Documents/CEMO/TEACHING/PIAAC2022-SEM/Examples/2-CFA/CFA1a.dgm
-
-     Beginning Time:  18:10:21
-        Ending Time:  18:10:22
-       Elapsed Time:  00:00:01
+     Beginning Time:  13:19:03
+        Ending Time:  13:19:03
+       Elapsed Time:  00:00:00
 
 
 
@@ -601,4 +592,4 @@ Fax: (310) 391-8971
 Web: www.StatModel.com
 Support: Support@StatModel.com
 
-Copyright (c) 1998-2018 Muthen & Muthen
+Copyright (c) 1998-2020 Muthen & Muthen

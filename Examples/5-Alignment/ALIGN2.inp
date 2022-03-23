@@ -8,31 +8,31 @@ TITLE:	Structural equation modeling with PIAAC data
 DATA: 	FILE IS piaac1-all-curiosity.dat;
 	! TYPE = IMPUTATION;
 	! Not needed here as the model does not contain any PV
-		
-		
-VARIABLE: 
-	NAMES ARE 
+
+
+VARIABLE:
+	NAMES ARE
 		CNTRYID
 		I_Q04b I_Q04d I_Q04h I_Q04j I_Q04l I_Q04m
 		SPFWT0
 		HDI2012 UAI;
-		
+
 	! Variables to be used
 	! Newly defined variable appear at the end of this list
-	USEVARIABLES ARE 
-		I_Q04b 
-		I_Q04d 
-		I_Q04h 
-		I_Q04j 
+	USEVARIABLES ARE
+		I_Q04b
+		I_Q04d
+		I_Q04h
+		I_Q04j
 		I_Q04l
 		I_Q04m;
-		
+
 	! Missing data coding
 	MISSING ARE ALL(-99);
-		
+
 	! Final participant weight
 	WEIGHT = SPFWT0;
-	
+
 	! Grouping variable and its levels
 	GROUPING IS CNTRYID (56=BEL 124=CAN 152=CHL
 			203=CZE 208=DNK 233=EST 246=FIN
@@ -47,7 +47,7 @@ ANALYSIS:
 
 	ESTIMATOR = MLR;
 	H1ITERATIONS = 10000;
-	
+
 	! Use multiple processors to speed the estimation up
 	PROCESSORS = 4;
 
@@ -57,26 +57,26 @@ MODEL:
 	! MEASUREMENT MODEL
 	! Curiousity
 	CURIOUS BY
-		I_Q04b 
-		I_Q04d 
-		I_Q04h 
-		I_Q04j 
+		I_Q04b
+		I_Q04d
+		I_Q04h
+		I_Q04j
 		I_Q04l
 		I_Q04m;
-		
+
 	! Model modifications
 	! Residual covariances
 	I_Q04B WITH I_Q04H;
 	I_Q04B WITH I_Q04J;
-	
-	
+
+
 	! What follows are the measurement models for each
 	! country with the starting values from the fixed
 	! alignment method and the first factor loading fixed
 	! its starting value for identification purposes.
 	! The same goes for the intercept of the first item.
-	
-	
+
+
 
 MODEL BEL:
 
@@ -834,11 +834,9 @@ MODEL USA:
      i_q04m*0.39506;
      curious*0.83234;
 
-	
-	
+
 OUTPUT: STDYX;	! Fully standardized parameters requested
-        STDY;	! Standardized parameter estimates requested 
+        STDY;	! Standardized parameter estimates requested
         		! (some X-variables are dichotomous)
-        SAMPSTAT;	! Sample statistics 
+        SAMPSTAT;	! Sample statistics
         CINTERVAL;	! Confidence intervals
-        
